@@ -2792,6 +2792,7 @@ keybinds, keybindMainConn = {}, nil
                 guiPosition    = 1, 
                 nametagVisible = true, 
                 removeNametag  = false, 
+                antiVcBan      = false,
             }
 
             
@@ -5900,12 +5901,18 @@ local function RunCustomAnimation(Char)
                 do
                     local _vcModule = _TL_loadModule("TL-ANTIVCBAN")
                     sectionLbl(CY, "VOICE CHAT"); CY = CY + 18
+                    local _vcSetToggle = nil
                     if _vcModule then
-                        makeToggleRow(CY, "Anti-VC Ban", "mic protection", C.accent, function(on)
+                        local _, st = makeToggleRow(CY, "Anti-VC Ban", "mic protection", C.accent, function(on)
+                            settingsState.antiVcBan = on
                             if on then _vcModule.start(sendNotif) else _vcModule.stop() end
                         end)
+                        _vcSetToggle = st
                     else
                         makeToggleRow(CY, "Anti-VC Ban", "mic protection (offline)", C.sub, function() end)
+                    end
+                    if _vcSetToggle then
+                        _G._TL_vcSetToggle = _vcSetToggle
                     end
                     CY = CY + TOG_H + GAP
                 end
@@ -14504,8 +14511,14 @@ local _ok_Settings, _err_Settings = pcall(function()
                         end
                     end
 
+                    settingToggleSetters["antiVcBan"] = function(val)
+                        if val and _G._TL_vcSetToggle then
+                            _G._TL_vcSetToggle(true)
+                            settingsState.antiVcBan = true
+                        end
+                    end
                     _G.settingToggleSetters = settingToggleSetters
-                    genPage.Size = UDim2.new(1, 0, 0, 108 + 54 + 46 + 80 + 8)
+                    genPage.Size = UDim2.new(1, 0, 0, 108 + 54 + 46 + 80 + 8 + 34)
                 end) 
                 local kbPage
                 local _ok_kbPage = pcall(function()
