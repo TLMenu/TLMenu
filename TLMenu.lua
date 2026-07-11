@@ -42,106 +42,106 @@ local task                    = (type(task) == "table" and task) or {
     defer = function(f, ...) return spawn(f, ...) end
 }
 
-local ROLES_URL               = "https://raw.githubusercontent.com/telelumi/telelumi.github.io/refs/heads/main/NametagRoles.json"
-local NAMETAG_CONFIG_URL      = "https://raw.githubusercontent.com/telelumi/telelumi.github.io/refs/heads/main/NametagConfig.json"
-local SCRIPT_URL              = "https://raw.githubusercontent.com/telelumi/telelumi.github.io/refs/heads/main/covertnet.lua"
+local ROLES_URL               = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NametagRoles.json"
+local NAMETAG_CONFIG_URL      = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NametagConfig.json"
+local SCRIPT_URL              = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/covertnet.lua"
 local EMOTEWHEEL_URL          = "https://raw.githubusercontent.com/telelumi/TL-EX/refs/heads/main/TL-SCRIPTS/TL-EX-EMOTEWHEEL"
 local NameOverrides           = {}
 local AdminNames              = {}
 local LoadRolesFromGithub
 
-local nametagImageUrl      = "https://raw.githubusercontent.com/telelumi/telelumi.github.io/refs/heads/main/nametag-uploads/nametag-image.png"
+local nametagImageUrl      = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/nametag-uploads/nametag-image.png"
 local nametagImageFileName = "assets/TL-ROLE-PICS/nametag-image.png"
 
-local ownerProfilePicUrl      = "https://raw.githubusercontent.com/telelumi/telelumi.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-telelumi.png"
+local ownerProfilePicUrl      = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-telelumi.png"
 local ownerProfilePicFileName = "assets/TL-ROLE-PICS/TL-telelumi.png"
 
-local userProfilePicUrl      = "https://raw.githubusercontent.com/telelumi/telelumi.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TLUSER-ROLE.png"
+local userProfilePicUrl      = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TLUSER-ROLE.png"
 local userProfilePicFileName = "assets/TL-ROLE-PICS/TLUSER-ROLE.png"
 
 local customUserAvatars = {
     ["usxirr"] = {
-        url  = "https://raw.githubusercontent.com/telelumi/telelumi.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Oso.png",
+        url  = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Oso.png",
         file = "assets/TL-ROLE-PICS/TL-Usxirr.png",
         strokeColor = ColorSequence.new(Color3.fromHex("#9A7211"), Color3.fromHex("#000000")),
     },
     ["Abxsent0"] = {
-        url  = "https://raw.githubusercontent.com/telelumi/telelumi.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Absent.png",
+        url  = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Absent.png",
         file = "assets/TL-ROLE-PICS/TL-Abxsent0.png",
         strokeColor = ColorSequence.new(Color3.fromHex("#06402B"), Color3.fromHex("#88E788")),
     },
 }
 
-local dragonballMusicUrl             = "https://github.com/telelumi/TLASSETS/raw/refs/heads/main/TL%20SFX/THEME%20MUSICS/DRAGONBALL/DRAGONBALL-THEME-MUSIC-1.mp3"
+local dragonballMusicUrl             = "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/THEME%20MUSICS/DRAGONBALL/DRAGONBALL-THEME-MUSIC-1.mp3"
 local dragonballMusicFileName        = "assets/TL-MP3-FILES/DragonBall-Music1.mp3"
 
-local dragonballSettingsIconUrl      = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DRAGONBALL/Theme-Dragonball-Settings-Icon.png"
+local dragonballSettingsIconUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DRAGONBALL/Theme-Dragonball-Settings-Icon.png"
 local dragonballSettingsIconFileName = "assets/THEMES/DRAGONBALL/Theme-Dragonball-Settings-Icon.png"
 
-local dragonballBgUrl      = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DRAGONBALL/Theme-Dragonball-Home-Wallpaper.jpg"
+local dragonballBgUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DRAGONBALL/Theme-Dragonball-Home-Wallpaper.jpg"
 local dragonballBgFileName = "assets/THEMES/DRAGONBALL/Theme-Dragonball-Home-Wallpaper.jpg"
 
-local onePieceActionBgUrl      = "https://github.com/telelumi/TLASSETS/blob/main/THEMES/ONE%20PIECE/Theme-OnePiece-Action-Wallpaper.png?raw=true"
+local onePieceActionBgUrl      = "https://github.com/TLMenu/TLASSETS/blob/main/THEMES/ONE%20PIECE/Theme-OnePiece-Action-Wallpaper.png?raw=true"
 local onePieceActionBgFileName = "assets/THEMES/ONEPIECE/OP-ACT-BG.png"
 
-local adminAudioUrl           = "https://github.com/telelumi/TLASSETS/raw/refs/heads/main/TL%20SFX/TLMENU-STANDARD-SFX/TLSYSTEM-ADMIN-SFX.mp3"
+local adminAudioUrl           = "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/TLMENU-STANDARD-SFX/TLSYSTEM-ADMIN-SFX.mp3"
 local adminAudioFileName      = "assets/TL-MP3-FILES/TLSYSTEM-ADMIN-SFX.mp3"
 
-local theBoysScriptsIconUrl      = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/THE%20BOYS/Theme-TheBoys-Scripts-Icon.png"
+local theBoysScriptsIconUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/THE%20BOYS/Theme-TheBoys-Scripts-Icon.png"
 local theBoysScriptsIconFileName = "assets/THEMES/THEBOYS/Theme-TheBoys-Scripts-Icon.png"
-local theBoysSettingsIconUrl     = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/THE%20BOYS/Theme-TheBoys-Settings-Icon.png"
+local theBoysSettingsIconUrl     = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/THE%20BOYS/Theme-TheBoys-Settings-Icon.png"
 local theBoysSettingsIconFileName = "assets/THEMES/THEBOYS/Theme-TheBoys-Settings-Icon.png"
-local theBoysHomeIconUrl         = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/THE%20BOYS/Theme-TheBoys-HomeIcon.png"
+local theBoysHomeIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/THE%20BOYS/Theme-TheBoys-HomeIcon.png"
 local theBoysHomeIconFileName    = "assets/THEMES/THEBOYS/Theme-TheBoys-HomeIcon.png"
-local theBoysActionsIconUrl      = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/THE%20BOYS/Theme-TheBoys-Actions-Icon.png"
+local theBoysActionsIconUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/THE%20BOYS/Theme-TheBoys-Actions-Icon.png"
 local theBoysActionsIconFileName = "assets/THEMES/THEBOYS/Theme-TheBoys-Actions-Icon.png"
-local theBoysBgUrl               = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/THE%20BOYS/Theme-TheBoys2.jpg"
+local theBoysBgUrl               = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/THE%20BOYS/Theme-TheBoys2.jpg"
 local theBoysBgFileName          = "assets/THEMES/THEBOYS/Theme-TheBoys2.jpg"
-local theBoysMusicUrl            = "https://github.com/telelumi/TLASSETS/raw/refs/heads/main/TL%20SFX/THEME%20MUSICS/THE%20BOYS/The%20Boys%20Homelander%20Theme%20Enhanced%20Version.mp3"
+local theBoysMusicUrl            = "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/THEME%20MUSICS/THE%20BOYS/The%20Boys%20Homelander%20Theme%20Enhanced%20Version.mp3"
 local theBoysMusicFileName       = "assets/TL-MP3-FILES/Theme-TheBoys-Music.mp3"
 
-local comTabIconUrl              = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/Icons/Com-Icon.png"
+local comTabIconUrl              = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/Icons/Com-Icon.png"
 local comTabIconFileName         = "assets/Com-Icon.png"
 
-local deathNoteHomeIconUrl         = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Home-Icon.png"
+local deathNoteHomeIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Home-Icon.png"
 local deathNoteHomeIconFileName    = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Home-Icon.png"
-local deathNoteCharIconUrl         = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-CharacterIcon.png"
+local deathNoteCharIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-CharacterIcon.png"
 local deathNoteCharIconFileName    = "assets/THEMES/DEATHNOTE/Theme-Death-Note-CharacterIcon.png"
-local deathNoteScriptsIconUrl      = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Scripts-Icon.png"
+local deathNoteScriptsIconUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Scripts-Icon.png"
 local deathNoteScriptsIconFileName = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Scripts-Icon.png"
-local deathNoteSettingsIconUrl     = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Settings-Icon.png"
+local deathNoteSettingsIconUrl     = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Settings-Icon.png"
 local deathNoteSettingsIconFileName = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Settings-Icon.png"
-local deathNoteComIconUrl          = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Com-Icon.png"
+local deathNoteComIconUrl          = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Com-Icon.png"
 local deathNoteComIconFileName     = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Com-Icon.png"
-local deathNoteCharBgUrl           = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-CharacterPanelBackground.png"
+local deathNoteCharBgUrl           = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-CharacterPanelBackground.png"
 local deathNoteCharBgFileName      = "assets/THEMES/DEATHNOTE/Theme-Death-Note-CharPanelBg.png"
-local deathNoteComBgUrl            = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Com-Background.png"
+local deathNoteComBgUrl            = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Com-Background.png"
 local deathNoteComBgFileName       = "assets/THEMES/DEATHNOTE/Theme-Death-Note-ComPanelBg.png"
-local deathNoteScriptsBgUrl        = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Actions-Background-Icon.png"
+local deathNoteScriptsBgUrl        = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Actions-Background-Icon.png"
 local deathNoteScriptsBgFileName   = "assets/THEMES/DEATHNOTE/Theme-Death-Note-ActionsPanelBg.png"
-local deathNoteScriptsPanelBgUrl    = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-ScriptsPanel-Background.png"
+local deathNoteScriptsPanelBgUrl    = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-ScriptsPanel-Background.png"
 local deathNoteScriptsPanelBgFileName = "assets/THEMES/DEATHNOTE/Theme-Death-Note-ScriptsPanelBg.png"
-local deathNoteLoadingScreenUrl    = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Loading-Screen.png"
+local deathNoteLoadingScreenUrl    = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Loading-Screen.png"
 local deathNoteLoadingScreenFileName = "assets/THEMES/DEATHNOTE/Theme-Death-Note-LoadingScreen.png"
-local deathNoteHomeBgUrl            = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Home-Background-Icon.png"
+local deathNoteHomeBgUrl            = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Home-Background-Icon.png"
 local deathNoteHomeBgFileName       = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Home-Background.png"
 
-local dexterCharIconUrl             = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-CharacterIcon.png"
+local dexterCharIconUrl             = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-CharacterIcon.png"
 local dexterCharIconFileName        = "assets/THEMES/DEXTER/Theme-Dexter-CharacterIcon.png"
-local dexterCharBgUrl               = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-CharacterPanel.png"
+local dexterCharBgUrl               = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-CharacterPanel.png"
 local dexterCharBgFileName          = "assets/THEMES/DEXTER/Theme-Dexter-CharacterPanel.png"
-local dexterSettingsIconUrl         = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-Settings-Icon.png"
+local dexterSettingsIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-Settings-Icon.png"
 local dexterSettingsIconFileName    = "assets/THEMES/DEXTER/Theme-Dexter-Settings-Icon.png"
-local dexterScriptsIconUrl          = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-Scripts-Icon.png"
+local dexterScriptsIconUrl          = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-Scripts-Icon.png"
 local dexterScriptsIconFileName     = "assets/THEMES/DEXTER/Theme-Dexter-Scripts-Icon.png"
-local dexterComBgUrl                = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-Com-Wallpaper.png"
+local dexterComBgUrl                = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-Com-Wallpaper.png"
 local dexterComBgFileName           = "assets/THEMES/DEXTER/Theme-Dexter-ComWallpaper.png"
-local dexterLoadingScreenUrl        = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-Loading-Screen.png"
+local dexterLoadingScreenUrl        = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-Loading-Screen.png"
 local dexterLoadingScreenFileName   = "assets/THEMES/DEXTER/Theme-Dexter-LoadingScreen.png"
-local dexterPlayerlistIconUrl       = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-Playerlist-Icon.png"
+local dexterPlayerlistIconUrl       = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-Playerlist-Icon.png"
 local dexterPlayerlistIconFileName  = "assets/THEMES/DEXTER/Theme-Dexter-Playerlist-Icon.png"
 
-local loadingScreenVoiceUrl      = "https://github.com/telelumi/TLASSETS/raw/refs/heads/main/TL%20SFX/TLMENU-STANDARD-SFX/TLMenuLoadingScreen-VoiceLine.mp3"
+local loadingScreenVoiceUrl      = "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/TLMENU-STANDARD-SFX/TLMenuLoadingScreen-VoiceLine.mp3"
 local loadingScreenVoiceFileName = "assets/TL-MP3-FILES/TLMenuLoadingScreen-VoiceLine.mp3"
 
 local _TL_assetLoader = {
@@ -190,7 +190,7 @@ local function _TL_safeGetCustomAsset(path)
     return nil
 end
 
-local _TL_MANIFEST_URL = "https://raw.githubusercontent.com/telelumi/telelumi.github.io/refs/heads/main/tl-assets-manifest.json"
+local _TL_MANIFEST_URL = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/tl-assets-manifest.json"
 local _TL_MANIFEST_CACHE = "assets/manifest-cache.json"
 
 local function _TL_loadManifest()
@@ -282,14 +282,14 @@ task.spawn(function()
         { name = "TL User Profile Picture",    url = userProfilePicUrl,            file = userProfilePicFileName,            kind = "image", priority = 1 },
         { name = "usxirr Custom Avatar",       url = customUserAvatars["usxirr"].url, file = customUserAvatars["usxirr"].file, kind = "image", priority = 1 },
         { name = "Abxsent0 Custom Avatar",     url = customUserAvatars["Abxsent0"].url, file = customUserAvatars["Abxsent0"].file, kind = "image", priority = 1 },
-        { name = "TL Staff Icon", url = "https://raw.githubusercontent.com/telelumi/telelumi.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-STAFF.png", file = "assets/TL-ROLE-PICS/TL-STAFF.png", kind = "image", priority = 1 },
-        { name = "TL Arda Avatar", url = "https://raw.githubusercontent.com/telelumi/telelumi.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Arda.png", file = "assets/TL-ROLE-PICS/TL-Arda.png", kind = "image", priority = 1 },
-        { name = "TL Sec Avatar", url = "https://raw.githubusercontent.com/telelumi/telelumi.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Sec.png", file = "assets/TL-ROLE-PICS/TL-Sec.png", kind = "image", priority = 1 },
-        { name = "TL Sleepy Avatar", url = "https://raw.githubusercontent.com/telelumi/telelumi.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Sleepy.jpg", file = "assets/TL-ROLE-PICS/TL-Sleepy.jpg", kind = "image", priority = 1 },
-        { name = "R5yn Avatar", url = "https://raw.githubusercontent.com/telelumi/telelumi.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/R5yn.png", file = "assets/TL-ROLE-PICS/R5yn.png", kind = "image", priority = 1 },
+        { name = "TL Staff Icon", url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-STAFF.png", file = "assets/TL-ROLE-PICS/TL-STAFF.png", kind = "image", priority = 1 },
+        { name = "TL Arda Avatar", url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Arda.png", file = "assets/TL-ROLE-PICS/TL-Arda.png", kind = "image", priority = 1 },
+        { name = "TL Sec Avatar", url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Sec.png", file = "assets/TL-ROLE-PICS/TL-Sec.png", kind = "image", priority = 1 },
+        { name = "TL Sleepy Avatar", url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Sleepy.jpg", file = "assets/TL-ROLE-PICS/TL-Sleepy.jpg", kind = "image", priority = 1 },
+        { name = "R5yn Avatar", url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/R5yn.png", file = "assets/TL-ROLE-PICS/R5yn.png", kind = "image", priority = 1 },
         { name = "Communication Tab Icon",     url = comTabIconUrl,                file = comTabIconFileName,                kind = "image", priority = 1 },
-        { name = "VC Unmuted Icon",            url = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/Icons/ANTIVCBAN-Unmuted-Icon.png", file = "assets/TL_Unmuted.png", kind = "image", priority = 1 },
-        { name = "VC Muted Icon",              url = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/Icons/ANTIVCBAN-Mute-Icon.png",    file = "assets/TL_Muted.png",   kind = "image", priority = 1 },
+        { name = "VC Unmuted Icon",            url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/Icons/ANTIVCBAN-Unmuted-Icon.png", file = "assets/TL_Unmuted.png", kind = "image", priority = 1 },
+        { name = "VC Muted Icon",              url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/Icons/ANTIVCBAN-Mute-Icon.png",    file = "assets/TL_Muted.png",   kind = "image", priority = 1 },
         { name = "Admin Join Audio",           url = adminAudioUrl,                file = adminAudioFileName,                kind = "audio", priority = 1 },
         
         { name = "The Boys Scripts Icon",      url = theBoysScriptsIconUrl,        file = theBoysScriptsIconFileName,        kind = "image", priority = 2 },
@@ -301,7 +301,7 @@ task.spawn(function()
         { name = "Dragonball Settings Icon",   url = dragonballSettingsIconUrl,    file = dragonballSettingsIconFileName,    kind = "image", priority = 2 },
         { name = "Dragonball Wallpaper",       url = dragonballBgUrl,              file = dragonballBgFileName,              kind = "image", priority = 2 },
         { name = "Dragonball Theme Music",     url = dragonballMusicUrl,           file = dragonballMusicFileName,           kind = "audio", priority = 2 },
-        { name = "One Piece COM Background",   url = "https://raw.githubusercontent.com/telelumi/TLASSETS/refs/heads/main/THEMES/ONE%20PIECE/Theme-OnePiece-Com-Wallpaper.png", file = "assets/THEMES/ONEPIECE/OP-COM-BG.png", kind = "image", priority = 2 },
+        { name = "One Piece COM Background",   url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/ONE%20PIECE/Theme-OnePiece-Com-Wallpaper.png", file = "assets/THEMES/ONEPIECE/OP-COM-BG.png", kind = "image", priority = 2 },
         { name = "One Piece Action Background", url = onePieceActionBgUrl, file = onePieceActionBgFileName, kind = "image", priority = 2 },
         { name = "Death Note Home Icon",       url = deathNoteHomeIconUrl,         file = deathNoteHomeIconFileName,         kind = "image", priority = 2 },
         { name = "Death Note Character Icon",  url = deathNoteCharIconUrl,         file = deathNoteCharIconFileName,         kind = "image", priority = 2 },
@@ -336,18 +336,18 @@ task.spawn(function()
         { "Usopp Theme",                   "Usopp%20Theme.mp3",                                           "assets/TL-MP3-FILES/OP-M-08.mp3" },
         { "Zoro Theme",                    "Zoro%20Theme.mp3",                                            "assets/TL-MP3-FILES/OP-M-09.mp3" },
     }
-    local _OP_BASE = "https://github.com/telelumi/TLASSETS/raw/refs/heads/main/TL%20SFX/THEME%20MUSICS/ONEPIECE/"
+    local _OP_BASE = "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/THEME%20MUSICS/ONEPIECE/"
     for _, v in ipairs(_opMusic) do
         assets[#assets + 1] = { name = "OP Music: " .. v[1], url = _OP_BASE .. v[2], file = v[3], kind = "audio", priority = 2 }
     end
 
     
     local _afkFiles = {
-        { "https://github.com/telelumi/TLASSETS/raw/refs/heads/main/TL%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE.mp3",  "assets/TL-MP3-FILES/DB-AFK-VL0.mp3" },
-        { "https://github.com/telelumi/TLASSETS/raw/refs/heads/main/TL%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE1.mp3", "assets/TL-MP3-FILES/DB-AFK-VL1.mp3" },
-        { "https://github.com/telelumi/TLASSETS/raw/refs/heads/main/TL%20SFX/AFKSFX/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE.mp3",      "assets/TL-MP3-FILES/OP-AFK-VL0.mp3" },
-        { "https://github.com/telelumi/TLASSETS/raw/refs/heads/main/TL%20SFX/AFKSFX/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE1.mp3",     "assets/TL-MP3-FILES/OP-AFK-VL1.mp3" },
-        { "https://github.com/telelumi/TLASSETS/raw/refs/heads/main/TL%20SFX/AFKSFX/THE%20BOYS-AFKSFX/THEBOYS-AFK-VOICELINE.mp3",     "assets/TL-MP3-FILES/TB-AFK-VL0.mp3" },
+        { "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE.mp3",  "assets/TL-MP3-FILES/DB-AFK-VL0.mp3" },
+        { "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE1.mp3", "assets/TL-MP3-FILES/DB-AFK-VL1.mp3" },
+        { "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/AFKSFX/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE.mp3",      "assets/TL-MP3-FILES/OP-AFK-VL0.mp3" },
+        { "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/AFKSFX/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE1.mp3",     "assets/TL-MP3-FILES/OP-AFK-VL1.mp3" },
+        { "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/AFKSFX/THE%20BOYS-AFKSFX/THEBOYS-AFK-VOICELINE.mp3",     "assets/TL-MP3-FILES/TB-AFK-VL0.mp3" },
     }
     for _, v in ipairs(_afkFiles) do
         assets[#assets + 1] = { name = "AFK VL: " .. v[2], url = v[1], file = v[2], kind = "audio", priority = 2 }
@@ -1001,7 +1001,7 @@ task.spawn(function()
         
         
         
-        local _TL_MODULES_BASE = "https://raw.githubusercontent.com/telelumi/TLMenuParts/main/"
+        local _TL_MODULES_BASE = "https://raw.githubusercontent.com/TLMenu/TLMenuParts/main/"
         local _TL_MODULES = {}
         rawset(_genv, "_TL_MODULES", _TL_MODULES)
 
@@ -4102,7 +4102,7 @@ sendNotif = function(title, text, dur, accentOverride)
                 }
                 task.spawn(function()
                     local ok, src = pcall(function()
-                        return (game :: any):HttpGet("https://raw.githubusercontent.com/telelumi/TLMenuParts/refs/heads/main/TL-ROLE-DETECTOR.lua")
+                        return (game :: any):HttpGet("https://raw.githubusercontent.com/TLMenu/TLMenuParts/refs/heads/main/TL-ROLE-DETECTOR.lua")
                     end)
                     if ok and src and #src > 50 then
                         src = src:gsub('ROBLOX_STAFF%s*=%s*true', 'ROBLOX_STAFF = false')
@@ -16730,9 +16730,9 @@ local themePage = Instance.new("Frame", subArea)
                 
                 local CHAT_MAX_LENGTH    = 100
                 local ROLES_URL          =
-                "https://raw.githubusercontent.com/telelumi/telelumi.github.io/refs/heads/main/NametagRoles.json"
+                "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NametagRoles.json"
                 local SCRIPT_URL         =
-                "https://raw.githubusercontent.com/telelumi/telelumi.github.io/refs/heads/main/covertnet.lua"
+                "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/covertnet.lua"
 
                 local Players            = game:GetService("Players")
                 local RunService         = game:GetService("RunService")
@@ -17946,12 +17946,12 @@ local themePage = Instance.new("Frame", subArea)
                         admin = { url = "", file = "" },
                         developer = { url = "", file = "" },
                         moderator = { url = "", file = "" },
-                        staff = { url = "https://raw.githubusercontent.com/telelumi/telelumi.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-STAFF.png", file = "assets/TL-ROLE-PICS/TL-STAFF.png" },
+                        staff = { url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-STAFF.png", file = "assets/TL-ROLE-PICS/TL-STAFF.png" },
                         advertising = { url = "", file = "" },
                     },
                     customAvatars = {},
                     tagImages = {
-                        staff = { url = "https://raw.githubusercontent.com/telelumi/telelumi.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-STAFF.png", file = "assets/TL-ROLE-PICS/TL-STAFF.png" },
+                        staff = { url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-STAFF.png", file = "assets/TL-ROLE-PICS/TL-STAFF.png" },
                     },
                     roleLabels = {},
                     displayNames = {},
