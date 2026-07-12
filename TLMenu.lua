@@ -23540,6 +23540,70 @@ local function parseFieldMessage(fullText, prefixLen)
                     _TL_refs._TL_safeStand        = safeStand
                     _TL_refs._TL_stopBB           = stopBB
                     _TL_refs._TL_startBB          = startBB
+                    _TL_refs._TL_qaDispatch       = function(key, target)
+                        if not target or not target.Character then return false end
+                        local _tRoot = target.Character:FindFirstChild("HumanoidRootPart")
+                        if not _tRoot then return false end
+                        local _actionOk = false
+                        pcall(function()
+                        if key == "soh" then
+                            startSitOnHead(target); _actionOk = true
+                        elseif key == "piggyback" then
+                            startPiggyback(target); _actionOk = true
+                        elseif key == "piggyback2" then
+                            startPiggyback2(target); _actionOk = true
+                        elseif key == "kiss" then
+                            startKiss(target); _actionOk = true
+                        elseif key == "backpack" then
+                            startBackpack(target); _actionOk = true
+                        elseif key == "friend" then
+                            _actionOk = startFriend(target)
+                        elseif key == "hug" then
+                            startHug(target); _actionOk = true
+                        elseif key == "hug2" then
+                            startHug2(target); _actionOk = true
+                        elseif key == "carry" then
+                            startCarry(target); _actionOk = true
+                        elseif key == "carryshoulder" then
+                            startShoulderSit(target, "101003999980390", "Carry on shoulder"); _actionOk = true
+                        elseif key == "shouldersit" then
+                            startShoulderSit(target); _actionOk = true
+                        elseif key == "stand" then
+                            startStand(target); _actionOk = true
+                        elseif key == "headstand" then
+                            startStand(target, "71483261700852", "Head Stand", CFrame.new(0.2, 4, 0.2)); _actionOk = true
+                        elseif key == "licking" then
+                            startLicking(target); _actionOk = true
+                        elseif key == "sucking" then
+                            startSucking(target); _actionOk = true
+                        elseif key == "suck_it" then
+                            startSuckIt(target); _actionOk = true
+                        elseif key == "backshots" then
+                            startBackshots(target); _actionOk = true
+                        elseif key == "doggy" then
+                            startDoggy(target); _actionOk = true
+                        elseif key == "layfuck" then
+                            startLayFuck(target); _actionOk = true
+                        elseif key == "pussyspread" then
+                            startPussySpread(target); _actionOk = true
+                        elseif key == "facefuck" then
+                            startFacefuck(target); _actionOk = true
+                        elseif key == "orbit" then
+                            startOrbit(target); _actionOk = true
+                        elseif key == "upsidedown" then
+                            _actionOk = startUpsideDown(target)
+                        elseif key == "crossud" then
+                            _actionOk = startCrossUD(target)
+                        elseif key == "spinning" then
+                            _actionOk = startSpinning(target)
+                        elseif key == "ghost" then
+                            startGhost(target); _actionOk = true
+                        elseif key == "bang" then
+                            startFollow(target); _actionOk = true
+                        end
+                        end)
+                        return _actionOk
+                    end
                     _TL_refs._TL_AF               = _AF
                     _TL_refs._TL_SOH              = _SOH
                     _TL_refs._TL_act_stopFollow   = _act_stopFollow
