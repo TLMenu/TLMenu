@@ -1,3 +1,4 @@
+--!nocheck
 _G._invisSinkEnabled = true; _G._invisAnimEnabled = true; _invisSinkEnabled = true; _invisAnimEnabled = true; local _realTS =
 game:GetService("TweenService")
 local _tsProxy       = setmetatable({}, {
@@ -24826,29 +24827,44 @@ local function _TL_showLoadingScreen()
             do
                 local _bbMod2 = _TL_loadModule("SCRIPTS-TAB/TL-ByteBreaker")
                 if _bbMod2 then
-                    _bbMod2.initQABar({
-                        _TL_refs = _TL_refs,
-                        _genv = _genv,
-                        C = C,
-                        _panelColorHooks = _panelColorHooks,
-                        _makeRealStroke = _makeRealStroke,
-                        _tlAlive = _tlAlive,
-                        twP = twP,
-                        getNearestPlayer = getNearestPlayer,
-                        _handleError = _handleError,
-                        stopStand = stopStand,
-                        standStopAnim = standStopAnim,
-                        closeBar = closeBar,
-                        LocalPlayer = LocalPlayer,
-                        RunService = RunService,
-                        _SvcUIS = _SvcUIS,
-                        _TL_VP = _TL_VP,
-                        _sc = _sc,
-                        _AF = _AF,
-                        stopQA74 = stopQA74,
-                        registerResetFn = function(fn) _G.TLQA_ResetUI = fn end,
-                    })
-                    _bbMod2.startQABar()
+                    if type(_bbMod2.initQABar) == "function" then
+                        _bbMod2.initQABar({
+                            _TL_refs = _TL_refs,
+                            _genv = _genv,
+                            C = C,
+                            _panelColorHooks = _panelColorHooks,
+                            _makeRealStroke = _makeRealStroke,
+                            _tlAlive = _tlAlive,
+                            twP = twP,
+                            getNearestPlayer = getNearestPlayer,
+                            _handleError = _handleError,
+                            stopStand = stopStand,
+                            standStopAnim = standStopAnim,
+                            closeBar = closeBar,
+                            LocalPlayer = LocalPlayer,
+                            RunService = RunService,
+                            _SvcUIS = _SvcUIS,
+                            _TL_VP = _TL_VP,
+                            _sc = _sc,
+                            _AF = _AF,
+                            stopQA74 = stopQA74,
+                            registerResetFn = function(fn) _G.TLQA_ResetUI = fn end,
+                        })
+                        _bbMod2.startQABar()
+                    elseif type(_bbMod2.initBB) == "function" then
+                        _bbMod2.initBB({
+                            LocalPlayer = LocalPlayer,
+                            RunService = RunService,
+                            Players = Players,
+                            sethiddenproperty = sethiddenproperty,
+                            raknet = getgenv and rawget(getgenv(), "raknet") or nil,
+                            sendNotif = sendNotif,
+                            getHumanoid = getHumanoid,
+                            safeStand = safeStand,
+                            _AF = _AF,
+                            _TL_refs = _TL_refs,
+                        })
+                    end
                 end
             end 
             
