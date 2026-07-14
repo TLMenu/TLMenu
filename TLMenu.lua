@@ -56,8 +56,8 @@ local nametagImageFileName = "assets/TL-ROLE-PICS/nametag-image.png"
 local ownerProfilePicUrl      = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-telelumi.png"
 local ownerProfilePicFileName = "assets/TL-ROLE-PICS/TL-telelumi.png"
 
-local userProfilePicUrl      = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TLUSER-ROLE.png"
-local userProfilePicFileName = "assets/TL-ROLE-PICS/TLUSER-ROLE.png"
+local userProfilePicUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ROLE-ICONS/TLUSER-ROLE.png"
+local userProfilePicFileName = "assets/ROLE-ICONS/TLUSER-ROLE.png"
 
 local customUserAvatars = {
     ["usxirr"] = {
@@ -66,8 +66,8 @@ local customUserAvatars = {
         strokeColor = ColorSequence.new(Color3.fromHex("#9A7211"), Color3.fromHex("#000000")),
     },
     ["Abxsent0"] = {
-        url  = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Absent.png",
-        file = "assets/TL-ROLE-PICS/TL-Abxsent0.png",
+        url  = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ROLE-ICONS/TL-Abxsent0.png",
+        file = "assets/ROLE-ICONS/TL-Abxsent0.png",
         strokeColor = ColorSequence.new(Color3.fromHex("#06402B"), Color3.fromHex("#88E788")),
     },
 }
@@ -297,6 +297,7 @@ task.spawn(function()
         if not _TL_safeIsFolder("assets/TL-MP3-FILES") then _TL_safeMakeFolder("assets/TL-MP3-FILES") end
         if not _TL_safeIsFolder("assets/TL-ROLE-PICS") then _TL_safeMakeFolder("assets/TL-ROLE-PICS") end
         if not _TL_safeIsFolder("assets/TL-DEFAULT") then _TL_safeMakeFolder("assets/TL-DEFAULT") end
+        if not _TL_safeIsFolder("assets/ROLE-ICONS") then _TL_safeMakeFolder("assets/ROLE-ICONS") end
         if not _TL_safeIsFolder("assets/THEMES") then _TL_safeMakeFolder("assets/THEMES") end
         if not _TL_safeIsFolder("assets/THEMES/DRAGONBALL") then _TL_safeMakeFolder("assets/THEMES/DRAGONBALL") end
         if not _TL_safeIsFolder("assets/THEMES/ONEPIECE") then _TL_safeMakeFolder("assets/THEMES/ONEPIECE") end
@@ -315,7 +316,7 @@ task.spawn(function()
         { name = "TL User Profile Picture",    url = userProfilePicUrl,            file = userProfilePicFileName,            kind = "image", priority = 1 },
         { name = "usxirr Custom Avatar",       url = customUserAvatars["usxirr"].url, file = customUserAvatars["usxirr"].file, kind = "image", priority = 1 },
         { name = "Abxsent0 Custom Avatar",     url = customUserAvatars["Abxsent0"].url, file = customUserAvatars["Abxsent0"].file, kind = "image", priority = 1 },
-        { name = "TL Staff Icon", url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-STAFF.png", file = "assets/TL-ROLE-PICS/TL-STAFF.png", kind = "image", priority = 1 },
+        { name = "TL Staff Icon", url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ROLE-ICONS/TL-STAFF.png", file = "assets/ROLE-ICONS/TL-STAFF.png", kind = "image", priority = 1 },
         { name = "TL Arda Avatar", url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Arda.png", file = "assets/TL-ROLE-PICS/TL-Arda.png", kind = "image", priority = 1 },
         { name = "TL Sec Avatar", url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Sec.png", file = "assets/TL-ROLE-PICS/TL-Sec.png", kind = "image", priority = 1 },
         { name = "TL Sleepy Avatar", url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Sleepy.jpg", file = "assets/TL-ROLE-PICS/TL-Sleepy.jpg", kind = "image", priority = 1 },
@@ -18103,12 +18104,12 @@ local themePage = Instance.new("Frame", subArea)
                         admin = { url = "", file = "" },
                         developer = { url = "", file = "" },
                         moderator = { url = "", file = "" },
-                        staff = { url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-STAFF.png", file = "assets/TL-ROLE-PICS/TL-STAFF.png" },
+                        staff = { url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ROLE-ICONS/TL-STAFF.png", file = "assets/ROLE-ICONS/TL-STAFF.png" },
                         advertising = { url = "", file = "" },
                     },
                     customAvatars = {},
                     tagImages = {
-                        staff = { url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-STAFF.png", file = "assets/TL-ROLE-PICS/TL-STAFF.png" },
+                        staff = { url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ROLE-ICONS/TL-STAFF.png", file = "assets/ROLE-ICONS/TL-STAFF.png" },
                     },
                     roleLabels = {},
                     displayNames = {},
