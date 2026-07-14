@@ -1,4 +1,3 @@
---!nocheck
 _G._invisSinkEnabled = true; _G._invisAnimEnabled = true; _invisSinkEnabled = true; _invisAnimEnabled = true; local _realTS =
 game:GetService("TweenService")
 local _tsProxy       = setmetatable({}, {
@@ -156,8 +155,8 @@ local dexterLoadingScreenFileName   = "assets/THEMES/DEXTER/Theme-Dexter-Loading
 local dexterPlayerlistIconUrl       = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-Playerlist-Icon.png"
 local dexterPlayerlistIconFileName  = "assets/THEMES/DEXTER/Theme-Dexter-Playerlist-Icon.png"
 
-local loadingScreenVoiceUrl      = "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/TLMENU-STANDARD-SFX/TLMenuLoadingScreen-VoiceLine.mp3"
-local loadingScreenVoiceFileName = "assets/TL-MP3-FILES/TLMenuLoadingScreen-VoiceLine.mp3"
+local loadingScreenVoiceUrl      = "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL-MP3/TLMenuLoadingScreen.mp3"
+local loadingScreenVoiceFileName = "assets/TL-MP3-FILES/TLMenuLoadingScreen.mp3"
 
 local _TL_assetLoader = {
     started = false,
@@ -311,7 +310,7 @@ task.spawn(function()
     
     local assets = {
         
-        { name = "TLMenu Loading Voice Line",  url = loadingScreenVoiceUrl,        file = loadingScreenVoiceFileName,        kind = "audio", priority = 1 },
+        { name = "TLMenu Loading Screen",  url = loadingScreenVoiceUrl,        file = loadingScreenVoiceFileName,        kind = "audio", priority = 1 },
         { name = "TL Owner Profile Picture",   url = ownerProfilePicUrl,           file = ownerProfilePicFileName,           kind = "image", priority = 1 },
         { name = "TL User Profile Picture",    url = userProfilePicUrl,            file = userProfilePicFileName,            kind = "image", priority = 1 },
         { name = "usxirr Custom Avatar",       url = customUserAvatars["usxirr"].url, file = customUserAvatars["usxirr"].file, kind = "image", priority = 1 },
