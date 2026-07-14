@@ -100,8 +100,23 @@ local theBoysBgFileName          = "assets/THEMES/THEBOYS/Theme-TheBoys2.jpg"
 local theBoysMusicUrl            = "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/THEME%20MUSICS/THE%20BOYS/The%20Boys%20Homelander%20Theme%20Enhanced%20Version.mp3"
 local theBoysMusicFileName       = "assets/TL-MP3-FILES/Theme-TheBoys-Music.mp3"
 
-local comTabIconUrl              = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/Icons/Com-Icon.png"
-local comTabIconFileName         = "assets/Com-Icon.png"
+local comTabIconUrl              = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Com-Icon.png"
+local comTabIconFileName         = "assets/TL-DEFAULT/Com-Icon.png"
+
+local homeTabIconUrl             = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/HomeTab-Icon.png"
+local homeTabIconFileName        = "assets/TL-DEFAULT/HomeTab-Icon.png"
+
+local characterTabIconUrl        = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Character-Icon.png"
+local characterTabIconFileName   = "assets/TL-DEFAULT/Character-Icon.png"
+
+local scriptsTabIconUrl          = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Scripts-Icon.png"
+local scriptsTabIconFileName     = "assets/TL-DEFAULT/Scripts-Icon.png"
+
+local actionsTabIconUrl          = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/ActionTab-Icon.png"
+local actionsTabIconFileName     = "assets/TL-DEFAULT/ActionTab-Icon.png"
+
+local playerlistTabIconUrl       = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Playerlist-Icon.png"
+local playerlistTabIconFileName  = "assets/TL-DEFAULT/Playerlist-Icon.png"
 
 local deathNoteHomeIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Home-Icon.png"
 local deathNoteHomeIconFileName    = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Home-Icon.png"
@@ -281,6 +296,7 @@ task.spawn(function()
     pcall(function()
         if not _TL_safeIsFolder("assets/TL-MP3-FILES") then _TL_safeMakeFolder("assets/TL-MP3-FILES") end
         if not _TL_safeIsFolder("assets/TL-ROLE-PICS") then _TL_safeMakeFolder("assets/TL-ROLE-PICS") end
+        if not _TL_safeIsFolder("assets/TL-DEFAULT") then _TL_safeMakeFolder("assets/TL-DEFAULT") end
         if not _TL_safeIsFolder("assets/THEMES") then _TL_safeMakeFolder("assets/THEMES") end
         if not _TL_safeIsFolder("assets/THEMES/DRAGONBALL") then _TL_safeMakeFolder("assets/THEMES/DRAGONBALL") end
         if not _TL_safeIsFolder("assets/THEMES/ONEPIECE") then _TL_safeMakeFolder("assets/THEMES/ONEPIECE") end
@@ -305,8 +321,46 @@ task.spawn(function()
         { name = "TL Sleepy Avatar", url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Sleepy.jpg", file = "assets/TL-ROLE-PICS/TL-Sleepy.jpg", kind = "image", priority = 1 },
         { name = "R5yn Avatar", url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/R5yn.png", file = "assets/TL-ROLE-PICS/R5yn.png", kind = "image", priority = 1 },
         { name = "Communication Tab Icon",     url = comTabIconUrl,                file = comTabIconFileName,                kind = "image", priority = 1 },
+        { name = "Home Tab Icon",              url = homeTabIconUrl,               file = homeTabIconFileName,               kind = "image", priority = 1 },
+        { name = "Character Tab Icon",         url = characterTabIconUrl,          file = characterTabIconFileName,          kind = "image", priority = 1 },
+        { name = "Scripts Tab Icon",           url = scriptsTabIconUrl,            file = scriptsTabIconFileName,            kind = "image", priority = 1 },
+        { name = "Actions Tab Icon",           url = actionsTabIconUrl,            file = actionsTabIconFileName,            kind = "image", priority = 1 },
+        { name = "Playerlist Tab Icon",        url = playerlistTabIconUrl,         file = playerlistTabIconFileName,         kind = "image", priority = 1 },
         { name = "VC Unmuted Icon",            url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/ANTIVCBAN-Unmuted-Icon.png", file = "assets/TL_Unmuted.png", kind = "image", priority = 1 },
         { name = "VC Muted Icon",              url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/ANTIVCBAN-Mute-Icon.png",    file = "assets/TL_Muted.png",   kind = "image", priority = 1 },
+
+        { name = "TL Default Emote Icon",      url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Emote-Icon.png",          file = "assets/TL-DEFAULT/Emote-Icon.png",          kind = "image", priority = 2 },
+        { name = "TL Default Music Icon",      url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Music-Icon.png",          file = "assets/TL-DEFAULT/Music-Icon.png",          kind = "image", priority = 2 },
+        { name = "TL Default Visual Icon",     url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Visual-Icon.png",          file = "assets/TL-DEFAULT/Visual-Icon.png",          kind = "image", priority = 2 },
+        { name = "TL Default Visual2 Icon",    url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Visual2-Icon.png",         file = "assets/TL-DEFAULT/Visual2-Icon.png",         kind = "image", priority = 2 },
+        { name = "TL Default Movement Icon",   url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Movement-Icon.png",        file = "assets/TL-DEFAULT/Movement-Icon.png",        kind = "image", priority = 2 },
+        { name = "TL Default Misc Icon",       url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Misc-Icon.png",            file = "assets/TL-DEFAULT/Misc-Icon.png",            kind = "image", priority = 2 },
+        { name = "TL Default Colors Icon",     url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Colors-Icon.png",          file = "assets/TL-DEFAULT/Colors-Icon.png",          kind = "image", priority = 2 },
+        { name = "TL Default Theme Icon",      url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Theme-Icon.png",           file = "assets/TL-DEFAULT/Theme-Icon.png",           kind = "image", priority = 2 },
+        { name = "TL Default Themes Icon",     url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Themes-Icon.png",          file = "assets/TL-DEFAULT/Themes-Icon.png",          kind = "image", priority = 2 },
+        { name = "TL Default Keybind Icon",    url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Keybind-Icon.png",         file = "assets/TL-DEFAULT/Keybind-Icon.png",         kind = "image", priority = 2 },
+        { name = "TL Default Cursor Icon",     url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Cursor-Icon.png",          file = "assets/TL-DEFAULT/Cursor-Icon.png",          kind = "image", priority = 2 },
+        { name = "TL Default CustomCursor Icon", url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/CustomCursor-Icon%20(2).png", file = "assets/TL-DEFAULT/CustomCursor-Icon.png", kind = "image", priority = 2 },
+        { name = "TL Default Search Icon",     url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Search-Icon.png",          file = "assets/TL-DEFAULT/Search-Icon.png",          kind = "image", priority = 2 },
+        { name = "TL Default Search2 Icon",    url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Search2-Icon.png",         file = "assets/TL-DEFAULT/Search2-Icon.png",         kind = "image", priority = 2 },
+        { name = "TL Default Minimize Icon",   url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Minimize-Icon.png",        file = "assets/TL-DEFAULT/Minimize-Icon.png",        kind = "image", priority = 2 },
+        { name = "TL Default MusicPlay Icon",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/MusicPlay-Icon.png",       file = "assets/TL-DEFAULT/MusicPlay-Icon.png",       kind = "image", priority = 2 },
+        { name = "TL Default MusicPause Icon", url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/MusicPause-Icon.png",      file = "assets/TL-DEFAULT/MusicPause-Icon.png",      kind = "image", priority = 2 },
+        { name = "TL Default MusicBack Icon",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/MusicBack-Icon.png",       file = "assets/TL-DEFAULT/MusicBack-Icon.png",       kind = "image", priority = 2 },
+        { name = "TL Default MusicSkip Icon",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/MusicSkip-Icon.png",       file = "assets/TL-DEFAULT/MusicSkip-Icon.png",       kind = "image", priority = 2 },
+        { name = "TL Default PING-WLAN Icon",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/PING-WLAN-Icon.png",       file = "assets/TL-DEFAULT/PING-WLAN-Icon.png",       kind = "image", priority = 2 },
+        { name = "TL Default PunchFling Icon", url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/PunchFling-Icon.png",      file = "assets/TL-DEFAULT/PunchFling-Icon.png",      kind = "image", priority = 2 },
+        { name = "TL Default TLMagnifier Icon", url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/TLMagnifier-Tool-Icon.png", file = "assets/TL-DEFAULT/TLMagnifier-Tool-Icon.png", kind = "image", priority = 2 },
+        { name = "TL Default TL-Icon",         url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/TL-Icon.png",              file = "assets/TL-DEFAULT/TL-Icon.png",              kind = "image", priority = 2 },
+        { name = "TL Default TLIcon",          url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/TLIcon.png",               file = "assets/TL-DEFAULT/TLIcon.png",               kind = "image", priority = 2 },
+        { name = "TL Default TL-ProfileIcon",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/TL-ProfileIcon.png",       file = "assets/TL-DEFAULT/TL-ProfileIcon.png",       kind = "image", priority = 2 },
+        { name = "TL Default TLOpenBars",      url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/TLOpenBars-Button.png",     file = "assets/TL-DEFAULT/TLOpenBars-Button.png",    kind = "image", priority = 2 },
+        { name = "TL Default TLOpenedBars",    url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/TLOpenedBars-Button.png",    file = "assets/TL-DEFAULT/TLOpenedBars-Button.png",  kind = "image", priority = 2 },
+        { name = "TL Default QA Hug",          url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/QuickAction%20Hug-Icon.png",       file = "assets/TL-DEFAULT/QuickAction-Hug-Icon.png",       kind = "image", priority = 2 },
+        { name = "TL Default QA Kiss",         url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/QuickAction%20Kiss-Icon.png",      file = "assets/TL-DEFAULT/QuickAction-Kiss-Icon.png",      kind = "image", priority = 2 },
+        { name = "TL Default QA Slap",         url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/QuickAction%20Slap-Icon.png",      file = "assets/TL-DEFAULT/QuickAction-Slap-Icon.png",      kind = "image", priority = 2 },
+        { name = "TL Default QA Headbutt",     url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/QuickAction%20Headbutt-Icon.png", file = "assets/TL-DEFAULT/QuickAction-Headbutt-Icon.png", kind = "image", priority = 2 },
+        { name = "TL Default QA Backshots",    url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/QuickAction%20Backshots-Icon.png", file = "assets/TL-DEFAULT/QuickAction-Backshots-Icon.png", kind = "image", priority = 2 },
         { name = "Admin Join Audio",           url = adminAudioUrl,                file = adminAudioFileName,                kind = "audio", priority = 1 },
         
         { name = "The Boys Scripts Icon",      url = theBoysScriptsIconUrl,        file = theBoysScriptsIconFileName,        kind = "image", priority = 2 },
@@ -22529,12 +22583,17 @@ local function parseFieldMessage(fullText, prefixLen)
                         _TL_safeGetCustomAsset(comTabIconFileName) or nil
                         return asset or "rbxassetid://117318347375651"
                     end
+                    local function _TL_getDefaultTabIcon(fname, fallback)
+                        local asset = _TL_safeIsFile(fname) and
+                        _TL_safeGetCustomAsset(fname) or nil
+                        return asset or fallback
+                    end
                     local tabDefs = {
-                        { name = "Home",        img = "rbxassetid://95315124947838" },
-                        { name = "Character",   img = "rbxassetid://130511578744559" },
-                        { name = "Scripts",     img = "rbxassetid://99174931681951" },
-                        { name = "Actions",     img = "rbxassetid://110933969812438" },
-                        { name = "Playerlist",  img = "rbxassetid://133167021592598" },
+                        { name = "Home",        img = _TL_getDefaultTabIcon(homeTabIconFileName,       "rbxassetid://95315124947838") },
+                        { name = "Character",   img = _TL_getDefaultTabIcon(characterTabIconFileName,   "rbxassetid://130511578744559") },
+                        { name = "Scripts",     img = _TL_getDefaultTabIcon(scriptsTabIconFileName,     "rbxassetid://99174931681951") },
+                        { name = "Actions",     img = _TL_getDefaultTabIcon(actionsTabIconFileName,     "rbxassetid://110933969812438") },
+                        { name = "Playerlist",  img = _TL_getDefaultTabIcon(playerlistTabIconFileName,  "rbxassetid://133167021592598") },
                         { name = "Settings",    img = "rbxassetid://117318347375651" },
                         { name = "Communication", img = _TL_getComTabIcon() },
                     }
@@ -22755,13 +22814,13 @@ local function parseFieldMessage(fullText, prefixLen)
                     _TL_refs._TL_tabBtns = tabBtns
                     
                     _TL_refs._TL_tabOrigIcons = {
-                        Home       = "rbxassetid://95315124947838",
-                        Character  = "rbxassetid://130511578744559",
-                        Playerlist = "rbxassetid://133167021592598",
+                        Home       = _TL_getDefaultTabIcon(homeTabIconFileName,      "rbxassetid://95315124947838"),
+                        Character  = _TL_getDefaultTabIcon(characterTabIconFileName, "rbxassetid://130511578744559"),
+                        Playerlist = _TL_getDefaultTabIcon(playerlistTabIconFileName,"rbxassetid://133167021592598"),
                         Settings   = "rbxassetid://117318347375651",
-                        Actions    = "rbxassetid://110933969812438",
+                        Actions    = _TL_getDefaultTabIcon(actionsTabIconFileName,   "rbxassetid://110933969812438"),
                         Admin      = "rbxassetid://117318347375651",
-                        Scripts    = "rbxassetid://99174931681951",
+                        Scripts    = _TL_getDefaultTabIcon(scriptsTabIconFileName,   "rbxassetid://99174931681951"),
                         Communication = _TL_getComTabIcon(),
                     }
                     
