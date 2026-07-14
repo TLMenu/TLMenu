@@ -327,8 +327,8 @@ task.spawn(function()
         { name = "Scripts Tab Icon",           url = scriptsTabIconUrl,            file = scriptsTabIconFileName,            kind = "image", priority = 1 },
         { name = "Actions Tab Icon",           url = actionsTabIconUrl,            file = actionsTabIconFileName,            kind = "image", priority = 1 },
         { name = "Playerlist Tab Icon",        url = playerlistTabIconUrl,         file = playerlistTabIconFileName,         kind = "image", priority = 1 },
-        { name = "VC Unmuted Icon",            url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/ANTIVCBAN-Unmuted-Icon.png", file = "assets/TL_Unmuted.png", kind = "image", priority = 1 },
-        { name = "VC Muted Icon",              url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/ANTIVCBAN-Mute-Icon.png",    file = "assets/TL_Muted.png",   kind = "image", priority = 1 },
+        { name = "VC Unmuted Icon",            url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/ANTIVCBAN-Unmuted-Icon.png", file = "assets/TL-DEFAULT/TL_Unmuted.png", kind = "image", priority = 1 },
+        { name = "VC Muted Icon",              url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/ANTIVCBAN-Mute-Icon.png",    file = "assets/TL-DEFAULT/TL_Muted.png",   kind = "image", priority = 1 },
 
         { name = "TL Default Emote Icon",      url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Emote-Icon.png",          file = "assets/TL-DEFAULT/Emote-Icon.png",          kind = "image", priority = 2 },
         { name = "TL Default Music Icon",      url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Music-Icon.png",          file = "assets/TL-DEFAULT/Music-Icon.png",          kind = "image", priority = 2 },
