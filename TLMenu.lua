@@ -154,6 +154,12 @@ local _TL_assetLoader = {
 }
 rawset(_genv, "_TL_assetLoader", _TL_assetLoader)
 
+local _TL_expectedAssetFiles = {}
+rawset(_genv, "_TL_expectedAssetFiles", _TL_expectedAssetFiles)
+
+local _TL_configReady = false
+rawset(_genv, "_TL_configReady", _TL_configReady)
+
 local function _TL_safeIsFile(path)
     if type(isfile) ~= "function" then return false end
     local ok, result = pcall(isfile, path)
@@ -193,6 +199,23 @@ end
 local _TL_MANIFEST_URL = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/tl-assets-manifest.json"
 local _TL_MANIFEST_CACHE = "assets/manifest-cache.json"
 
+local function _TL_recursiveListFiles(dir)
+    local results = {}
+    local ok, entries = pcall(function() return listfiles(dir) end)
+    if not ok or type(entries) ~= "table" then return results end
+    for _, entry in ipairs(entries) do
+        if _TL_safeIsFolder(entry) then
+            local sub = _TL_recursiveListFiles(entry)
+            for _, v in ipairs(sub) do
+                results[#results + 1] = v
+            end
+        else
+            results[#results + 1] = entry
+        end
+    end
+    return results
+end
+
 local function _TL_loadManifest()
     local ok, cached = pcall(readfile, _TL_MANIFEST_CACHE)
     if ok and cached then
@@ -220,12 +243,14 @@ local function _TL_syncAssetsFromManifest()
         local url = repoPath:match("^tlassets:") and (tlassetsUrl .. "/" .. repoPath:gsub("^tlassets:", "")) or (baseUrl .. "/" .. repoPath)
         allEntries[#allEntries + 1] = { name = entry.name, url = url, file = entry.file, kind = "image" }
         expectedFiles[entry.file] = true
+        _TL_expectedAssetFiles[entry.file] = { url = url, kind = "image" }
     end
     for _, entry in ipairs(manifest.audio or {}) do
         local repoPath = entry.repo or ""
         local url = repoPath:match("^tlassets:") and (tlassetsUrl .. "/" .. repoPath:gsub("^tlassets:", "")) or (baseUrl .. "/" .. repoPath)
         allEntries[#allEntries + 1] = { name = entry.name, url = url, file = entry.file, kind = "audio" }
         expectedFiles[entry.file] = true
+        _TL_expectedAssetFiles[entry.file] = { url = url, kind = "audio" }
     end
     for _, entry in ipairs(allEntries) do
         if not _TL_safeIsFile(entry.file) then
@@ -239,14 +264,6 @@ local function _TL_syncAssetsFromManifest()
             end
         end
     end
-    pcall(function()
-        local files = (listfiles and listfiles("assets")) or {}
-        for _, filePath in ipairs(files) do
-            if not expectedFiles[filePath] then
-                pcall(delfile, filePath)
-            end
-        end
-    end)
 end
 
 task.spawn(function()
@@ -288,8 +305,8 @@ task.spawn(function()
         { name = "TL Sleepy Avatar", url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Sleepy.jpg", file = "assets/TL-ROLE-PICS/TL-Sleepy.jpg", kind = "image", priority = 1 },
         { name = "R5yn Avatar", url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/R5yn.png", file = "assets/TL-ROLE-PICS/R5yn.png", kind = "image", priority = 1 },
         { name = "Communication Tab Icon",     url = comTabIconUrl,                file = comTabIconFileName,                kind = "image", priority = 1 },
-        { name = "VC Unmuted Icon",            url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/Icons/ANTIVCBAN-Unmuted-Icon.png", file = "assets/TL_Unmuted.png", kind = "image", priority = 1 },
-        { name = "VC Muted Icon",              url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/Icons/ANTIVCBAN-Mute-Icon.png",    file = "assets/TL_Muted.png",   kind = "image", priority = 1 },
+        { name = "VC Unmuted Icon",            url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/ANTIVCBAN-Unmuted-Icon.png", file = "assets/TL_Unmuted.png", kind = "image", priority = 1 },
+        { name = "VC Muted Icon",              url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/ANTIVCBAN-Mute-Icon.png",    file = "assets/TL_Muted.png",   kind = "image", priority = 1 },
         { name = "Admin Join Audio",           url = adminAudioUrl,                file = adminAudioFileName,                kind = "audio", priority = 1 },
         
         { name = "The Boys Scripts Icon",      url = theBoysScriptsIconUrl,        file = theBoysScriptsIconFileName,        kind = "image", priority = 2 },
@@ -355,6 +372,12 @@ task.spawn(function()
 
     
     _TL_assetLoader.total = #assets
+
+    for _, entry in ipairs(assets) do
+        if not _TL_expectedAssetFiles[entry.file] then
+            _TL_expectedAssetFiles[entry.file] = { url = entry.url, kind = entry.kind }
+        end
+    end
 
     
     
@@ -488,6 +511,73 @@ task.spawn(function()
         warn("[TL] Asset loader encountered an unhandled error — marked ready anyway")
     end
 end) 
+
+task.spawn(function()
+    while not _TL_assetLoader.ready do task.wait(0.1) end
+    while not _TL_configReady do task.wait(0.1) end
+    task.wait(1)
+    pcall(function()
+        if not _TL_safeIsFolder("assets") then return end
+        local allFiles = _TL_recursiveListFiles("assets")
+        local expected = {}
+        for file, info in pairs(_TL_expectedAssetFiles) do
+            expected[file] = info
+        end
+        if type(_genv._NT_getExpectedFiles) == "function" then
+            local ntFiles = _genv._NT_getExpectedFiles()
+            if type(ntFiles) == "table" then
+                for file, info in pairs(ntFiles) do
+                    if not expected[file] then
+                        expected[file] = info
+                    end
+                end
+            end
+        end
+        for _, filePath in ipairs(allFiles) do
+            if filePath:find("^assets/Custom%-Music") or filePath:find("^assets/manifest%-cache%.json$") then
+                continue
+            end
+            if not expected[filePath] then
+                pcall(delfile, filePath)
+            end
+        end
+        for filePath, info in pairs(expected) do
+            if _TL_safeIsFolder(filePath) then continue end
+            if not _TL_safeIsFile(filePath) then
+                if info and info.url and info.url ~= "" then
+                    local dir = filePath:match("^(.+/)") or ""
+                    if dir ~= "" and not _TL_safeIsFolder(dir) then
+                        pcall(function() _TL_safeMakeFolder(dir) end)
+                    end
+                    local ok, bytes = pcall(function() return (game :: any):HttpGet(info.url) end)
+                    if ok and type(bytes) == "string" and #bytes > 0 then
+                        _TL_safeWriteFile(filePath, bytes)
+                    end
+                end
+            end
+        end
+        for filePath, info in pairs(expected) do
+            if not _TL_safeIsFolder(filePath) and _TL_safeIsFile(filePath) then
+                if type(readfile) == "function" then
+                    local rOk, content = pcall(readfile, filePath)
+                    if not rOk or type(content) ~= "string" or #content == 0 then
+                        pcall(delfile, filePath)
+                        if info and info.url and info.url ~= "" then
+                            local dir = filePath:match("^(.+/)") or ""
+                            if dir ~= "" and not _TL_safeIsFolder(dir) then
+                                pcall(function() _TL_safeMakeFolder(dir) end)
+                            end
+                            local ok, bytes = pcall(function() return (game :: any):HttpGet(info.url) end)
+                            if ok and type(bytes) == "string" and #bytes > 0 then
+                                _TL_safeWriteFile(filePath, bytes)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end)
+end)
 
 local _afkSystem = {
     active        = false,
@@ -16855,7 +16945,7 @@ local themePage = Instance.new("Frame", subArea)
                 local _NT_loadConfig  
                 task.spawn(function() while true do
                         task.wait(300)
-                        _NT_loadConfig()
+                _NT_loadConfig()
                         
                         if _NT_CONFIG and _NT_CONFIG.roleUsers then
                             local _ADMIN_ROLE_KEYS = { owner = true, admin = true, developer = true }
@@ -18224,6 +18314,7 @@ local themePage = Instance.new("Frame", subArea)
                         if not _TL_safeIsFolder("assets/TL-ROLE-PICS") then pcall(function() _TL_safeMakeFolder("assets/TL-ROLE-PICS") end) end
                         for role, img in pairs(_NT_CONFIG.tagImages) do
                             if img.url and img.url ~= "" and img.file and img.file ~= "" then
+                                _TL_expectedAssetFiles[img.file] = { url = img.url, kind = "image" }
                                 if not _TL_safeIsFile(img.file) then
                                     local dir = img.file:match("^(.+/)") or ""
                                     if dir ~= "" and not _TL_safeIsFolder(dir) then pcall(function() _TL_safeMakeFolder(dir) end) end
@@ -18238,6 +18329,7 @@ local themePage = Instance.new("Frame", subArea)
                         end
                         for role, pic in pairs(_NT_CONFIG.profilePictures) do
                             if pic.url and pic.url ~= "" and pic.file and pic.file ~= "" then
+                                _TL_expectedAssetFiles[pic.file] = { url = pic.url, kind = "image" }
                                 if not _TL_safeIsFile(pic.file) then
                                     local dir = pic.file:match("^(.+/)") or ""
                                     if dir ~= "" and not _TL_safeIsFolder(dir) then pcall(function() _TL_safeMakeFolder(dir) end) end
@@ -18418,6 +18510,8 @@ local themePage = Instance.new("Frame", subArea)
                     if _parsed then _NT_CONFIG.themes[_defName] = _parsed end
                 end
                 _NT_loadConfig()
+                _TL_configReady = true
+                rawset(_genv, "_TL_configReady", true)
 
                 
                 
@@ -22108,7 +22202,27 @@ local function parseFieldMessage(fullText, prefixLen)
                         _cmBuildCard()
                         musicHint.Text = (#_cmTracks > 0) and ("▶  " .. #_cmTracks .. " Track" .. (#_cmTracks ~= 1 and "s" or "")) or "No tracks found"
                     end
-                end) 
+                    end)
+
+                    rawset(_genv, "_NT_getExpectedFiles", function()
+                        local files = {}
+                        for role, img in pairs(_NT_CONFIG.tagImages or {}) do
+                            if img.file and img.file ~= "" then
+                                files[img.file] = { url = img.url or "", kind = "image" }
+                            end
+                        end
+                        for role, pic in pairs(_NT_CONFIG.profilePictures or {}) do
+                            if pic.file and pic.file ~= "" then
+                                files[pic.file] = { url = pic.url or "", kind = "image" }
+                            end
+                        end
+                        for username, avatar in pairs(_NT_CONFIG.customAvatars or {}) do
+                            if avatar.file and avatar.file ~= "" then
+                                files[avatar.file] = { url = avatar.url or "", kind = "image" }
+                            end
+                        end
+                        return files
+                    end)
                 return musicPage
                 end)() 
 
