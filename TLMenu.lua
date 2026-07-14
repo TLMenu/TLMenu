@@ -13290,7 +13290,7 @@ _TL_state.actions = {}
             do
                 local _bbMod = _TL_loadModule("SCRIPTS-TAB/TL-ByteBreaker")
                 if _bbMod then
-                    _bbMod.init({
+                    _bbMod.initBB({
                         _AF = _AF,
                         _AF_getReliableActionTrack = _AF_getReliableActionTrack,
                         LocalPlayer = LocalPlayer,
@@ -24765,9 +24765,9 @@ local function _TL_showLoadingScreen()
 
             
             do
-                local _qaMod = _TL_loadModule("SCRIPTS-TAB/TL-QABar")
-                if _qaMod then
-                    _qaMod.init({
+                local _bbMod2 = _TL_loadModule("SCRIPTS-TAB/TL-ByteBreaker")
+                if _bbMod2 then
+                    _bbMod2.initQABar({
                         _TL_refs = _TL_refs,
                         _genv = _genv,
                         C = C,
@@ -24789,7 +24789,7 @@ local function _TL_showLoadingScreen()
                         stopQA74 = stopQA74,
                         registerResetFn = function(fn) _G.TLQA_ResetUI = fn end,
                     })
-                    _qaMod.start()
+                    _bbMod2.startQABar()
                 end
             end 
             
