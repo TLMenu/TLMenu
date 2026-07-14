@@ -56,7 +56,7 @@ local nametagImageFileName = "assets/TL-ROLE-PICS/nametag-image.png"
 local ownerProfilePicUrl      = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-telelumi.png"
 local ownerProfilePicFileName = "assets/TL-ROLE-PICS/TL-telelumi.png"
 
-local userProfilePicUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ROLE-ICONS/TLUSER-ROLE.png"
+local userProfilePicUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/ROLE-ICONS/TLUSER-ROLE.png"
 local userProfilePicFileName = "assets/ROLE-ICONS/TLUSER-ROLE.png"
 
 local customUserAvatars = {
@@ -66,97 +66,97 @@ local customUserAvatars = {
         strokeColor = ColorSequence.new(Color3.fromHex("#9A7211"), Color3.fromHex("#000000")),
     },
     ["Abxsent0"] = {
-        url  = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ROLE-ICONS/TL-Abxsent0.png",
+        url  = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/ROLE-ICONS/TL-Abxsent0.png",
         file = "assets/ROLE-ICONS/TL-Abxsent0.png",
         strokeColor = ColorSequence.new(Color3.fromHex("#06402B"), Color3.fromHex("#88E788")),
     },
 }
 
-local dragonballMusicUrl             = "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/THEME%20MUSICS/DRAGONBALL/DRAGONBALL-THEME-MUSIC-1.mp3"
+local dragonballMusicUrl             = "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/THEME%20MUSICS/DRAGONBALL/DRAGONBALL-THEME-MUSIC-1.mp3"
 local dragonballMusicFileName        = "assets/TL-MP3-FILES/DragonBall-Music1.mp3"
 
-local dragonballSettingsIconUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DRAGONBALL/Theme-Dragonball-Settings-Icon.png"
+local dragonballSettingsIconUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DRAGONBALL/Theme-Dragonball-Settings-Icon.png"
 local dragonballSettingsIconFileName = "assets/THEMES/DRAGONBALL/Theme-Dragonball-Settings-Icon.png"
 
-local dragonballBgUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DRAGONBALL/Theme-Dragonball-Home-Wallpaper.jpg"
+local dragonballBgUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DRAGONBALL/Theme-Dragonball-Home-Wallpaper.jpg"
 local dragonballBgFileName = "assets/THEMES/DRAGONBALL/Theme-Dragonball-Home-Wallpaper.jpg"
 
-local onePieceActionBgUrl      = "https://github.com/TLMenu/TLASSETS/blob/main/THEMES/ONE%20PIECE/Theme-OnePiece-Action-Wallpaper.png?raw=true"
+local onePieceActionBgUrl      = "https://github.com/TLMenu/TLASSETS/raw/main/ONE%20PIECE/Theme-OnePiece-Action-Wallpaper.png"
 local onePieceActionBgFileName = "assets/THEMES/ONEPIECE/OP-ACT-BG.png"
 
-local adminAudioUrl           = "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/TLMENU-STANDARD-SFX/TLSYSTEM-ADMIN-SFX.mp3"
+local adminAudioUrl           = "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/TLMENU-STANDARD-SFX/TLSYSTEM-ADMIN-SFX.mp3"
 local adminAudioFileName      = "assets/TL-MP3-FILES/TLSYSTEM-ADMIN-SFX.mp3"
 
-local theBoysScriptsIconUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/THE%20BOYS/Theme-TheBoys-Scripts-Icon.png"
+local theBoysScriptsIconUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THE%20BOYS/Theme-TheBoys-Scripts-Icon.png"
 local theBoysScriptsIconFileName = "assets/THEMES/THEBOYS/Theme-TheBoys-Scripts-Icon.png"
-local theBoysSettingsIconUrl     = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/THE%20BOYS/Theme-TheBoys-Settings-Icon.png"
+local theBoysSettingsIconUrl     = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THE%20BOYS/Theme-TheBoys-Settings-Icon.png"
 local theBoysSettingsIconFileName = "assets/THEMES/THEBOYS/Theme-TheBoys-Settings-Icon.png"
-local theBoysHomeIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/THE%20BOYS/Theme-TheBoys-HomeIcon.png"
+local theBoysHomeIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THE%20BOYS/Theme-TheBoys-HomeIcon.png"
 local theBoysHomeIconFileName    = "assets/THEMES/THEBOYS/Theme-TheBoys-HomeIcon.png"
-local theBoysActionsIconUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/THE%20BOYS/Theme-TheBoys-Actions-Icon.png"
+local theBoysActionsIconUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THE%20BOYS/Theme-TheBoys-Actions-Icon.png"
 local theBoysActionsIconFileName = "assets/THEMES/THEBOYS/Theme-TheBoys-Actions-Icon.png"
-local theBoysBgUrl               = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/THE%20BOYS/Theme-TheBoys2.jpg"
+local theBoysBgUrl               = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THE%20BOYS/Theme-TheBoys2.jpg"
 local theBoysBgFileName          = "assets/THEMES/THEBOYS/Theme-TheBoys2.jpg"
-local theBoysMusicUrl            = "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/THEME%20MUSICS/THE%20BOYS/The%20Boys%20Homelander%20Theme%20Enhanced%20Version.mp3"
+local theBoysMusicUrl            = "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/THEME%20MUSICS/THE%20BOYS/The%20Boys%20Homelander%20Theme%20Enhanced%20Version.mp3"
 local theBoysMusicFileName       = "assets/TL-MP3-FILES/Theme-TheBoys-Music.mp3"
 
-local comTabIconUrl              = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Com-Icon.png"
+local comTabIconUrl              = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Com-Icon.png"
 local comTabIconFileName         = "assets/TL-DEFAULT/Com-Icon.png"
 
-local homeTabIconUrl             = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/HomeTab-Icon.png"
+local homeTabIconUrl             = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/HomeTab-Icon.png"
 local homeTabIconFileName        = "assets/TL-DEFAULT/HomeTab-Icon.png"
 
-local characterTabIconUrl        = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Character-Icon.png"
+local characterTabIconUrl        = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Character-Icon.png"
 local characterTabIconFileName   = "assets/TL-DEFAULT/Character-Icon.png"
 
-local scriptsTabIconUrl          = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Scripts-Icon.png"
+local scriptsTabIconUrl          = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Scripts-Icon.png"
 local scriptsTabIconFileName     = "assets/TL-DEFAULT/Scripts-Icon.png"
 
-local actionsTabIconUrl          = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/ActionTab-Icon.png"
+local actionsTabIconUrl          = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/ActionTab-Icon.png"
 local actionsTabIconFileName     = "assets/TL-DEFAULT/ActionTab-Icon.png"
 
-local playerlistTabIconUrl       = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Playerlist-Icon.png"
+local playerlistTabIconUrl       = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Playerlist-Icon.png"
 local playerlistTabIconFileName  = "assets/TL-DEFAULT/Playerlist-Icon.png"
 
-local deathNoteHomeIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Home-Icon.png"
+local deathNoteHomeIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DEATH%20NOTE/Theme-Death-Note-Home-Icon.png"
 local deathNoteHomeIconFileName    = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Home-Icon.png"
-local deathNoteCharIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-CharacterIcon.png"
+local deathNoteCharIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DEATH%20NOTE/Theme-Death-Note-CharacterIcon.png"
 local deathNoteCharIconFileName    = "assets/THEMES/DEATHNOTE/Theme-Death-Note-CharacterIcon.png"
-local deathNoteScriptsIconUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Scripts-Icon.png"
+local deathNoteScriptsIconUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DEATH%20NOTE/Theme-Death-Note-Scripts-Icon.png"
 local deathNoteScriptsIconFileName = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Scripts-Icon.png"
-local deathNoteSettingsIconUrl     = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Settings-Icon.png"
+local deathNoteSettingsIconUrl     = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DEATH%20NOTE/Theme-Death-Note-Settings-Icon.png"
 local deathNoteSettingsIconFileName = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Settings-Icon.png"
-local deathNoteComIconUrl          = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Com-Icon.png"
+local deathNoteComIconUrl          = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DEATH%20NOTE/Theme-Death-Note-Com-Icon.png"
 local deathNoteComIconFileName     = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Com-Icon.png"
-local deathNoteCharBgUrl           = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-CharacterPanelBackground.png"
+local deathNoteCharBgUrl           = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DEATH%20NOTE/Theme-Death-Note-CharacterPanelBackground.png"
 local deathNoteCharBgFileName      = "assets/THEMES/DEATHNOTE/Theme-Death-Note-CharPanelBg.png"
-local deathNoteComBgUrl            = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Com-Background.png"
+local deathNoteComBgUrl            = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DEATH%20NOTE/Theme-Death-Note-Com-Background.png"
 local deathNoteComBgFileName       = "assets/THEMES/DEATHNOTE/Theme-Death-Note-ComPanelBg.png"
-local deathNoteScriptsBgUrl        = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Actions-Background-Icon.png"
+local deathNoteScriptsBgUrl        = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DEATH%20NOTE/Theme-Death-Note-Actions-Background-Icon.png"
 local deathNoteScriptsBgFileName   = "assets/THEMES/DEATHNOTE/Theme-Death-Note-ActionsPanelBg.png"
-local deathNoteScriptsPanelBgUrl    = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-ScriptsPanel-Background.png"
+local deathNoteScriptsPanelBgUrl    = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DEATH%20NOTE/Theme-Death-Note-ScriptsPanel-Background.png"
 local deathNoteScriptsPanelBgFileName = "assets/THEMES/DEATHNOTE/Theme-Death-Note-ScriptsPanelBg.png"
-local deathNoteLoadingScreenUrl    = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Loading-Screen.png"
+local deathNoteLoadingScreenUrl    = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DEATH%20NOTE/Theme-Death-Note-Loading-Screen.png"
 local deathNoteLoadingScreenFileName = "assets/THEMES/DEATHNOTE/Theme-Death-Note-LoadingScreen.png"
-local deathNoteHomeBgUrl            = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Home-Background-Icon.png"
+local deathNoteHomeBgUrl            = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DEATH%20NOTE/Theme-Death-Note-Home-Background-Icon.png"
 local deathNoteHomeBgFileName       = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Home-Background.png"
 
-local dexterCharIconUrl             = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-CharacterIcon.png"
+local dexterCharIconUrl             = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DEXTER/Theme-Dexter-CharacterIcon.png"
 local dexterCharIconFileName        = "assets/THEMES/DEXTER/Theme-Dexter-CharacterIcon.png"
-local dexterCharBgUrl               = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-CharacterPanel.png"
+local dexterCharBgUrl               = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DEXTER/Theme-Dexter-CharacterPanel.png"
 local dexterCharBgFileName          = "assets/THEMES/DEXTER/Theme-Dexter-CharacterPanel.png"
-local dexterSettingsIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-Settings-Icon.png"
+local dexterSettingsIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DEXTER/Theme-Dexter-Settings-Icon.png"
 local dexterSettingsIconFileName    = "assets/THEMES/DEXTER/Theme-Dexter-Settings-Icon.png"
-local dexterScriptsIconUrl          = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-Scripts-Icon.png"
+local dexterScriptsIconUrl          = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DEXTER/Theme-Dexter-Scripts-Icon.png"
 local dexterScriptsIconFileName     = "assets/THEMES/DEXTER/Theme-Dexter-Scripts-Icon.png"
-local dexterComBgUrl                = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-Com-Wallpaper.png"
+local dexterComBgUrl                = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DEXTER/Theme-Dexter-Com-Wallpaper.png"
 local dexterComBgFileName           = "assets/THEMES/DEXTER/Theme-Dexter-ComWallpaper.png"
-local dexterLoadingScreenUrl        = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-Loading-Screen.png"
+local dexterLoadingScreenUrl        = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DEXTER/Theme-Dexter-Loading-Screen.png"
 local dexterLoadingScreenFileName   = "assets/THEMES/DEXTER/Theme-Dexter-LoadingScreen.png"
-local dexterPlayerlistIconUrl       = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/DEXTER/Theme-Dexter-Playerlist-Icon.png"
+local dexterPlayerlistIconUrl       = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/DEXTER/Theme-Dexter-Playerlist-Icon.png"
 local dexterPlayerlistIconFileName  = "assets/THEMES/DEXTER/Theme-Dexter-Playerlist-Icon.png"
 
-local loadingScreenVoiceUrl      = "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL-MP3/TLMenuLoadingScreen.mp3"
+local loadingScreenVoiceUrl      = "https://github.com/TLMenu/TLASSETS/raw/main/TL-MP3/TLMenuLoadingScreen.mp3"
 local loadingScreenVoiceFileName = "assets/TL-MP3-FILES/TLMenuLoadingScreen.mp3"
 
 local _TL_assetLoader = {
@@ -316,7 +316,7 @@ task.spawn(function()
         { name = "TL User Profile Picture",    url = userProfilePicUrl,            file = userProfilePicFileName,            kind = "image", priority = 1 },
         { name = "usxirr Custom Avatar",       url = customUserAvatars["usxirr"].url, file = customUserAvatars["usxirr"].file, kind = "image", priority = 1 },
         { name = "Abxsent0 Custom Avatar",     url = customUserAvatars["Abxsent0"].url, file = customUserAvatars["Abxsent0"].file, kind = "image", priority = 1 },
-        { name = "TL Staff Icon", url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ROLE-ICONS/TL-STAFF.png", file = "assets/ROLE-ICONS/TL-STAFF.png", kind = "image", priority = 1 },
+        { name = "TL Staff Icon", url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/ROLE-ICONS/TL-STAFF.png", file = "assets/ROLE-ICONS/TL-STAFF.png", kind = "image", priority = 1 },
         { name = "TL Arda Avatar", url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Arda.png", file = "assets/TL-ROLE-PICS/TL-Arda.png", kind = "image", priority = 1 },
         { name = "TL Sec Avatar", url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Sec.png", file = "assets/TL-ROLE-PICS/TL-Sec.png", kind = "image", priority = 1 },
         { name = "TL Sleepy Avatar", url = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Sleepy.jpg", file = "assets/TL-ROLE-PICS/TL-Sleepy.jpg", kind = "image", priority = 1 },
@@ -327,41 +327,41 @@ task.spawn(function()
         { name = "Scripts Tab Icon",           url = scriptsTabIconUrl,            file = scriptsTabIconFileName,            kind = "image", priority = 1 },
         { name = "Actions Tab Icon",           url = actionsTabIconUrl,            file = actionsTabIconFileName,            kind = "image", priority = 1 },
         { name = "Playerlist Tab Icon",        url = playerlistTabIconUrl,         file = playerlistTabIconFileName,         kind = "image", priority = 1 },
-        { name = "VC Unmuted Icon",            url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/ANTIVCBAN-Unmuted-Icon.png", file = "assets/TL-DEFAULT/TL_Unmuted.png", kind = "image", priority = 1 },
-        { name = "VC Muted Icon",              url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/ANTIVCBAN-Mute-Icon.png",    file = "assets/TL-DEFAULT/TL_Muted.png",   kind = "image", priority = 1 },
+        { name = "VC Unmuted Icon",            url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/ANTIVCBAN-Unmuted-Icon.png", file = "assets/TL-DEFAULT/TL_Unmuted.png", kind = "image", priority = 1 },
+        { name = "VC Muted Icon",              url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/ANTIVCBAN-Mute-Icon.png",    file = "assets/TL-DEFAULT/TL_Muted.png",   kind = "image", priority = 1 },
 
-        { name = "TL Default Emote Icon",      url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Emote-Icon.png",          file = "assets/TL-DEFAULT/Emote-Icon.png",          kind = "image", priority = 2 },
-        { name = "TL Default Music Icon",      url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Music-Icon.png",          file = "assets/TL-DEFAULT/Music-Icon.png",          kind = "image", priority = 2 },
-        { name = "TL Default Visual Icon",     url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Visual-Icon.png",          file = "assets/TL-DEFAULT/Visual-Icon.png",          kind = "image", priority = 2 },
-        { name = "TL Default Visual2 Icon",    url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Visual2-Icon.png",         file = "assets/TL-DEFAULT/Visual2-Icon.png",         kind = "image", priority = 2 },
-        { name = "TL Default Movement Icon",   url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Movement-Icon.png",        file = "assets/TL-DEFAULT/Movement-Icon.png",        kind = "image", priority = 2 },
-        { name = "TL Default Misc Icon",       url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Misc-Icon.png",            file = "assets/TL-DEFAULT/Misc-Icon.png",            kind = "image", priority = 2 },
-        { name = "TL Default Colors Icon",     url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Colors-Icon.png",          file = "assets/TL-DEFAULT/Colors-Icon.png",          kind = "image", priority = 2 },
-        { name = "TL Default Theme Icon",      url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Theme-Icon.png",           file = "assets/TL-DEFAULT/Theme-Icon.png",           kind = "image", priority = 2 },
-        { name = "TL Default Themes Icon",     url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Themes-Icon.png",          file = "assets/TL-DEFAULT/Themes-Icon.png",          kind = "image", priority = 2 },
-        { name = "TL Default Keybind Icon",    url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Keybind-Icon.png",         file = "assets/TL-DEFAULT/Keybind-Icon.png",         kind = "image", priority = 2 },
-        { name = "TL Default Cursor Icon",     url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Cursor-Icon.png",          file = "assets/TL-DEFAULT/Cursor-Icon.png",          kind = "image", priority = 2 },
-        { name = "TL Default CustomCursor Icon", url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/CustomCursor-Icon%20(2).png", file = "assets/TL-DEFAULT/CustomCursor-Icon.png", kind = "image", priority = 2 },
-        { name = "TL Default Search Icon",     url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Search-Icon.png",          file = "assets/TL-DEFAULT/Search-Icon.png",          kind = "image", priority = 2 },
-        { name = "TL Default Search2 Icon",    url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Search2-Icon.png",         file = "assets/TL-DEFAULT/Search2-Icon.png",         kind = "image", priority = 2 },
-        { name = "TL Default Minimize Icon",   url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/Minimize-Icon.png",        file = "assets/TL-DEFAULT/Minimize-Icon.png",        kind = "image", priority = 2 },
-        { name = "TL Default MusicPlay Icon",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/MusicPlay-Icon.png",       file = "assets/TL-DEFAULT/MusicPlay-Icon.png",       kind = "image", priority = 2 },
-        { name = "TL Default MusicPause Icon", url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/MusicPause-Icon.png",      file = "assets/TL-DEFAULT/MusicPause-Icon.png",      kind = "image", priority = 2 },
-        { name = "TL Default MusicBack Icon",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/MusicBack-Icon.png",       file = "assets/TL-DEFAULT/MusicBack-Icon.png",       kind = "image", priority = 2 },
-        { name = "TL Default MusicSkip Icon",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/MusicSkip-Icon.png",       file = "assets/TL-DEFAULT/MusicSkip-Icon.png",       kind = "image", priority = 2 },
-        { name = "TL Default PING-WLAN Icon",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/PING-WLAN-Icon.png",       file = "assets/TL-DEFAULT/PING-WLAN-Icon.png",       kind = "image", priority = 2 },
-        { name = "TL Default PunchFling Icon", url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/PunchFling-Icon.png",      file = "assets/TL-DEFAULT/PunchFling-Icon.png",      kind = "image", priority = 2 },
-        { name = "TL Default TLMagnifier Icon", url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/TLMagnifier-Tool-Icon.png", file = "assets/TL-DEFAULT/TLMagnifier-Tool-Icon.png", kind = "image", priority = 2 },
-        { name = "TL Default TL-Icon",         url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/TL-Icon.png",              file = "assets/TL-DEFAULT/TL-Icon.png",              kind = "image", priority = 2 },
-        { name = "TL Default TLIcon",          url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/TLIcon.png",               file = "assets/TL-DEFAULT/TLIcon.png",               kind = "image", priority = 2 },
-        { name = "TL Default TL-ProfileIcon",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/TL-ProfileIcon.png",       file = "assets/TL-DEFAULT/TL-ProfileIcon.png",       kind = "image", priority = 2 },
-        { name = "TL Default TLOpenBars",      url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/TLOpenBars-Button.png",     file = "assets/TL-DEFAULT/TLOpenBars-Button.png",    kind = "image", priority = 2 },
-        { name = "TL Default TLOpenedBars",    url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/TLOpenedBars-Button.png",    file = "assets/TL-DEFAULT/TLOpenedBars-Button.png",  kind = "image", priority = 2 },
-        { name = "TL Default QA Hug",          url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/QuickAction%20Hug-Icon.png",       file = "assets/TL-DEFAULT/QuickAction-Hug-Icon.png",       kind = "image", priority = 2 },
-        { name = "TL Default QA Kiss",         url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/QuickAction%20Kiss-Icon.png",      file = "assets/TL-DEFAULT/QuickAction-Kiss-Icon.png",      kind = "image", priority = 2 },
-        { name = "TL Default QA Slap",         url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/QuickAction%20Slap-Icon.png",      file = "assets/TL-DEFAULT/QuickAction-Slap-Icon.png",      kind = "image", priority = 2 },
-        { name = "TL Default QA Headbutt",     url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/QuickAction%20Headbutt-Icon.png", file = "assets/TL-DEFAULT/QuickAction-Headbutt-Icon.png", kind = "image", priority = 2 },
-        { name = "TL Default QA Backshots",    url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/TL-DEFAULT/QuickAction%20Backshots-Icon.png", file = "assets/TL-DEFAULT/QuickAction-Backshots-Icon.png", kind = "image", priority = 2 },
+        { name = "TL Default Emote Icon",      url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Emote-Icon.png",          file = "assets/TL-DEFAULT/Emote-Icon.png",          kind = "image", priority = 2 },
+        { name = "TL Default Music Icon",      url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Music-Icon.png",          file = "assets/TL-DEFAULT/Music-Icon.png",          kind = "image", priority = 2 },
+        { name = "TL Default Visual Icon",     url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Visual-Icon.png",          file = "assets/TL-DEFAULT/Visual-Icon.png",          kind = "image", priority = 2 },
+        { name = "TL Default Visual2 Icon",    url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Visual2-Icon.png",         file = "assets/TL-DEFAULT/Visual2-Icon.png",         kind = "image", priority = 2 },
+        { name = "TL Default Movement Icon",   url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Movement-Icon.png",        file = "assets/TL-DEFAULT/Movement-Icon.png",        kind = "image", priority = 2 },
+        { name = "TL Default Misc Icon",       url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Misc-Icon.png",            file = "assets/TL-DEFAULT/Misc-Icon.png",            kind = "image", priority = 2 },
+        { name = "TL Default Colors Icon",     url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Colors-Icon.png",          file = "assets/TL-DEFAULT/Colors-Icon.png",          kind = "image", priority = 2 },
+        { name = "TL Default Theme Icon",      url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Theme-Icon.png",           file = "assets/TL-DEFAULT/Theme-Icon.png",           kind = "image", priority = 2 },
+        { name = "TL Default Themes Icon",     url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Themes-Icon.png",          file = "assets/TL-DEFAULT/Themes-Icon.png",          kind = "image", priority = 2 },
+        { name = "TL Default Keybind Icon",    url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Keybind-Icon.png",         file = "assets/TL-DEFAULT/Keybind-Icon.png",         kind = "image", priority = 2 },
+        { name = "TL Default Cursor Icon",     url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Cursor-Icon.png",          file = "assets/TL-DEFAULT/Cursor-Icon.png",          kind = "image", priority = 2 },
+        { name = "TL Default CustomCursor Icon", url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/CustomCursor-Icon%20(2).png", file = "assets/TL-DEFAULT/CustomCursor-Icon.png", kind = "image", priority = 2 },
+        { name = "TL Default Search Icon",     url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Search-Icon.png",          file = "assets/TL-DEFAULT/Search-Icon.png",          kind = "image", priority = 2 },
+        { name = "TL Default Search2 Icon",    url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Search2-Icon.png",         file = "assets/TL-DEFAULT/Search2-Icon.png",         kind = "image", priority = 2 },
+        { name = "TL Default Minimize Icon",   url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Minimize-Icon.png",        file = "assets/TL-DEFAULT/Minimize-Icon.png",        kind = "image", priority = 2 },
+        { name = "TL Default MusicPlay Icon",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/MusicPlay-Icon.png",       file = "assets/TL-DEFAULT/MusicPlay-Icon.png",       kind = "image", priority = 2 },
+        { name = "TL Default MusicPause Icon", url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/MusicPause-Icon.png",      file = "assets/TL-DEFAULT/MusicPause-Icon.png",      kind = "image", priority = 2 },
+        { name = "TL Default MusicBack Icon",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/MusicBack-Icon.png",       file = "assets/TL-DEFAULT/MusicBack-Icon.png",       kind = "image", priority = 2 },
+        { name = "TL Default MusicSkip Icon",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/MusicSkip-Icon.png",       file = "assets/TL-DEFAULT/MusicSkip-Icon.png",       kind = "image", priority = 2 },
+        { name = "TL Default PING-WLAN Icon",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/PING-WLAN-Icon.png",       file = "assets/TL-DEFAULT/PING-WLAN-Icon.png",       kind = "image", priority = 2 },
+        { name = "TL Default PunchFling Icon", url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/PunchFling-Icon.png",      file = "assets/TL-DEFAULT/PunchFling-Icon.png",      kind = "image", priority = 2 },
+        { name = "TL Default TLMagnifier Icon", url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/TLMagnifier-Tool-Icon.png", file = "assets/TL-DEFAULT/TLMagnifier-Tool-Icon.png", kind = "image", priority = 2 },
+        { name = "TL Default TL-Icon",         url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/TL-Icon.png",              file = "assets/TL-DEFAULT/TL-Icon.png",              kind = "image", priority = 2 },
+        { name = "TL Default TLIcon",          url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/TLIcon.png",               file = "assets/TL-DEFAULT/TLIcon.png",               kind = "image", priority = 2 },
+        { name = "TL Default TL-ProfileIcon",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/TL-ProfileIcon.png",       file = "assets/TL-DEFAULT/TL-ProfileIcon.png",       kind = "image", priority = 2 },
+        { name = "TL Default TLOpenBars",      url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/TLOpenBars-Button.png",     file = "assets/TL-DEFAULT/TLOpenBars-Button.png",    kind = "image", priority = 2 },
+        { name = "TL Default TLOpenedBars",    url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/TLOpenedBars-Button.png",    file = "assets/TL-DEFAULT/TLOpenedBars-Button.png",  kind = "image", priority = 2 },
+        { name = "TL Default QA Hug",          url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/QuickAction%20Hug-Icon.png",       file = "assets/TL-DEFAULT/QuickAction-Hug-Icon.png",       kind = "image", priority = 2 },
+        { name = "TL Default QA Kiss",         url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/QuickAction%20Kiss-Icon.png",      file = "assets/TL-DEFAULT/QuickAction-Kiss-Icon.png",      kind = "image", priority = 2 },
+        { name = "TL Default QA Slap",         url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/QuickAction%20Slap-Icon.png",      file = "assets/TL-DEFAULT/QuickAction-Slap-Icon.png",      kind = "image", priority = 2 },
+        { name = "TL Default QA Headbutt",     url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/QuickAction%20Headbutt-Icon.png", file = "assets/TL-DEFAULT/QuickAction-Headbutt-Icon.png", kind = "image", priority = 2 },
+        { name = "TL Default QA Backshots",    url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/QuickAction%20Backshots-Icon.png", file = "assets/TL-DEFAULT/QuickAction-Backshots-Icon.png", kind = "image", priority = 2 },
         { name = "Admin Join Audio",           url = adminAudioUrl,                file = adminAudioFileName,                kind = "audio", priority = 1 },
         
         { name = "The Boys Scripts Icon",      url = theBoysScriptsIconUrl,        file = theBoysScriptsIconFileName,        kind = "image", priority = 2 },
@@ -373,7 +373,7 @@ task.spawn(function()
         { name = "Dragonball Settings Icon",   url = dragonballSettingsIconUrl,    file = dragonballSettingsIconFileName,    kind = "image", priority = 2 },
         { name = "Dragonball Wallpaper",       url = dragonballBgUrl,              file = dragonballBgFileName,              kind = "image", priority = 2 },
         { name = "Dragonball Theme Music",     url = dragonballMusicUrl,           file = dragonballMusicFileName,           kind = "audio", priority = 2 },
-        { name = "One Piece COM Background",   url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THEMES/ONE%20PIECE/Theme-OnePiece-Com-Wallpaper.png", file = "assets/THEMES/ONEPIECE/OP-COM-BG.png", kind = "image", priority = 2 },
+        { name = "One Piece COM Background",   url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/ONE%20PIECE/Theme-OnePiece-Com-Wallpaper.png", file = "assets/THEMES/ONEPIECE/OP-COM-BG.png", kind = "image", priority = 2 },
         { name = "One Piece Action Background", url = onePieceActionBgUrl, file = onePieceActionBgFileName, kind = "image", priority = 2 },
         { name = "Death Note Home Icon",       url = deathNoteHomeIconUrl,         file = deathNoteHomeIconFileName,         kind = "image", priority = 2 },
         { name = "Death Note Character Icon",  url = deathNoteCharIconUrl,         file = deathNoteCharIconFileName,         kind = "image", priority = 2 },
@@ -408,18 +408,18 @@ task.spawn(function()
         { "Usopp Theme",                   "Usopp%20Theme.mp3",                                           "assets/TL-MP3-FILES/OP-M-08.mp3" },
         { "Zoro Theme",                    "Zoro%20Theme.mp3",                                            "assets/TL-MP3-FILES/OP-M-09.mp3" },
     }
-    local _OP_BASE = "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/THEME%20MUSICS/ONEPIECE/"
+    local _OP_BASE = "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/THEME%20MUSICS/ONEPIECE/"
     for _, v in ipairs(_opMusic) do
         assets[#assets + 1] = { name = "OP Music: " .. v[1], url = _OP_BASE .. v[2], file = v[3], kind = "audio", priority = 2 }
     end
 
     
     local _afkFiles = {
-        { "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE.mp3",  "assets/TL-MP3-FILES/DB-AFK-VL0.mp3" },
-        { "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE1.mp3", "assets/TL-MP3-FILES/DB-AFK-VL1.mp3" },
-        { "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/AFKSFX/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE.mp3",      "assets/TL-MP3-FILES/OP-AFK-VL0.mp3" },
-        { "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/AFKSFX/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE1.mp3",     "assets/TL-MP3-FILES/OP-AFK-VL1.mp3" },
-        { "https://github.com/TLMenu/TLASSETS/raw/refs/heads/main/TL%20SFX/AFKSFX/THE%20BOYS-AFKSFX/THEBOYS-AFK-VOICELINE.mp3",     "assets/TL-MP3-FILES/TB-AFK-VL0.mp3" },
+        { "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE.mp3",  "assets/TL-MP3-FILES/DB-AFK-VL0.mp3" },
+        { "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE1.mp3", "assets/TL-MP3-FILES/DB-AFK-VL1.mp3" },
+        { "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/AFKSFX/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE.mp3",      "assets/TL-MP3-FILES/OP-AFK-VL0.mp3" },
+        { "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/AFKSFX/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE1.mp3",     "assets/TL-MP3-FILES/OP-AFK-VL1.mp3" },
+        { "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/AFKSFX/THE%20BOYS-AFKSFX/THEBOYS-AFK-VOICELINE.mp3",     "assets/TL-MP3-FILES/TB-AFK-VL0.mp3" },
     }
     for _, v in ipairs(_afkFiles) do
         assets[#assets + 1] = { name = "AFK VL: " .. v[2], url = v[1], file = v[2], kind = "audio", priority = 2 }
@@ -1702,6 +1702,9 @@ local _TL_THEMES = {
                                 cancelBgTweens(d)
                                 local nb = remapColor(d.BackgroundColor3); if nb then d.BackgroundColor3 = nb end
                             end
+                            
+                        elseif cn == "ImageLabel" or cn == "ImageButton" then
+                            local ni = remapColor(d.ImageColor3); if ni then d.ImageColor3 = ni end
                             
                         elseif cn == "UIGradient" then
                             local kps = d.Color.Keypoints
@@ -7742,7 +7745,7 @@ local function RunCustomAnimation(Char)
                     
                     
                     do
-                        local _opMod = _TL_loadModule("SCRIPTS-TAB/TL-OutfitPanel")
+                        local _opMod = _TL_loadModule("AVATAR-STEAL-PANEL")
                         if _opMod then
                             _opMod.init({ _tsProxy = _tsProxy, _genv = _genv or GLOBAL_ENV })
                             _G._TLInitAvatarOutfit = function()
@@ -15380,6 +15383,7 @@ local themePage = Instance.new("Frame", subArea)
                                                     local opIcon = _TL_refs._TL_tabOnePieceIcons[tb.name]
                                                     if opIcon and tb.iconImg then
                                                         tb.iconImg.Image = opIcon
+                                                        tb.iconImg.ImageColor3 = MGDIM()
                                                     end
                                                 end
                                             end
@@ -18104,12 +18108,12 @@ local themePage = Instance.new("Frame", subArea)
                         admin = { url = "", file = "" },
                         developer = { url = "", file = "" },
                         moderator = { url = "", file = "" },
-                        staff = { url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ROLE-ICONS/TL-STAFF.png", file = "assets/ROLE-ICONS/TL-STAFF.png" },
+                        staff = { url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/ROLE-ICONS/TL-STAFF.png", file = "assets/ROLE-ICONS/TL-STAFF.png" },
                         advertising = { url = "", file = "" },
                     },
                     customAvatars = {},
                     tagImages = {
-                        staff = { url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ROLE-ICONS/TL-STAFF.png", file = "assets/ROLE-ICONS/TL-STAFF.png" },
+                        staff = { url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/ROLE-ICONS/TL-STAFF.png", file = "assets/ROLE-ICONS/TL-STAFF.png" },
                     },
                     roleLabels = {},
                     displayNames = {},
