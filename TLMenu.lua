@@ -7343,7 +7343,7 @@ local function RunCustomAnimation(Char)
                     makeToggleRow(CY, "Godmode", "health lock", C.accent2,
                         function(on) if on then
                                 godStart(); pcall(function() sendNotif("Godmode", "Godmode Enabled!", 2) end)
-                            else godStop(); pcall(function() sendNotif("Godmode", "Godmode Disabled!", 2)) end end)
+                            else godStop(); pcall(function() sendNotif("Godmode", "Godmode Disabled!", 2) end) end end)
                     CY                    = CY + TOG_H + GAP
                     _TL_refs._TL_godStart = godStart
                     _TL_refs._TL_godStop  = godStop
