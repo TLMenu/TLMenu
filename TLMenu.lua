@@ -5459,34 +5459,135 @@ makePanel("Home", C.accent)
                                     local char    = LocalPlayer.Character
                                     local hrp     = char and char:FindFirstChild("HumanoidRootPart")
                                     local savedCF = hrp and hrp.CFrame
-                                    
                                     local hum     = char and char:FindFirstChildOfClass("Humanoid")
-                                    if hum then pcall(function() hum.Health = 0 end) end
-                                    
+
+                                    -- 1) Fly-Zustand sofort beenden
                                     if flyActive then
                                         flyActive = false
                                         pcall(function() if _flyMod and _flyMod.stop then _flyMod.stop() end end)
                                         pcall(_flyMuteSounds, false)
                                         pcall(function() if _flyPanelSetFn then _flyPanelSetFn(false) end end)
                                     end
-                                    
-                                    if savedCF then
-                                        local conn
-                                        conn = LocalPlayer.CharacterAdded:Connect(function(newChar)
-                                            conn:Disconnect()
-                                            local newHrp = newChar:FindFirstChild("HumanoidRootPart")
-                                                or newChar:WaitForChild("HumanoidRootPart", 3)
-                                            if newHrp then
-                                                pcall(function() newHrp.CFrame = savedCF end)
-                                                task.defer(function()
-                                                    pcall(function() newHrp.CFrame = savedCF end)
+
+                                    -- 2) Godmode aktiv? -> erst deaktivieren damit Tod möglich ist
+                                    pcall(function()
+                                        if hum then
+                                            hum.BreakJointsOnDeath = true
+                                            hum.RequiresNeck       = true
+                                            hum:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
+                                            hum:SetStateEnabled(Enum.HumanoidStateType.FallingDown, true)
+                                            hum:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, true)
+                                            hum:SetStateEnabled(Enum.HumanoidStateType.GettingUp, true)
+                                            hum:SetStateEnabled(Enum.HumanoidStateType.Physics, true)
+                                        end
+                                    end)
+                                    pcall(function() if type(godStop) == "function" then godStop() end end)
+                                    pcall(function() if _TL_refs._TL_isGodOn and _TL_refs._TL_isGodOn() then godStop() end end)
+
+                                    -- 3) Positionswiederherstellung VOR dem Tod registrieren
+                                    local _respawnDone = false
+                                    local function _restorePosition(newChar)
+                                        if _respawnDone then return end
+                                        _respawnDone = true
+                                        if not savedCF then return end
+                                        local tries = 0
+                                        local function trySet()
+                                            tries = tries + 1
+                                            local nHrp = newChar:FindFirstChild("HumanoidRootPart")
+                                                or newChar:WaitForChild("HumanoidRootPart", 5)
+                                            if nHrp then
+                                                pcall(function() nHrp.CFrame = savedCF end)
+                                                task.delay(0.1, function()
+                                                    pcall(function() nHrp.CFrame = savedCF end)
                                                 end)
+                                                task.delay(0.4, function()
+                                                    pcall(function() nHrp.CFrame = savedCF end)
+                                                end)
+                                            elseif tries < 10 then
+                                                task.delay(0.3, trySet)
+                                            end
+                                        end
+                                        trySet()
+                                    end
+
+                                    local conn
+                                    conn = LocalPlayer.CharacterAdded:Connect(function(newChar)
+                                        if conn then pcall(function() conn:Disconnect() end) end
+                                        _restorePosition(newChar)
+                                    end)
+
+                                    -- Safety: falls CharacterAdded nie feuert, nach 6s aufräumen
+                                    task.delay(6, function()
+                                        if not _respawnDone then
+                                            _respawnDone = true
+                                            pcall(function() if conn then conn:Disconnect() end end)
+                                        end
+                                    end)
+
+                                    -- 4) Tod erzwingen – mehrere Methoden parallel
+                                    local function forceKill(h)
+                                        if not h or not h.Parent then return end
+                                        -- Methode A: Health auf 0
+                                        pcall(function() h.Health = 0 end)
+                                        -- Methode B: BreakJointsOn_death
+                                        pcall(function() h:ChangeState(Enum.HumanoidStateType.Dead) end)
+                                    end
+
+                                    local function killByRemovingParts(c)
+                                        if not c or not c.Parent then return end
+                                        pcall(function()
+                                            local neck = c:FindFirstChild("Neck")
+                                            if not neck then
+                                                local upperTorso = c:FindFirstChild("UpperTorso")
+                                                if upperTorso then neck = upperTorso:FindFirstChild("Neck") end
+                                            end
+                                            if neck then neck:Destroy() end
+                                        end)
+                                        pcall(function()
+                                            local rootJoint = c:FindFirstChild("HumanoidRootPart")
+                                            if rootJoint then
+                                                local joint = rootJoint:FindFirstChild("RootJoint")
+                                                if joint then joint:Destroy() end
                                             end
                                         end)
                                     end
-                                    
-                                    local hum2 = char and char:FindFirstChildOfClass("Humanoid")
-                                    if hum2 then pcall(function() hum2.Health = 0 end) end
+
+                                    -- Sofort versuchen
+                                    forceKill(hum)
+                                    task.wait(0.15)
+
+                                    -- Nochmal versuchen (frischer Humanoid nach Evolve/Transform)
+                                    local hum3 = char and char:FindFirstChildOfClass("Humanoid")
+                                    if hum3 and hum3.Health > 0 then
+                                        forceKill(hum3)
+                                        task.wait(0.2)
+                                    end
+
+                                    -- Fallback: Char-Teile entfernen
+                                    local hum4 = char and char:FindFirstChildOfClass("Humanoid")
+                                    if hum4 and hum4.Health > 0 then
+                                        killByRemovingParts(char)
+                                        task.wait(0.3)
+                                    end
+
+                                    -- Letzter Ausweg: LoadCharacter (Position wird danach wiederhergestellt)
+                                    local hum5 = LocalPlayer.Character and LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+                                    if hum5 and hum5.Health > 0 then
+                                        pcall(function() LocalPlayer:LoadCharacter() end)
+                                        -- Position auch nach LoadCharacter wiederherstellen
+                                        if savedCF then
+                                            task.delay(1, function()
+                                                local newChar = LocalPlayer.Character
+                                                local nHrp = newChar and newChar:FindFirstChild("HumanoidRootPart")
+                                                if nHrp then
+                                                    pcall(function() nHrp.CFrame = savedCF end)
+                                                    task.delay(0.2, function()
+                                                        pcall(function() nHrp.CFrame = savedCF end)
+                                                    end)
+                                                end
+                                            end)
+                                        end
+                                    end
                                 end)
                             end
                             if captId == "r6anim" then
@@ -6986,45 +7087,102 @@ local function RunCustomAnimation(Char)
                     local godActive       = false
                     godDiedConn     = nil
                     godFF           = nil
-                    local _godChar  = nil
-                    local _godHum   = nil
-                    local _godFF    = nil
-                    local _godConns = {}
+                    local _godChar       = nil
+                    local _godHum        = nil
+                    local _godFF         = nil
+                    local _godConns      = {}
+                    local _godApplyToken = 0
+                    local _godLastApply  = 0
+                    local _godFFDebounce = false
+
                     local function _godCleanConns()
                         for _, c in ipairs(_godConns) do pcall(function() c:Disconnect() end) end
                         _godConns = {}
                     end
-                    local function _godApply(char)
-                        if not char then return end
-                        _godChar  = char
-                        _godHum   = char:FindFirstChildOfClass("Humanoid")
-                        local hum = _godHum
+
+                    local function _godProtectHumanoid(hum)
                         if not hum then return end
                         pcall(function()
                             hum.BreakJointsOnDeath = false
-                            hum.RequiresNeck = false
+                            hum.RequiresNeck       = false
                             hum:SetStateEnabled(Enum.HumanoidStateType.Dead, false)
                             hum:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
                             hum:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, false)
+                            hum:SetStateEnabled(Enum.HumanoidStateType.GettingUp, false)
+                            hum:SetStateEnabled(Enum.HumanoidStateType.Physics, false)
                         end)
-                        local hrp = char:FindFirstChild("HumanoidRootPart")
-                        if hrp then pcall(function() hrp:SetNetworkOwner(LocalPlayer) end) end
-                        if _godFF and _godFF.Parent then pcall(function() _godFF:Destroy() end) end
-                        _godFF = nil
+                    end
+
+                    local function _godRestoreHumanoid(hum)
+                        if not hum then return end
                         pcall(function()
-                            _godFF = Instance.new("ForceField", char)
-                            _godFF.Visible = false
+                            hum.BreakJointsOnDeath = true
+                            hum.RequiresNeck       = true
+                            hum:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
+                            hum:SetStateEnabled(Enum.HumanoidStateType.FallingDown, true)
+                            hum:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, true)
+                            hum:SetStateEnabled(Enum.HumanoidStateType.GettingUp, true)
+                            hum:SetStateEnabled(Enum.HumanoidStateType.Physics, true)
                         end)
+                    end
+
+                    local function _godApply(char)
+                        if not char or not godActive then return end
+                        local now = tick()
+                        if now - _godLastApply < 0.3 then return end
+                        _godLastApply = now
+                        _godApplyToken = _godApplyToken + 1
+                        local myToken = _godApplyToken
+
+                        _godChar = char
+                        local hum = char:FindFirstChildOfClass("Humanoid")
+                            or char:WaitForChild("Humanoid", 5)
+                        if not hum then return end
+                        _godHum = hum
+
+                        -- Humanoid schützen
+                        _godProtectHumanoid(hum)
+
+                        -- Network Owner setzen
+                        local hrp = char:FindFirstChild("HumanoidRootPart")
+                        if hrp then
+                            pcall(function() hrp:SetNetworkOwner(LocalPlayer) end)
+                        end
+
+                        -- Alte ForceField entfernen + neue erstellen (debounced)
+                        if not _godFFDebounce then
+                            _godFFDebounce = true
+                            if _godFF and _godFF.Parent then
+                                pcall(function() _godFF:Destroy() end)
+                            end
+                            _godFF = nil
+                            pcall(function()
+                                _godFF = Instance.new("ForceField", char)
+                                _godFF.Visible = false
+                            end)
+                            task.delay(0.5, function() _godFFDebounce = false end)
+                        end
+
+                        -- Health-Schutz 1: PropertyChangedSignal (schnellster Pfad)
                         local conn1 = hum:GetPropertyChangedSignal("Health"):Connect(function()
-                            if not godActive then return end
+                            if not godActive or myToken ~= _godApplyToken then return end
                             if hum.Health < hum.MaxHealth then
                                 pcall(function() hum.Health = hum.MaxHealth end)
                             end
                         end)
+
+                        -- Health-Schutz 2: Died-Event (letzter Ausweg)
                         local conn2 = hum.Died:Connect(function()
-                            if not godActive then return end
-                            task.spawn(function()
-                                task.wait()
+                            if not godActive or myToken ~= _godApplyToken then return end
+                            -- Sofort Health wiederherstellen (kein task.wait!)
+                            pcall(function()
+                                if hum and hum.Parent then
+                                    hum.Health = hum.MaxHealth
+                                end
+                            end)
+                            -- Nomal versuchen nach kurzem Delay
+                            task.delay(0.05, function()
+                                if not godActive or myToken ~= _godApplyToken then return end
                                 pcall(function()
                                     if hum and hum.Parent then
                                         hum.Health = hum.MaxHealth
@@ -7032,62 +7190,145 @@ local function RunCustomAnimation(Char)
                                 end)
                             end)
                         end)
+
+                        -- Health-Schutz 3: StateChanged (erkennet Tod-States)
+                        local conn3 = hum.StateChanged:Connect(function(_, newState)
+                            if not godActive or myToken ~= _godApplyToken then return end
+                            if newState == Enum.HumanoidStateType.Dead then
+                                pcall(function()
+                                    if hum and hum.Parent then
+                                        hum.Health = hum.MaxHealth
+                                        hum:ChangeState(Enum.HumanoidStateType.Running)
+                                    end
+                                end)
+                            end
+                        end)
+
+                        -- Humanoid schützen falls sie nachträglich hinzugefügt wird
+                        local conn4 = char.ChildAdded:Connect(function(child)
+                            if not godActive or myToken ~= _godApplyToken then return end
+                            if child:IsA("Humanoid") then
+                                task.defer(function()
+                                    _godProtectHumanoid(child)
+                                    pcall(function() child.Health = child.MaxHealth end)
+                                end)
+                            end
+                        end)
+
+                        -- Anti-BreakJoints: Joint-Entfernungen blockieren
+                        local conn5 = char.DescendantRemoving:Connect(function(desc)
+                            if not godActive or myToken ~= _godApplyToken then return end
+                            if desc:IsA("Motor6D") or desc:IsA("Weld") then
+                                local name = desc.Name:lower()
+                                if name == "neck" or name == "rootjoint" or name == "right shoulder"
+                                    or name == "left shoulder" or name == "right hip" or name == "left hip"
+                                    or name == "right knee" or name == "left knee" then
+                                    -- Joint wurde entfernt – sofort wiederherstellen
+                                    task.delay(0, function()
+                                        if not godActive or myToken ~= _godApplyToken then return end
+                                        if not char or not char.Parent then return end
+                                        -- Humanoid states nochmal setzen
+                                        local h = char:FindFirstChildOfClass("Humanoid")
+                                        if h then _godProtectHumanoid(h) end
+                                    end)
+                                end
+                            end
+                        end)
+
                         table.insert(_godConns, conn1)
                         table.insert(_godConns, conn2)
+                        table.insert(_godConns, conn3)
+                        table.insert(_godConns, conn4)
+                        table.insert(_godConns, conn5)
+
+                        -- Initiale Health-Wiederherstellung
                         pcall(function() hum.Health = hum.MaxHealth end)
                     end
+
                     local function godStart()
+                        if godActive then return end
                         godActive = true
                         _godCleanConns()
+
+                        -- CharacterAdded: bei Respawn Godmode neu anwenden
                         local charConn = LocalPlayer.CharacterAdded:Connect(function(char)
                             if not godActive then return end
-                            task.wait(0.15)
                             _godCleanConns()
+                            task.wait(0.1)
                             _godApply(char)
                         end)
                         table.insert(_godConns, charConn)
+
+                        -- Heartbeat: zusätzliche Schutzebene + Anti-Void + Anti-Fling
+                        local heartbeatErrors = 0
                         local hbConn = RunService.Heartbeat:Connect(function()
                             if not godActive then return end
                             local char = LocalPlayer.Character
                             if not char then return end
+
+                            -- Charakter gewechselt? -> neu anwenden
                             if char ~= _godChar then
-                                _godChar = char
-                                _godHum  = char:FindFirstChildOfClass("Humanoid")
+                                _godCleanConns()
                                 task.spawn(function() _godApply(char) end)
                                 return
                             end
+
                             local hum = _godHum
                             if not hum or not hum.Parent then return end
+
+                            -- Health-Lock (schneller Pfad)
                             if hum.Health < hum.MaxHealth then
                                 pcall(function() hum.Health = hum.MaxHealth end)
                             end
+
+                            -- Humanoid-States periodic schützen
+                            if math.random(1, 30) == 1 then
+                                _godProtectHumanoid(hum)
+                            end
+
                             local hrp = char:FindFirstChild("HumanoidRootPart")
                             if hrp then
+                                -- Anti-Void
                                 if hrp.Position.Y < -450 then
                                     pcall(function()
-                                        hrp.CFrame = hrp.CFrame + Vector3.new(0, 550, 0)
-                                        hrp.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+                                        hrp.CFrame = CFrame.new(hrp.Position.X, 100, hrp.Position.Z)
+                                        hrp.AssemblyLinearVelocity = Vector3.zero
+                                        hrp.AssemblyAngularVelocity = Vector3.zero
                                     end)
                                 end
+
+                                -- Anti-Fling
                                 local vel = hrp.AssemblyLinearVelocity
                                 local ang = hrp.AssemblyAngularVelocity
                                 if vel.Magnitude > 300 or ang.Magnitude > 300 then
                                     pcall(function()
-                                        hrp.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
-                                        hrp.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+                                        hrp.AssemblyLinearVelocity = Vector3.zero
+                                        hrp.AssemblyAngularVelocity = Vector3.zero
                                     end)
                                 end
+
+                                -- Network Owner периодически setzen
+                                if math.random(1, 120) == 1 then
+                                    pcall(function() hrp:SetNetworkOwner(LocalPlayer) end)
+                                end
                             end
-                            if not char:FindFirstChildOfClass("ForceField") then
+
+                            -- ForceField wiederherstellen wenn entfernt
+                            if not _godFFDebounce and not char:FindFirstChildOfClass("ForceField") then
+                                _godFFDebounce = true
                                 pcall(function()
                                     _godFF = Instance.new("ForceField", char)
                                     _godFF.Visible = false
                                 end)
+                                task.delay(1, function() _godFFDebounce = false end)
                             end
                         end)
                         table.insert(_godConns, hbConn)
+
+                        -- Sofort anwenden
                         _godApply(LocalPlayer.Character)
                     end
+
                     local function godStop()
                         godActive = false
                         _godCleanConns()
@@ -7095,22 +7336,14 @@ local function RunCustomAnimation(Char)
                             pcall(function() _godFF:Destroy() end)
                         end
                         _godFF = nil
-                        local hum = _godHum
-                        if hum and hum.Parent then
-                            pcall(function()
-                                hum.BreakJointsOnDeath = true
-                                hum.RequiresNeck = true
-                                hum:SetStateEnabled(Enum.HumanoidStateType.Dead, true)
-                                hum:SetStateEnabled(Enum.HumanoidStateType.FallingDown, true)
-                                hum:SetStateEnabled(Enum.HumanoidStateType.Ragdoll, true)
-                            end)
-                        end
+                        _godRestoreHumanoid(_godHum)
                         _godChar = nil; _godHum = nil
                     end
+
                     makeToggleRow(CY, "Godmode", "health lock", C.accent2,
                         function(on) if on then
                                 godStart(); pcall(function() sendNotif("Godmode", "Godmode Enabled!", 2) end)
-                            else godStop() end end)
+                            else godStop(); pcall(function() sendNotif("Godmode", "Godmode Disabled!", 2)) end end)
                     CY                    = CY + TOG_H + GAP
                     _TL_refs._TL_godStart = godStart
                     _TL_refs._TL_godStop  = godStop
@@ -9357,7 +9590,9 @@ _TL_state.actions = {}
             local bbMode_ = nil 
             local function _AF_onStartAction()
                 _AF.origGodState = _TL_refs._TL_isGodOn and _TL_refs._TL_isGodOn() or false
+                _AF.origInvisState = invisActive
                 if _TL_refs._TL_godStart then pcall(_TL_refs._TL_godStart) end
+                if invisActive then pcall(function() setInvis(false) end) end
                 local hum = getHumanoid()
                 if hum then
                     pcall(function() hum:SetStateEnabled(Enum.HumanoidStateType.Seated, false) end)
@@ -9368,6 +9603,11 @@ _TL_state.actions = {}
                 if not _AF.origGodState and _TL_refs._TL_godStop then pcall(_TL_refs._TL_godStop) end
                 local hum = getHumanoid()
                 if hum then pcall(function() hum:SetStateEnabled(Enum.HumanoidStateType.Seated, true) end) end
+                if _AF.origInvisState then
+                    invisActive = true
+                    pcall(function() setInvis(true) end)
+                    _AF.origInvisState = nil
+                end
             end
             _AF.onStartAction = _AF_onStartAction
             _AF.onStopAction = _AF_onStopAction
