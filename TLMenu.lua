@@ -7895,19 +7895,6 @@ local function RunCustomAnimation(Char)
                     end)
                 end
 
-
-                            outfitBtn.MouseButton1Click:Connect(function()
-                                if not _opMod.isActive() then
-                                    _opMod.start()
-                                    _opMod.open()
-                                else
-                                    if _opMod.getIsOpen() then _opMod.close() else _opMod.open() end
-                                end
-                            end)
-                        end
-                    end
-                end
-
                 do
                     local outfitExpandRow                  = Instance.new("Frame", trollPage)
                     outfitExpandRow.Size              = UDim2.new(1, 0, 0, 46); outfitExpandRow.LayoutOrder = 5
