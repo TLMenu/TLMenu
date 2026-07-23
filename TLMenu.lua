@@ -2468,55 +2468,6 @@ local _TL_THEMES = {
                         namesBtn.Size = UDim2.new(0, 78, 0, 28)
                         namesBtn.Position = UDim2.new(0, 168, 1, -38)
                         namesBtn.Text = "NAMES"
-
-                        local outfitBtn                                  = Instance.new("TextButton", bg)
-                        outfitBtn.Size                                   = UDim2.new(0, 76, 0, 28)
-                        outfitBtn.Position                               = UDim2.new(0, 88, 1, -38)
-                        outfitBtn.BackgroundColor3                       = Color3.fromRGB(25, 25, 30)
-                        outfitBtn.BackgroundTransparency                 = 0.4
-                        outfitBtn.BorderSizePixel                        = 0
-                        outfitBtn.Text = "OUTFITS"
-                        outfitBtn.TextColor3                             = Color3.fromRGB(245, 245, 250)
-                        outfitBtn.Font                                   = Enum.Font.GothamBold; outfitBtn.TextSize = 9
-                        outfitBtn.ZIndex                                 = 9; outfitBtn.Active = true
-                        Instance.new("UICorner", outfitBtn).CornerRadius = UDim.new(0, 8)
-
-                        local outfitSt                                   = Instance.new("UIStroke", outfitBtn)
-                        outfitSt.Color                                   = C.accent or Color3.fromRGB(0, 200, 255)
-                        outfitSt.Thickness                               = 1.2
-                        outfitSt.Transparency                            = 0.4
-                        outfitSt.ApplyStrokeMode                         = Enum.ApplyStrokeMode.Border
-
-                        outfitBtn.MouseEnter:Connect(function()
-                            _sc._playHoverSound()
-                            TS:Create(outfitBtn, TweenInfo.new(0.2), {
-                                BackgroundTransparency = 0.2,
-                                BackgroundColor3 = C.accent or Color3.fromRGB(0, 200, 255)
-                            }):Play()
-                            TS:Create(outfitSt, TweenInfo.new(0.2), {
-                                Transparency = 0
-                            }):Play()
-                        end)
-                        outfitBtn.MouseLeave:Connect(function()
-                            TS:Create(outfitBtn, TweenInfo.new(0.2), {
-                                BackgroundTransparency = 0.4,
-                                BackgroundColor3 = Color3.fromRGB(25, 25, 30)
-                            }):Play()
-                            TS:Create(outfitSt, TweenInfo.new(0.2), {
-                                Transparency = 0.4
-                            }):Play()
-                        end)
-
-                        outfitBtn.MouseButton1Click:Connect(function()
-                            local api = _G._TLInitAvatarOutfit and _G._TLInitAvatarOutfit()
-                            if api then
-                                toggle(p)
-                                if not api.getIsOpen() then
-                                    api.open()
-                                end
-                                api.openForPlayer(p)
-                            end
-                        end)
                     else
                         
                         addBtn.Size = UDim2.new(0, 114, 0, 28)
@@ -7944,47 +7895,7 @@ local function RunCustomAnimation(Char)
                     end)
                 end
 
-                do
-                    local outfitRow                        = Instance.new("Frame", trollPage)
-                    outfitRow.Size                   = UDim2.new(1, 0, 0, 46); outfitRow.LayoutOrder = 4
-                    outfitRow.BackgroundColor3       = Color3.fromRGB(22, 22, 22); outfitRow.BackgroundTransparency = 0
-                    outfitRow.BorderSizePixel        = 0;
-                    local outfitCorner                     = Instance.new("UICorner", outfitRow); outfitCorner.CornerRadius =
-                    UDim.new(0, 12)
-                    local outfitRowS                       = _makeDummyStroke(outfitRow)
-                    outfitRowS.Thickness             = 1; outfitRowS.Color = Color3.fromRGB(44, 44, 48); outfitRowS.Transparency = 0.3
 
-                    local outfitLbl                        = Instance.new("TextLabel", outfitRow)
-                    outfitLbl.Size                   = UDim2.new(0, 150, 1, 0); outfitLbl.Position = UDim2.new(0, 16, 0,
-                        0)
-                    outfitLbl.BackgroundTransparency = 1; outfitLbl.Text = "Avatar Outfits Stealer"
-                    outfitLbl.Font                   = Enum.Font.GothamBold; outfitLbl.TextSize = 13
-                    outfitLbl.TextColor3             = Color3.fromRGB(255, 255, 255); outfitLbl.TextXAlignment = Enum
-                    .TextXAlignment.Left
-
-                    local outfitBtn                        = Instance.new("TextButton", outfitRow)
-                    outfitBtn.Size                   = UDim2.new(0, 70, 0, 24); outfitBtn.Position = UDim2.new(1, -82,
-                        0.5, -12)
-                    outfitBtn.BackgroundColor3       = Color3.fromRGB(18, 8, 8); outfitBtn.BackgroundTransparency = 0
-                    outfitBtn.BorderSizePixel        = 0; outfitBtn.Text = "Open"
-                    outfitBtn.Font                   = Enum.Font.GothamBold; outfitBtn.TextSize = 13
-                    outfitBtn.TextColor3             = Color3.fromRGB(255, 255, 255); outfitBtn.ZIndex = 5
-                    local outfitBtnCorner                  = Instance.new("UICorner", outfitBtn); outfitBtnCorner.CornerRadius =
-                    UDim.new(0, 4)
-                    local outfitBtnS                       = _makeDummyStroke(outfitBtn)
-                    outfitBtnS.Thickness             = 1.2; outfitBtnS.Color = C.accent; outfitBtnS.Transparency = 0.1
-
-                    
-                    
-                    
-                    do
-                        local _opMod = _TL_loadModule("AVATAR-STEAL-PANEL")
-                        if _opMod then
-                            _opMod.init({ _tsProxy = _tsProxy, _genv = _genv or GLOBAL_ENV })
-                            _G._TLInitAvatarOutfit = function()
-                                if not _opMod.isActive() then _opMod.start() end
-                                return { open = _opMod.open, close = _opMod.close, getIsOpen = _opMod.getIsOpen, openForPlayer = _opMod.openForPlayer }
-                            end
                             outfitBtn.MouseButton1Click:Connect(function()
                                 if not _opMod.isActive() then
                                     _opMod.start()
