@@ -1579,8 +1579,8 @@ local _TL_THEMES = {
                     dexter     = { panelBg = Color3.fromRGB(4, 6, 10),   panelHdr = Color3.fromRGB(8, 14, 22)  },
                 }
                 local _thFallback = themeFallbacks[themeId] or themeFallbacks.matrix
-                C.panelBg  = Color3.fromRGB(0, 0, 0)
-                C.panelHdr = Color3.fromRGB(0, 0, 0)
+                C.panelBg  = _thFallback.panelBg or Color3.fromRGB(0, 0, 0)
+                C.panelHdr = _thFallback.panelHdr or Color3.fromRGB(0, 0, 0)
                 _TL_activeThemeId = themeId
                 
                 pcall(function()
@@ -1725,8 +1725,8 @@ local _TL_THEMES = {
                 
                 
                 
-                C.panelBg  = Color3.fromRGB(0, 0, 0)
-                C.panelHdr = Color3.fromRGB(0, 0, 0)
+                C.panelBg  = _thFallback.panelBg or Color3.fromRGB(0, 0, 0)
+                C.panelHdr = _thFallback.panelHdr or Color3.fromRGB(0, 0, 0)
 
                 
                 
@@ -6033,6 +6033,15 @@ local function RunCustomAnimation(Char)
                         _G._TL_vcSetToggle = _vcSetToggle
                     end
                     CY = CY + TOG_H + GAP
+                    -- Restore ANTIVCBAN if it was active before reinjection
+                    task.defer(function()
+                        if _vcModule and rawget(_genv, "_TL_persist_antiVcBan") then
+                            rawset(_genv, "_TL_persist_antiVcBan", nil)
+                            settingsState.antiVcBan = true
+                            if _vcSetToggle then pcall(function() _vcSetToggle(true) end) end
+                            pcall(function() _vcModule.start(sendNotif) end)
+                        end
+                    end)
                 end
                 
                 sectionLbl(CY, "MOVEMENT"); CY = CY + 18
@@ -9157,6 +9166,26 @@ visualPage = Instance.new("Frame", sSubArea)
                     hum.WalkSpeed = 16; if not flyActive then hum.PlatformStand = false end
                 end
                 pcall(function() setFreeze(false) end)
+                pcall(function()
+                    if flyActive then return end
+                    local myChar = LocalPlayer.Character
+                    local myRoot = myChar and myChar:FindFirstChild("HumanoidRootPart")
+                    if myRoot then
+                        myRoot.AssemblyLinearVelocity = Vector3.zero
+                        myRoot.AssemblyAngularVelocity = Vector3.zero
+                        local rayO = myRoot.Position + Vector3.new(0, 2, 0)
+                        local rayD = Vector3.new(0, -50, 0)
+                        local rayP = RaycastParams.new()
+                        rayP.FilterDescendantsInstances = {myChar}
+                        rayP.FilterType = Enum.RaycastFilterType.Exclude
+                        local rayR = workspace:Raycast(rayO, rayD, rayP)
+                        if rayR then
+                            myRoot.CFrame = CFrame.new(
+                                Vector3.new(myRoot.Position.X, rayR.Position.Y + 3, myRoot.Position.Z)
+                            ) * myRoot.CFrame.Rotation
+                        end
+                    end
+                end)
             end
             local function _act_startFollow(targetPlayer)
                 _act_stopFollow()
@@ -12788,7 +12817,21 @@ _TL_state.actions = {}
                                     pcall(function()
                                         local _lpc = LocalPlayer.Character
                                         local myRoot = _lpc and _lpc:FindFirstChild("HumanoidRootPart")
-                                        pcall(function() if myRoot then myRoot.Velocity = Vector3.zero end end)
+                                        if myRoot then
+                                            myRoot.AssemblyLinearVelocity = Vector3.zero
+                                            myRoot.AssemblyAngularVelocity = Vector3.zero
+                                            local rayOrigin = myRoot.Position + Vector3.new(0, 2, 0)
+                                            local rayDir = Vector3.new(0, -50, 0)
+                                            local rayParams = RaycastParams.new()
+                                            rayParams.FilterDescendantsInstances = {_lpc}
+                                            rayParams.FilterType = Enum.RaycastFilterType.Exclude
+                                            local rayResult = workspace:Raycast(rayOrigin, rayDir, rayParams)
+                                            if rayResult then
+                                                myRoot.CFrame = CFrame.new(
+                                                    Vector3.new(myRoot.Position.X, rayResult.Position.Y + 3, myRoot.Position.Z)
+                                                ) * myRoot.CFrame.Rotation
+                                            end
+                                        end
                                     end)
                                 end
                             end
@@ -13226,7 +13269,13 @@ _TL_state.actions = {}
                                             hrp.Position.X
                                             local originZ              = lastTargetPos and lastTargetPos.Z or
                                             hrp.Position.Z
-                                            local safeY                = lastTargetPos and (lastTargetPos.Y + 1) or 1
+                                            local rayO = Vector3.new(originX, originZ and (hrp.Position.Y + 10) or (lastTargetPos and lastTargetPos.Y + 10 or 10), originZ)
+                                            local rayD = Vector3.new(0, -60, 0)
+                                            local rayP = RaycastParams.new()
+                                            rayP.FilterDescendantsInstances = {myChar}
+                                            rayP.FilterType = Enum.RaycastFilterType.Exclude
+                                            local rayR = workspace:Raycast(rayO, rayD, rayP)
+                                            local safeY = rayR and (rayR.Position.Y + 3) or (lastTargetPos and (lastTargetPos.Y + 1) or 1)
                                             hrp.CFrame                 = CFrame.new(originX, safeY, originZ)
                                             hrp.AssemblyLinearVelocity = Vector3.zero
                                         end)
@@ -22075,7 +22124,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     tabCardsHolder.AnchorPoint            = Vector2.new(_tabBarInitAX, 1)
                     tabCardsHolder.Size                   = UDim2.new(0, _TAB_BAR_W, 0, 0)
                     tabCardsHolder.Position               = UDim2.new(_tabBarInitXSc, _tabBarInitXOff, 1, 2)
-                    tabCardsHolder.BackgroundColor3       = Color3.fromRGB(0, 0, 0)
+                    tabCardsHolder.BackgroundColor3       = C.panelBg or Color3.fromRGB(0, 0, 0)
                     tabCardsHolder.BackgroundTransparency = 0.2
                     tabCardsHolder.BorderSizePixel        = 0
                     tabCardsHolder.ClipsDescendants       = true
@@ -22116,7 +22165,7 @@ local function parseFieldMessage(fullText, prefixLen)
                         local card                  = Instance.new("Frame", tabCardsHolder)
                         card.Size                   = UDim2.new(0, _TAB_CARD_W, 0, _TAB_CARD_H)
                         card.Position               = UDim2.new(0, xOff, 0, _TAB_BAR_PAD)
-                        card.BackgroundColor3       = Color3.fromRGB(0, 0, 0)
+                        card.BackgroundColor3       = C.panelBg or Color3.fromRGB(0, 0, 0)
                         card.BackgroundTransparency = 0.45
                         card.BorderSizePixel        = 0
                         card.ZIndex                 = 8
@@ -22683,11 +22732,19 @@ local function parseFieldMessage(fullText, prefixLen)
                         if tlArrowBig then tlArrowBig.Image = "rbxassetid://119926812103560" end
                     end
 
-                    
+                                        
                                         _panelColorHooks[#_panelColorHooks + 1] = function(_newT)
                         pcall(function()
+                            if tabCardsHolder and tabCardsHolder.Parent then
+                                twP(tabCardsHolder, 0.12, { BackgroundColor3 = C.panelBg or Color3.fromRGB(0, 0, 0) })
+                                local thStroke = tabCardsHolder:FindFirstChildOfClass("UIStroke")
+                                if thStroke then thStroke.Color = MGDIM() end
+                            end
                             for _, tb in ipairs(tabBtns) do
                                 local isActive = (tb.name == activeTab)
+                                if tb.card then
+                                    twP(tb.card, 0.12, { BackgroundColor3 = C.panelBg or Color3.fromRGB(0, 0, 0) })
+                                end
                                 if tb.card_Stroke then
                                     tb.card_Stroke.Color = isActive and MG_B() or MGDIM()
                                     tb.card_Stroke.Transparency = isActive and 0.3 or 0.82
@@ -22762,7 +22819,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     fpsWidget.Name                   = "FPSWidget"
                     fpsWidget.Size                   = UDim2.new(0, FW_W, 0, FW_H)
                     fpsWidget.AnchorPoint            = Vector2.new(1, 0.5)
-                    fpsWidget.BackgroundColor3       = Color3.fromRGB(15, 15, 18)
+                    fpsWidget.BackgroundColor3       = C.panelBg or Color3.fromRGB(15, 15, 18)
                     fpsWidget.BackgroundTransparency = 0.1
                     fpsWidget.BorderSizePixel        = 0
                     fpsWidget.ZIndex                 = 20
@@ -22822,7 +22879,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     smartCapsule.Name = "SmartCapsule"
                     smartCapsule.Size = UDim2.fromOffset(28, 28)
                     smartCapsule.Position = UDim2.new(0, 4, 0.5, -14)
-                    smartCapsule.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+                    smartCapsule.BackgroundColor3 = C.panelBg or Color3.fromRGB(30, 30, 35)
                     smartCapsule.BorderSizePixel = 0
                     smartCapsule.ZIndex = 21
                     local smartCapsuleCorner = Instance.new("UICorner", smartCapsule)
@@ -22851,7 +22908,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     qaCapsule.Name = "QACapsule"
                     qaCapsule.Size = UDim2.fromOffset(28, 28)
                     qaCapsule.Position = UDim2.new(0, 36, 0.5, -14)
-                    qaCapsule.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+                    qaCapsule.BackgroundColor3 = C.panelBg or Color3.fromRGB(30, 30, 35)
                     qaCapsule.BorderSizePixel = 0
                     qaCapsule.ZIndex = 21
                     local qaCapsuleCorner = Instance.new("UICorner", qaCapsule)
@@ -22919,7 +22976,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     end)
                     tlSmartHitbox.MouseLeave:Connect(function()
                         quickTween(smartCapsule, 0.15,
-                            { BackgroundColor3 = Color3.fromRGB(30, 30, 35), Size = UDim2.fromOffset(28, 28), Position =
+                            { BackgroundColor3 = C.panelBg or Color3.fromRGB(30, 30, 35), Size = UDim2.fromOffset(28, 28), Position =
                             UDim2.new(0, 4, 0.5, -14) })
                         quickTween(smartCapsuleCorner, 0.15, { CornerRadius = UDim.new(1, 0) })
                         quickTween(scTlIcon, 0.15, { TextSize = 12 })
@@ -22933,7 +22990,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     end)
                     tlHitbox.MouseLeave:Connect(function()
                         quickTween(qaCapsule, 0.15,
-                            { BackgroundColor3 = Color3.fromRGB(30, 30, 35), Size = UDim2.fromOffset(28, 28), Position =
+                            { BackgroundColor3 = C.panelBg or Color3.fromRGB(30, 30, 35), Size = UDim2.fromOffset(28, 28), Position =
                             UDim2.new(0, 36, 0.5, -14) })
                         quickTween(qaCapsuleCorner, 0.15, { CornerRadius = UDim.new(1, 0) })
                         quickTween(qaTlIcon, 0.15, { TextSize = 12 })
@@ -23044,6 +23101,20 @@ local function parseFieldMessage(fullText, prefixLen)
                                         _panelColorHooks[#_panelColorHooks + 1] = function(_newT)
                         pcall(function() fwStroke.Color = C.accent2 end)
                         pcall(function() execVal.TextColor3 = C.accent2 or Color3.fromRGB(255, 255, 255) end)
+                        pcall(function() fpsText.TextColor3 = C.sub or Color3.fromRGB(180, 185, 195) end)
+                        pcall(function()
+                            fpsWidget.BackgroundColor3 = C.panelBg or Color3.fromRGB(15, 15, 18)
+                        end)
+                        pcall(function()
+                            if smartCapsule and smartCapsule.Parent then
+                                smartCapsule.BackgroundColor3 = C.panelBg or Color3.fromRGB(30, 30, 35)
+                            end
+                        end)
+                        pcall(function()
+                            if qaCapsule and qaCapsule.Parent then
+                                qaCapsule.BackgroundColor3 = C.panelBg or Color3.fromRGB(30, 30, 35)
+                            end
+                        end)
                     end
 
                     local _fwSamples                      = {}
@@ -24440,13 +24511,24 @@ local function _TL_showLoadingScreen()
                     end
                 end)
                 pcall(function()
-                    local _modRunkeys = { "__TL_AntiVCBAN_Runtime", "__TL_FlyRuntime", "__TL_InvisRuntime", "__TL_ShaderRuntime" }
+                    local _modRunkeys = { "__TL_FlyRuntime", "__TL_InvisRuntime", "__TL_ShaderRuntime" }
                     for _, rk in ipairs(_modRunkeys) do
                         local r = rawget(_genv, rk)
                         if type(r) == "table" and type(r.cleanup) == "function" then
                             pcall(r.cleanup)
                         end
                         rawset(_genv, rk, nil)
+                    end
+                    -- Preserve ANTIVCBAN across reinjections
+                    local _vcRun = rawget(_genv, "__TL_AntiVCBAN_Runtime")
+                    if type(_vcRun) == "table" and type(_vcRun.cleanup) == "function" then
+                        if settingsState and settingsState.antiVcBan then
+                            -- Still active — save flag, don't kill
+                            rawset(_genv, "_TL_persist_antiVcBan", true)
+                        else
+                            pcall(_vcRun.cleanup)
+                            rawset(_genv, "__TL_AntiVCBAN_Runtime", nil)
+                        end
                     end
                 end)
                 local _qb_ref = _TL_refs._TL_qb or {}
