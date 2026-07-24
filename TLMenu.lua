@@ -1146,30 +1146,53 @@ task.spawn(function()
         
         
         local _TL_MODULES_BASE = "https://raw.githubusercontent.com/TLMenu/TLMenuParts/main/"
+        local _TL_TAB_MODULES_BASE = "https://raw.githubusercontent.com/TLMenu/TLMenuParts/main/Tab-Moduls/"
         local _TL_MODULES = {}
         rawset(_genv, "_TL_MODULES", _TL_MODULES)
 
         local function _TL_loadModule(name)
             if _TL_MODULES[name] then return _TL_MODULES[name] end
+            
+            local cleanName = name:gsub("%.lua$", ""):gsub("^Tab%-Moduls/", "")
             local source = nil
-            local tabModPath = "Tab-Moduls/" .. name .. ".lua"
-            if type(_TL_safeIsFile) == "function" and _TL_safeIsFile(tabModPath) then
-                local ok, localSrc = pcall(readfile, tabModPath)
-                if ok and localSrc and #localSrc > 20 then
-                    source = localSrc
+
+            -- 1. Local Filesystem Checks
+            local localPaths = {
+                "Tab-Moduls/" .. cleanName .. ".lua",
+                cleanName .. ".lua",
+                name
+            }
+            for _, path in ipairs(localPaths) do
+                if type(_TL_safeIsFile) == "function" and _TL_safeIsFile(path) then
+                    local ok, localSrc = pcall(readfile, path)
+                    if ok and localSrc and #localSrc > 20 then
+                        source = localSrc
+                        break
+                    end
                 end
             end
+
+            -- 2. Remote GitHub HttpGet Checks (Primary: Tab-Moduls/, Secondary: Root)
             if not source then
-                local url = _TL_MODULES_BASE .. name .. ".lua"
-                local ok, httpSrc = pcall(function() return (game :: any):HttpGet(url) end)
-                if ok and httpSrc and #httpSrc >= 50 then
-                    source = httpSrc
+                local remoteUrls = {
+                    _TL_TAB_MODULES_BASE .. cleanName .. ".lua",
+                    _TL_MODULES_BASE .. cleanName .. ".lua",
+                    _TL_MODULES_BASE .. name .. ".lua"
+                }
+                for _, url in ipairs(remoteUrls) do
+                    local ok, httpSrc = pcall(function() return (game :: any):HttpGet(url) end)
+                    if ok and httpSrc and #httpSrc >= 50 and not httpSrc:find("404: Not Found") then
+                        source = httpSrc
+                        break
+                    end
                 end
             end
+
             if not source then
                 warn("[TL] Module load failed: " .. name)
                 return nil
             end
+
             local fn, loadErr = loadstring(source)
             if not fn then
                 warn("[TL] Module compile error: " .. name .. " — " .. tostring(loadErr))
@@ -1180,7 +1203,9 @@ task.spawn(function()
                 warn("[TL] Module exec error: " .. name .. " — " .. tostring(mod))
                 return nil
             end
+
             _TL_MODULES[name] = mod
+            _TL_MODULES[cleanName] = mod
             return mod
         end
         rawset(_genv, "_TL_loadModule", _TL_loadModule)
@@ -1233,6 +1258,25 @@ task.spawn(function()
             end)
             return obj
         end
+        local function corner(parent, r)
+            if not parent then return nil end
+            local c = parent:FindFirstChildOfClass("UICorner") or Instance.new("UICorner")
+            c.CornerRadius = UDim.new(0, r or 8)
+            c.Parent = parent
+            return c
+        end
+        local function stroke(parent, thick, col, trans)
+            if not parent then return nil end
+            local s = parent:FindFirstChildOfClass("UIStroke") or Instance.new("UIStroke")
+            s.Thickness = thick or 1
+            s.Color = col or Color3.fromRGB(255, 255, 255)
+            s.Transparency = trans or 0
+            s.Parent = parent
+            return s
+        end
+        local function _makeDummyStroke(parent, thick, col, trans)
+            return stroke(parent, thick, col, trans)
+        end
         pcall(function()
             if getgenv then _genv.SmartBarLoaded = true end
         end)
@@ -1270,7 +1314,7 @@ task.spawn(function()
             if getgenv ~= nil then return _genv._TLSessionToken == _MY_TOKEN end
             return true
         end
-        ;(function()
+        task.spawn(function()
             Players = nil; pcall(function() Players = _SvcPlr end)
             if not Players then Players = _SvcPlr end
             UserInputService = nil; pcall(function() UserInputService = _SvcUIS end)
@@ -1396,6 +1440,27 @@ task.spawn(function()
             end
 
             local C = {
+
+    local _C3_DEF_BG   = Color3.fromRGB(18, 18, 20)
+    local _C3_DEF_BG2  = Color3.fromRGB(26, 26, 28)
+    local _C3_DEF_BG3  = Color3.fromRGB(34, 34, 38)
+    local _C3_DEF_ACC  = Color3.fromRGB(0, 170, 255)
+    local _C3_DEF_SUB  = Color3.fromRGB(130, 135, 145)
+    local _C3_DEF_TXT  = Color3.fromRGB(255, 255, 255)
+    
+    if type(C) == "table" then
+        setmetatable(C, {
+            __index = function(_, k)
+                if k == "bg" or k == "bg1" or k == "panelBg" then return _C3_DEF_BG end
+                if k == "bg2" or k == "panelHdr" then return _C3_DEF_BG2 end
+                if k == "bg3" or k == "bg4" then return _C3_DEF_BG3 end
+                if k == "accent" or k == "accent2" then return _C3_DEF_ACC end
+                if k == "sub" or k == "sub2" then return _C3_DEF_SUB end
+                if k == "text" or k == "white" then return _C3_DEF_TXT end
+                return Color3.fromRGB(120, 120, 130)
+            end
+        })
+    end
                 
                 bg        = Color3.fromRGB(10, 10, 10),
                 bg2       = Color3.fromRGB(20, 20, 20),
@@ -1759,9 +1824,9 @@ local _TL_THEMES = {
                     if _panelAccentObjs then
                         for _, r in ipairs(_panelAccentObjs) do
                             pcall(function()
-                                if r.pf and r.pf.Parent then r.pf.BackgroundColor3 = C.panelBg end
-                                if r.hdrf and r.hdrf.Parent then r.hdrf.BackgroundColor3 = C.panelHdr end
-                                if r.hdrCut and r.hdrCut.Parent then r.hdrCut.BackgroundColor3 = C.panelHdr end
+                                if r.pf and r.pf.Parent then r.pf.BackgroundColor3 = C.panelBg or Color3.fromRGB(18, 18, 20) end
+                                if r.hdrf and r.hdrf.Parent then r.hdrf.BackgroundColor3 = C.panelHdr or Color3.fromRGB(26, 26, 28) end
+                                if r.hdrCut and r.hdrCut.Parent then r.hdrCut.BackgroundColor3 = C.panelHdr or Color3.fromRGB(26, 26, 28) end
                             end)
                         end
                     end
@@ -2416,7 +2481,7 @@ local _TL_THEMES = {
                         _sc._playHoverSound()
                         TS:Create(addBtn, TweenInfo.new(0.2), {
                             BackgroundTransparency = 0.2,
-                            BackgroundColor3 = C.accent or Color3.fromRGB(0, 200, 255)
+                            BackgroundColor3 = C.accent or Color3.fromRGB(0, 170, 255)
                         }):Play()
                         TS:Create(addSt, TweenInfo.new(0.2), {
                             Transparency = 0
@@ -2467,7 +2532,7 @@ local _TL_THEMES = {
                         _sc._playHoverSound()
                         TS:Create(namesBtn, TweenInfo.new(0.2), {
                             BackgroundTransparency = 0.2,
-                            BackgroundColor3 = C.accent2 or Color3.fromRGB(0, 160, 220)
+                            BackgroundColor3 = C.accent or Color3.fromRGB(0, 170, 255)
                         }):Play()
                         TS:Create(namesSt, TweenInfo.new(0.2), {
                             Transparency = 0
@@ -3312,7 +3377,7 @@ keybinds, keybindMainConn = {}, nil
                 end
                 local togTrack = Instance.new("Frame", card)
                 togTrack.Size = UDim2.new(0, 32, 0, 18); togTrack.Position = UDim2.new(1, -46, 0.5, -9)
-                togTrack.BackgroundColor3 = C.bg3 or _C3_BG3
+                togTrack.BackgroundColor3 = C.bg3 or Color3.fromRGB(34, 34, 38) or _C3_BG3
                 togTrack.BackgroundTransparency = 0.2; togTrack.BorderSizePixel = 0; corner(togTrack, 99)
                 local togKnob = Instance.new("Frame", togTrack)
                 togKnob.Size = UDim2.new(0, 12, 0, 12)
@@ -3320,7 +3385,7 @@ keybinds, keybindMainConn = {}, nil
                 togKnob.BackgroundColor3 = initOn and _C3_WHITE or _C3_SUB2
                 togKnob.BackgroundTransparency = 0; togKnob.BorderSizePixel = 0; corner(togKnob, 99)
                 if initOn then
-                    togTrack.BackgroundColor3 = C.accent; togTrack.BackgroundTransparency = 0.55
+                    togTrack.BackgroundColor3 = C.accent or Color3.fromRGB(0, 170, 255); togTrack.BackgroundTransparency = 0.55
                     cStr.Color = C.accent; cStr.Transparency = 0.5
                 end
                 local togState = initOn or false
@@ -3342,7 +3407,7 @@ keybinds, keybindMainConn = {}, nil
                             _SvcDeb:AddItem(sound, 2)
                         end)
                     else
-                        twP(togTrack, 0.15, { BackgroundColor3 = C.bg3 or _C3_BG3, BackgroundTransparency = 0.2 })
+                        twP(togTrack, 0.15, { BackgroundColor3 = C.bg3 or Color3.fromRGB(34, 34, 38) or _C3_BG3, BackgroundTransparency = 0.2 })
                         twP(togKnob, 0.15, { BackgroundColor3 = _C3_SUB2, Position = UDim2.new(0, 2, 0.5, -6) })
                         twP(cStr, 0.15,
                             { Color = _TL_isImgTheme(_TL_activeThemeId) and
@@ -3358,7 +3423,7 @@ keybinds, keybindMainConn = {}, nil
                         twP(togKnob, 0.15, { BackgroundColor3 = _C3_WHITE, Position = UDim2.new(1, -14, 0.5, -6) })
                         twP(cStr, 0.15, { Color = activeCol, Transparency = 0.5 })
                     else
-                        twP(togTrack, 0.15, { BackgroundColor3 = C.bg3 or _C3_BG3, BackgroundTransparency = 0.2 })
+                        twP(togTrack, 0.15, { BackgroundColor3 = C.bg3 or Color3.fromRGB(34, 34, 38) or _C3_BG3, BackgroundTransparency = 0.2 })
                         twP(togKnob, 0.15, { BackgroundColor3 = _C3_SUB2, Position = UDim2.new(0, 2, 0.5, -6) })
                         twP(cStr, 0.15,
                             { Color = _TL_isImgTheme(_TL_activeThemeId) and
@@ -3422,7 +3487,7 @@ keybinds, keybindMainConn = {}, nil
                             cStr.Thickness = _TL_isImgTheme(_TL_activeThemeId) and
                             1.5 or 1
                             cStr.Transparency = 0.3
-                            togTrack.BackgroundColor3 = C.bg3 or _C3_BG3
+                            togTrack.BackgroundColor3 = C.bg3 or Color3.fromRGB(34, 34, 38) or _C3_BG3
                             togKnob.BackgroundColor3 = _C3_SUB2
                         else
                             cStr.Color = _TL_isImgTheme(_TL_activeThemeId) and
@@ -3656,9 +3721,9 @@ keybinds, keybindMainConn = {}, nil
                                 ColorSequenceKeypoint.new(1, newT.sub),
                             }
                         end
-                        if r.pf and r.pf.Parent then r.pf.BackgroundColor3 = C.panelBg end
-                        if r.hdrf and r.hdrf.Parent then r.hdrf.BackgroundColor3 = C.panelHdr end
-                        if r.hdrCut and r.hdrCut.Parent then r.hdrCut.BackgroundColor3 = C.panelHdr end
+                        if r.pf and r.pf.Parent then r.pf.BackgroundColor3 = C.panelBg or Color3.fromRGB(18, 18, 20) end
+                        if r.hdrf and r.hdrf.Parent then r.hdrf.BackgroundColor3 = C.panelHdr or Color3.fromRGB(26, 26, 28) end
+                        if r.hdrCut and r.hdrCut.Parent then r.hdrCut.BackgroundColor3 = C.panelHdr or Color3.fromRGB(26, 26, 28) end
                         if r.bodyGrad and surf.body then r.bodyGrad.Color = surf.body end
                         if r.hdrGrad and surf.hdr then r.hdrGrad.Color = surf.hdr end
                         if r.cgGrad and surf.cg then r.cgGrad.Color = surf.cg end
@@ -4159,7 +4224,7 @@ sendNotif = function(title, text, dur, accentOverride)
                 local pWrap = Instance.new("Frame", card)
                 pWrap.Size = UDim2.new(1, -40, 0, 2)
                 pWrap.Position = UDim2.new(0, 24, 1, -10)
-                pWrap.BackgroundColor3 = C.bg3
+                pWrap.BackgroundColor3 = C.bg3 or Color3.fromRGB(34, 34, 38)
                 pWrap.BackgroundTransparency = 0.8
                 pWrap.BorderSizePixel = 0
                 corner(pWrap, 4)
@@ -4221,6 +4286,8 @@ sendNotif = function(title, text, dur, accentOverride)
             local p, _homeSc
             if homeMod and type(homeMod.Init) == "function" then
                 p, _homeSc = homeMod.Init(ctx)
+    local _ENUM_SORT_ORDER_LAYOUT = ctx._ENUM_SORT_ORDER_LAYOUT or (Enum and Enum.SortOrder and Enum.SortOrder.LayoutOrder) or 0
+
             end
 
             -- 2. Character Tab
@@ -4302,7 +4369,7 @@ sendNotif = function(title, text, dur, accentOverride)
                         settingToggleSetters["removeNametag"] = ntRemSet
                     end)
                     return nametagPage
-                end)() 
+                end)
 
                 subPages = { General = genPage, Keybinds = kbPage, Colors = colorsPage, Theme = themePage, ["C-CURSOR"] =
                 visualSettingsPage, Music = musicPage, Nametag = nametagPage }
@@ -4321,7 +4388,7 @@ sendNotif = function(title, text, dur, accentOverride)
                 switchCat = function(id)
                     for _, pg in pairs(subPages) do pg.Visible = false end
                     for _, cb in ipairs(catBtns) do
-                        twP(cb.card, 0.15, { BackgroundColor3 = C.bg2 or _C3_BG2 })
+                        twP(cb.card, 0.15, { BackgroundColor3 = C.bg2 or Color3.fromRGB(26, 26, 28) or _C3_BG2 })
                         twP(cb.lbl, 0.15, { TextColor3 = C.sub or _C3_SUB })
                         cb.cStr.Color = C.bg3 or _C3_BG3; cb.cStr.Transparency = 0.3
                         cb.selBar.Visible = false
@@ -4361,7 +4428,7 @@ sendNotif = function(title, text, dur, accentOverride)
                     end
                     for _, cb in ipairs(catBtns) do
                         if cb.id == id then
-                            twP(cb.card, 0.20, { BackgroundColor3 = C.bg3 or _C3_BG4 })
+                            twP(cb.card, 0.20, { BackgroundColor3 = C.bg3 or Color3.fromRGB(34, 34, 38) or _C3_BG4 })
                             twP(cb.lbl, 0.20, { TextColor3 = C.text })
                             cb.cStr.Color = cb.col; cb.cStr.Transparency = 0.5
                             cb.selBar.Visible = true
@@ -4382,7 +4449,7 @@ sendNotif = function(title, text, dur, accentOverride)
                     local card = Instance.new("Frame", grid)
                     card.Size = UDim2.new(0, CARD_W_S, 0, CARD_H_S)
                     card.Position = UDim2.new(0, xOff, 0, 0)
-                    card.BackgroundColor3 = C.bg2; card.BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and
+                    card.BackgroundColor3 = C.bg2 or Color3.fromRGB(26, 26, 28); card.BackgroundTransparency = _TL_isImgTheme(_TL_activeThemeId) and
                     1 or 0
                     card.BorderSizePixel = 0; corner(card, 12)
                     local cStr = _makeDummyStroke(card)
@@ -4406,7 +4473,7 @@ sendNotif = function(title, text, dur, accentOverride)
                     end
                     local selBar = Instance.new("Frame", card)
                     selBar.Size = UDim2.new(1, -16, 0, 2); selBar.Position = UDim2.new(0, 8, 0, 0)
-                    selBar.BackgroundColor3 = cat.col; selBar.BackgroundTransparency = 0
+                    selBar.BackgroundColor3 = (cat and cat.col) or Color3.fromRGB(0, 170, 255); selBar.BackgroundTransparency = 0
                     selBar.BorderSizePixel = 0; selBar.Visible = false; corner(selBar, 99)
                     
                     local _iconRef = nil
@@ -4442,12 +4509,12 @@ sendNotif = function(title, text, dur, accentOverride)
                         if _isMobile then return end
                         _sc._playHoverSound()
                         if activeCat ~= catId then
-                            twP(card, 0.1, { BackgroundColor3 = C.bg3 or _C3_BG4 })
+                            twP(card, 0.1, { BackgroundColor3 = C.bg3 or Color3.fromRGB(34, 34, 38) or _C3_BG4 })
                         end
                     end)
                     btn.MouseLeave:Connect(function()
                         if activeCat ~= catId then
-                            twP(card, 0.1, { BackgroundColor3 = C.bg2 or _C3_BG2 })
+                            twP(card, 0.1, { BackgroundColor3 = C.bg2 or Color3.fromRGB(26, 26, 28) or _C3_BG2 })
                         end
                     end)
                     btn.MouseButton1Click:Connect(function()
@@ -4472,10 +4539,10 @@ sendNotif = function(title, text, dur, accentOverride)
                 end
             end) 
             
-            if #catBtns > 0 then
+            if catBtns and #catBtns > 0 then
                 switchCat(catBtns[1].id)
             end
-            end); if not _ok_Settings then warn("[TL] Settings-IIFE crashed: " .. tostring(_err_Settings)) end
+            end)
             
             
             function getNearestPlayer()
@@ -5246,14 +5313,14 @@ sendNotif = function(title, text, dur, accentOverride)
                                         _panelColorHooks[#_panelColorHooks + 1] = function(_newT)
                         pcall(function()
                             if tabCardsHolder and tabCardsHolder.Parent then
-                                twP(tabCardsHolder, 0.12, { BackgroundColor3 = C.panelBg or Color3.fromRGB(0, 0, 0) })
+                                twP(tabCardsHolder, 0.12, { BackgroundColor3 = C.panelBg or Color3.fromRGB(18, 18, 20) or Color3.fromRGB(0, 0, 0) })
                                 local thStroke = tabCardsHolder:FindFirstChildOfClass("UIStroke")
                                 if thStroke then thStroke.Color = MGDIM() end
                             end
                             for _, tb in ipairs(tabBtns) do
                                 local isActive = (tb.name == activeTab)
                                 if tb.card then
-                                    twP(tb.card, 0.12, { BackgroundColor3 = C.panelBg or Color3.fromRGB(0, 0, 0) })
+                                    twP(tb.card, 0.12, { BackgroundColor3 = C.panelBg or Color3.fromRGB(18, 18, 20) or Color3.fromRGB(0, 0, 0) })
                                 end
                                 if tb.card_Stroke then
                                     tb.card_Stroke.Color = isActive and MG_B() or MGDIM()
@@ -5277,9 +5344,13 @@ sendNotif = function(title, text, dur, accentOverride)
                     
                     
                     
-                    LocalPlayer.CharacterAdded:Connect(function()
-                        task.wait(1.2)
-                        if settingsState.autoOpen and not isOpen then openBar() end
+                    pcall(function()
+                        if LocalPlayer then
+                            LocalPlayer.CharacterAdded:Connect(function()
+                                task.wait(1.2)
+                                if settingsState.autoOpen and not isOpen then openBar() end
+                            end)
+                        end
                     end)
                     pcall(function()
                         game:GetService("TeleportService").LocalPlayerArrivedFromTeleport:Connect(function()
@@ -5289,20 +5360,21 @@ sendNotif = function(title, text, dur, accentOverride)
                     end)
                     task.spawn(function()
                         task.wait(0.5)
-                        loadData()
-                        rebuildKeybindListener()
-                        sendNotif("SmartBar", T.notif_settings_loaded, 2)
+                        pcall(function() if type(loadData) == "function" then loadData() end end)
+                        pcall(function() if type(rebuildKeybindListener) == "function" then rebuildKeybindListener() end end)
+                        pcall(function() if type(sendNotif) == "function" then sendNotif("SmartBar", T.notif_settings_loaded, 2) end end)
                         
-                        if settingsState.guiScale and settingsState.guiScale > 0 and _TL_GUIScale then
+                        if settingsState and settingsState.guiScale and settingsState.guiScale > 0 and _TL_GUIScale then
                             _TL_GUIScale.Scale = settingsState.guiScale
                         end
                         
-                        if settingsState.guiPosition and _TL_refs._TL_applyGuiPosition then
+                        if settingsState and settingsState.guiPosition and _TL_refs and _TL_refs._TL_applyGuiPosition then
                             pcall(function() _TL_refs._TL_applyGuiPosition(settingsState.guiPosition) end)
                         end
                     end)
                     do
-                        local existing = PlayerGui:FindFirstChild("FPSWidget")
+                        local pGui = (LocalPlayer and LocalPlayer:FindFirstChildOfClass("PlayerGui")) or _SvcSG
+                        local existing = pGui and pGui:FindFirstChild("FPSWidget")
                         if not existing then
                             pcall(function()
                                 existing = game:GetService("CoreGui"):FindFirstChild("FPSWidget")
@@ -5386,7 +5458,7 @@ sendNotif = function(title, text, dur, accentOverride)
                     smartCapsule.Name = "SmartCapsule"
                     smartCapsule.Size = UDim2.fromOffset(28, 28)
                     smartCapsule.Position = UDim2.new(0, 4, 0.5, -14)
-                    smartCapsule.BackgroundColor3 = C.panelBg or Color3.fromRGB(30, 30, 35)
+                    smartCapsule.BackgroundColor3 = C.panelBg or Color3.fromRGB(18, 18, 20) or Color3.fromRGB(30, 30, 35)
                     smartCapsule.BorderSizePixel = 0
                     smartCapsule.ZIndex = 21
                     local smartCapsuleCorner = Instance.new("UICorner", smartCapsule)
@@ -5415,7 +5487,7 @@ sendNotif = function(title, text, dur, accentOverride)
                     qaCapsule.Name = "QACapsule"
                     qaCapsule.Size = UDim2.fromOffset(28, 28)
                     qaCapsule.Position = UDim2.new(0, 36, 0.5, -14)
-                    qaCapsule.BackgroundColor3 = C.panelBg or Color3.fromRGB(30, 30, 35)
+                    qaCapsule.BackgroundColor3 = C.panelBg or Color3.fromRGB(18, 18, 20) or Color3.fromRGB(30, 30, 35)
                     qaCapsule.BorderSizePixel = 0
                     qaCapsule.ZIndex = 21
                     local qaCapsuleCorner = Instance.new("UICorner", qaCapsule)
@@ -5475,7 +5547,7 @@ sendNotif = function(title, text, dur, accentOverride)
                             smartHitboxActivate() end end)
                     tlSmartHitbox.MouseEnter:Connect(function()
                         quickTween(smartCapsule, 0.15,
-                            { BackgroundColor3 = C.accent, Size = UDim2.fromOffset(30, 28), Position = UDim2.new(0, 3,
+                            { BackgroundColor3 = C.accent or Color3.fromRGB(0, 170, 255), Size = UDim2.fromOffset(30, 28), Position = UDim2.new(0, 3,
                                 0.5, -14) })
                         quickTween(smartCapsuleCorner, 0.15, { CornerRadius = UDim.new(0, 8) })
                         quickTween(scTlIcon, 0.15, { TextSize = 13 })
@@ -5483,21 +5555,21 @@ sendNotif = function(title, text, dur, accentOverride)
                     end)
                     tlSmartHitbox.MouseLeave:Connect(function()
                         quickTween(smartCapsule, 0.15,
-                            { BackgroundColor3 = C.panelBg or Color3.fromRGB(30, 30, 35), Size = UDim2.fromOffset(28, 28), Position =
+                            { BackgroundColor3 = C.panelBg or Color3.fromRGB(18, 18, 20) or Color3.fromRGB(30, 30, 35), Size = UDim2.fromOffset(28, 28), Position =
                             UDim2.new(0, 4, 0.5, -14) })
                         quickTween(smartCapsuleCorner, 0.15, { CornerRadius = UDim.new(1, 0) })
                         quickTween(scTlIcon, 0.15, { TextSize = 12 })
                     end)
                     tlHitbox.MouseEnter:Connect(function()
                         quickTween(qaCapsule, 0.15,
-                            { BackgroundColor3 = C.accent2 or C.accent, Size = UDim2.fromOffset(30, 28), Position = UDim2
+                            { BackgroundColor3 = C.accent or Color3.fromRGB(0, 170, 255), Size = UDim2.fromOffset(30, 28), Position = UDim2
                             .new(0, 35, 0.5, -14) })
                         quickTween(qaCapsuleCorner, 0.15, { CornerRadius = UDim.new(0, 8) })
                         quickTween(qaTlIcon, 0.15, { TextSize = 13 })
                     end)
                     tlHitbox.MouseLeave:Connect(function()
                         quickTween(qaCapsule, 0.15,
-                            { BackgroundColor3 = C.panelBg or Color3.fromRGB(30, 30, 35), Size = UDim2.fromOffset(28, 28), Position =
+                            { BackgroundColor3 = C.panelBg or Color3.fromRGB(18, 18, 20) or Color3.fromRGB(30, 30, 35), Size = UDim2.fromOffset(28, 28), Position =
                             UDim2.new(0, 36, 0.5, -14) })
                         quickTween(qaCapsuleCorner, 0.15, { CornerRadius = UDim.new(1, 0) })
                         quickTween(qaTlIcon, 0.15, { TextSize = 12 })
@@ -5610,16 +5682,16 @@ sendNotif = function(title, text, dur, accentOverride)
                         pcall(function() execVal.TextColor3 = C.accent2 or Color3.fromRGB(255, 255, 255) end)
                         pcall(function() fpsText.TextColor3 = C.sub or Color3.fromRGB(180, 185, 195) end)
                         pcall(function()
-                            fpsWidget.BackgroundColor3 = C.panelBg or Color3.fromRGB(15, 15, 18)
+                            fpsWidget.BackgroundColor3 = C.panelBg or Color3.fromRGB(18, 18, 20) or Color3.fromRGB(15, 15, 18)
                         end)
                         pcall(function()
                             if smartCapsule and smartCapsule.Parent then
-                                smartCapsule.BackgroundColor3 = C.panelBg or Color3.fromRGB(30, 30, 35)
+                                smartCapsule.BackgroundColor3 = C.panelBg or Color3.fromRGB(18, 18, 20) or Color3.fromRGB(30, 30, 35)
                             end
                         end)
                         pcall(function()
                             if qaCapsule and qaCapsule.Parent then
-                                qaCapsule.BackgroundColor3 = C.panelBg or Color3.fromRGB(30, 30, 35)
+                                qaCapsule.BackgroundColor3 = C.panelBg or Color3.fromRGB(18, 18, 20) or Color3.fromRGB(30, 30, 35)
                             end
                         end)
                     end
@@ -7173,7 +7245,6 @@ local function _TL_showLoadingScreen()
                 env.TLUnload = _TL_refs.TLMenuCleanup
             end)
             _G.TLMenuCleanup = _TL_refs.TLMenuCleanup
-            end)() 
     end, _handleError)
 end)
 
