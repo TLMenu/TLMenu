@@ -1641,8 +1641,20 @@ local _TL_THEMES = {
                     end)
                 end
 
+                local function _isInsideNametag(el)
+                    local cur = el
+                    while cur and cur.Parent do
+                        if cur:IsA("BillboardGui") and cur.Name:sub(1, 14) == "CovertPeerTag_" then
+                            return true
+                        end
+                        cur = cur.Parent
+                    end
+                    return false
+                end
+
                 for _, d in ipairs(sg:GetDescendants()) do
                     pcall(function()
+                        if _isInsideNametag(d) then return end
                         local cn = d.ClassName
                         if cn == "UIStroke" then
                             local n = remapColor(d.Color); if n then d.Color = n end
@@ -17541,7 +17553,7 @@ local themePage = Instance.new("Frame", subArea)
                     },
                     animations = {
                         fadeInDuration = 0.3, fadeInEasing = "Quad",
-                        cardTransparency = 0.1, borderTransparency = 0.7,
+                        cardTransparency = 0, borderTransparency = 0.3,
                     },
                     particles = {
                         enabled = true, count = 4, minSize = 2, maxSize = 4,
@@ -18244,8 +18256,19 @@ local themePage = Instance.new("Frame", subArea)
                         local ug = Instance.new("UIGradient", target)
                         local softColors = {}
                         for i = 1, #colors do
-                            local c = _NT_parseColor(colors[i]):Lerp(Color3.new(1, 1, 1), 0.25)
+                            local c = _NT_parseColor(colors[i]):Lerp(Color3.new(1, 1, 1), 0.2)
                             softColors[#softColors + 1] = ColorSequenceKeypoint.new((i - 1) / math.max(1, #colors - 1), c)
+                        end
+                        if #softColors == 2 then
+                            local c1 = _NT_parseColor(colors[1]):Lerp(Color3.new(1, 1, 1), 0.2)
+                            local c2 = _NT_parseColor(colors[2]):Lerp(Color3.new(1, 1, 1), 0.2)
+                            local mid = c1:Lerp(c2, 0.5)
+                            softColors = {
+                                ColorSequenceKeypoint.new(0, c1),
+                                ColorSequenceKeypoint.new(0.35, mid),
+                                ColorSequenceKeypoint.new(0.65, mid),
+                                ColorSequenceKeypoint.new(1, c2),
+                            }
                         end
                         ug.Color = ColorSequence.new(softColors)
                         ug.Transparency = ns; ug.Rotation = rot
@@ -18269,11 +18292,12 @@ local themePage = Instance.new("Frame", subArea)
                         local neonCS = {}
                         for i = 1, #colors do
                             local c = _NT_parseColor(colors[i])
-                            local brightC = c:Lerp(Color3.new(1, 1, 1), 0.6)
-                            local t1 = (i - 1) / #colors
-                            local t2 = (i - 0.5) / #colors
-                            neonCS[#neonCS + 1] = ColorSequenceKeypoint.new(t1, brightC)
-                            neonCS[#neonCS + 1] = ColorSequenceKeypoint.new(t2, c)
+                            local brightC = c:Lerp(Color3.new(1, 1, 1), 0.5)
+                            local softC = c:Lerp(Color3.new(1, 1, 1), 0.2)
+                            local base = (i - 1) / #colors
+                            neonCS[#neonCS + 1] = ColorSequenceKeypoint.new(math.clamp(base, 0, 1), softC)
+                            neonCS[#neonCS + 1] = ColorSequenceKeypoint.new(math.clamp(base + 0.2 / #colors, 0, 1), brightC)
+                            neonCS[#neonCS + 1] = ColorSequenceKeypoint.new(math.clamp(base + 0.4 / #colors, 0, 1), softC)
                         end
                         neonCS[#neonCS + 1] = ColorSequenceKeypoint.new(1, neonCS[1].Value)
                         ug.Color = ColorSequence.new(neonCS)
@@ -18303,12 +18327,14 @@ local themePage = Instance.new("Frame", subArea)
                         local metCS = {}
                         for i = 1, #colors do
                             local c = _NT_parseColor(colors[i])
-                            local metDark = c:Lerp(Color3.new(0, 0, 0), 0.5)
-                            local metLight = c:Lerp(Color3.new(1, 1, 1), 0.4)
-                            local t1 = (i - 1) / #colors
-                            local t2 = (i - 0.5) / #colors
-                            metCS[#metCS + 1] = ColorSequenceKeypoint.new(t1, metDark)
-                            metCS[#metCS + 1] = ColorSequenceKeypoint.new(t2, metLight)
+                            local metDark = c:Lerp(Color3.new(0, 0, 0), 0.45)
+                            local metMid = c:Lerp(Color3.new(1, 1, 1), 0.15)
+                            local metLight = c:Lerp(Color3.new(1, 1, 1), 0.5)
+                            local base = (i - 1) / #colors
+                            metCS[#metCS + 1] = ColorSequenceKeypoint.new(math.clamp(base, 0, 1), metDark)
+                            metCS[#metCS + 1] = ColorSequenceKeypoint.new(math.clamp(base + 0.15 / #colors, 0, 1), metMid)
+                            metCS[#metCS + 1] = ColorSequenceKeypoint.new(math.clamp(base + 0.35 / #colors, 0, 1), metLight)
+                            metCS[#metCS + 1] = ColorSequenceKeypoint.new(math.clamp(base + 0.5 / #colors, 0, 1), metMid)
                         end
                         metCS[#metCS + 1] = ColorSequenceKeypoint.new(1, metCS[1].Value)
                         ug.Color = ColorSequence.new(metCS)
@@ -18320,20 +18346,32 @@ local themePage = Instance.new("Frame", subArea)
                         local iriCS = {}
                         for i = 1, #colors do
                             local c = _NT_parseColor(colors[i])
-                            local brightC = c:Lerp(Color3.new(1, 1, 1), 0.35)
+                            local brightC = c:Lerp(Color3.new(1, 1, 1), 0.3)
                             local t = (i - 1) / math.max(1, #colors - 1)
                             iriCS[#iriCS + 1] = ColorSequenceKeypoint.new(t, brightC)
                         end
-                        if #iriCS < 3 then
-                            local mid = _NT_parseColor(colors[1]):Lerp(_NT_parseColor(colors[2] or colors[1]), 0.5)
+                        if #iriCS < 4 then
+                            local c1 = _NT_parseColor(colors[1])
+                            local c2 = _NT_parseColor(colors[2] or colors[1])
+                            local c3 = _NT_parseColor(colors[3] or colors[2] or colors[1])
+                            local mid1 = c1:Lerp(c2, 0.33):Lerp(Color3.new(1,1,1), 0.2)
+                            local mid2 = c2:Lerp(c3, 0.66):Lerp(Color3.new(1,1,1), 0.2)
                             iriCS = {
-                                ColorSequenceKeypoint.new(0, _NT_parseColor(colors[1]):Lerp(Color3.new(1,1,1), 0.35)),
-                                ColorSequenceKeypoint.new(0.5, mid:Lerp(Color3.new(1,1,1), 0.35)),
-                                ColorSequenceKeypoint.new(1, _NT_parseColor(colors[2] or colors[1]):Lerp(Color3.new(1,1,1), 0.35)),
+                                ColorSequenceKeypoint.new(0, c1:Lerp(Color3.new(1,1,1), 0.3)),
+                                ColorSequenceKeypoint.new(0.33, mid1),
+                                ColorSequenceKeypoint.new(0.66, mid2),
+                                ColorSequenceKeypoint.new(1, (c2 or c1):Lerp(Color3.new(1,1,1), 0.3)),
                             }
                         end
                         ug.Color = ColorSequence.new(iriCS)
-                        ug.Transparency = ns; ug.Rotation = rot
+                        ug.Transparency = NumberSequence.new({
+                            NumberSequenceKeypoint.new(0, 0),
+                            NumberSequenceKeypoint.new(0.25, 0.05),
+                            NumberSequenceKeypoint.new(0.5, 0),
+                            NumberSequenceKeypoint.new(0.75, 0.05),
+                            NumberSequenceKeypoint.new(1, 0),
+                        })
+                        ug.Rotation = rot
                         if not _NT_canAnimateGradient() then return ug, conns end
                         local alive = { alive = true, parent = target }
                         _NT_GRADIENT_ANIM_ALIVE[#_NT_GRADIENT_ANIM_ALIVE + 1] = alive
