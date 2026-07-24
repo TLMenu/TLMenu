@@ -14164,7 +14164,7 @@ local _ok_Settings, _err_Settings = pcall(function()
                     kbContainer.BorderSizePixel = 0
                     local keybindEntries = {
                         { "Toggle SmartBar", Enum.KeyCode.K, function()
-                            if isOpen then closeBar() else openBar() end
+                            if tabCardsHolder and tabCardsHolder.Visible then closeBar() else openBar() end
                         end },
                         { "Toggle Fly", Enum.KeyCode.F, function()
                             local newState = not flyActive
