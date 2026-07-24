@@ -2863,7 +2863,6 @@ keybinds, keybindMainConn = {}, nil
                     if gpe then return end
                     if isConfiguringKeybind then return end
                     if lastConfiguredKey and input.KeyCode == lastConfiguredKey and tick() - lastConfiguredTime < 0.5 then return end
-                    if input.KeyCode == Enum.KeyCode.K then return end
                     for actionName, data in pairs(keybinds) do
                         if data.key and input.KeyCode == data.key and data.callback then
                             data.callback()
@@ -22760,12 +22759,9 @@ local function parseFieldMessage(fullText, prefixLen)
                             end
                         end)
                     end
-                    _tlTrackConn(UserInputService.InputBegan:Connect(function(input, gpe)
-                        if gpe then return end
-                        if input.KeyCode == Enum.KeyCode.K then
-                            if isOpen then closeBar() else openBar() end
-                        end
-                    end))
+                    -- SmartBar toggle is now handled exclusively by the configurable
+                    -- keybind system (rebuildKeybindListener). The old hardcoded K
+                    -- listener was removed so that changing the keybind actually works.
                     
                     
                     
