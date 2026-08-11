@@ -9634,6 +9634,10 @@ _TL_state.actions = {}
                 { key = "sucking",     label = "Sucking 2",    col = Color3.fromRGB(255, 80, 160) },
                 { key = "suckit",      label = "Suck It",      col = Color3.fromRGB(255, 100, 180) },
                 { key = "ghost",       label = "Ghost",        col = Color3.fromRGB(160, 160, 255) },
+                { key = "shit",        label = "Shit on Head",  col = Color3.fromRGB(139, 90, 43) },
+                { key = "spidergrip",  label = "Spider Grip",   col = Color3.fromRGB(80, 180, 80) },
+                { key = "fingering",   label = "Fingering",     col = Color3.fromRGB(200, 100, 150) },
+                { key = "ghosthover",  label = "Ghost Hover",   col = Color3.fromRGB(180, 180, 220) },
             }
             ; (function()
                 local p, c = makePanel("Actions", C.accent)
@@ -10591,6 +10595,14 @@ _TL_state.actions = {}
                             startSuckIt(selectedFollowTarget); ok = true
                         elseif selectedAction == "ghost" then
                             startGhost(selectedFollowTarget); ok = true
+                        elseif selectedAction == "shit" then
+                            startBB(selectedFollowTarget, "bb_shit"); ok = true
+                        elseif selectedAction == "spidergrip" then
+                            startBB(selectedFollowTarget, "bb_spidergrip"); ok = true
+                        elseif selectedAction == "fingering" then
+                            startBB(selectedFollowTarget, "bb_fingering"); ok = true
+                        elseif selectedAction == "ghosthover" then
+                            startBB(selectedFollowTarget, "bb_ghosthover"); ok = true
                         end
                         if ok then
                             statusDot.BackgroundColor3 = C.accent
@@ -10615,6 +10627,10 @@ _TL_state.actions = {}
                                 or selectedAction == "sucking" and ("Sucking: " .. n)
                                 or selectedAction == "suckit" and ("Suck It: " .. n)
                                 or selectedAction == "ghost" and ("Ghost: " .. n)
+                                or selectedAction == "shit" and ("Shit on Head: " .. n)
+                                or selectedAction == "spidergrip" and ("Spider Grip: " .. n)
+                                or selectedAction == "fingering" and ("Fingering: " .. n)
+                                or selectedAction == "ghosthover" and ("Ghost Hover: " .. n)
                                 or ("Piggyback: " .. n)
                             statusTxt.TextColor3 = C.accent
                         else
@@ -10747,6 +10763,14 @@ _TL_state.actions = {}
                             startQA74(target); _actionOk = true
                         elseif key == "ghost" then
                             startGhost(target); _actionOk = true
+                        elseif key == "shit" then
+                            startBB(target, "bb_shit"); _actionOk = true
+                        elseif key == "spidergrip" then
+                            startBB(target, "bb_spidergrip"); _actionOk = true
+                        elseif key == "fingering" then
+                            startBB(target, "bb_fingering"); _actionOk = true
+                        elseif key == "ghosthover" then
+                            startBB(target, "bb_ghosthover"); _actionOk = true
                         elseif key == "carry" then
                             startCarry(target); _actionOk = true
                         elseif key == "carryshoulder" then
@@ -24016,6 +24040,14 @@ local function parseFieldMessage(fullText, prefixLen)
                             _actionOk = startSpinning(target)
                         elseif key == "ghost" then
                             startGhost(target); _actionOk = true
+                        elseif key == "shit" then
+                            startBB(target, "bb_shit"); _actionOk = true
+                        elseif key == "spidergrip" then
+                            startBB(target, "bb_spidergrip"); _actionOk = true
+                        elseif key == "fingering" then
+                            startBB(target, "bb_fingering"); _actionOk = true
+                        elseif key == "ghosthover" then
+                            startBB(target, "bb_ghosthover"); _actionOk = true
                         elseif key == "bang" then
                             startFollow(target); _actionOk = true
                         end
