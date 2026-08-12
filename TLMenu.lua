@@ -7944,58 +7944,6 @@ local function RunCustomAnimation(Char)
                     end)
                 end
 
-                do
-                    local outfitRow                        = Instance.new("Frame", trollPage)
-                    outfitRow.Size                   = UDim2.new(1, 0, 0, 46); outfitRow.LayoutOrder = 4
-                    outfitRow.BackgroundColor3       = Color3.fromRGB(22, 22, 22); outfitRow.BackgroundTransparency = 0
-                    outfitRow.BorderSizePixel        = 0;
-                    local outfitCorner                     = Instance.new("UICorner", outfitRow); outfitCorner.CornerRadius =
-                    UDim.new(0, 12)
-                    local outfitRowS                       = _makeDummyStroke(outfitRow)
-                    outfitRowS.Thickness             = 1; outfitRowS.Color = Color3.fromRGB(44, 44, 48); outfitRowS.Transparency = 0.3
-
-                    local outfitLbl                        = Instance.new("TextLabel", outfitRow)
-                    outfitLbl.Size                   = UDim2.new(0, 150, 1, 0); outfitLbl.Position = UDim2.new(0, 16, 0,
-                        0)
-                    outfitLbl.BackgroundTransparency = 1; outfitLbl.Text = "Avatar Outfits Stealer"
-                    outfitLbl.Font                   = Enum.Font.GothamBold; outfitLbl.TextSize = 13
-                    outfitLbl.TextColor3             = Color3.fromRGB(255, 255, 255); outfitLbl.TextXAlignment = Enum
-                    .TextXAlignment.Left
-
-                    local outfitBtn                        = Instance.new("TextButton", outfitRow)
-                    outfitBtn.Size                   = UDim2.new(0, 70, 0, 24); outfitBtn.Position = UDim2.new(1, -82,
-                        0.5, -12)
-                    outfitBtn.BackgroundColor3       = Color3.fromRGB(18, 8, 8); outfitBtn.BackgroundTransparency = 0
-                    outfitBtn.BorderSizePixel        = 0; outfitBtn.Text = "Open"
-                    outfitBtn.Font                   = Enum.Font.GothamBold; outfitBtn.TextSize = 13
-                    outfitBtn.TextColor3             = Color3.fromRGB(255, 255, 255); outfitBtn.ZIndex = 5
-                    local outfitBtnCorner                  = Instance.new("UICorner", outfitBtn); outfitBtnCorner.CornerRadius =
-                    UDim.new(0, 4)
-                    local outfitBtnS                       = _makeDummyStroke(outfitBtn)
-                    outfitBtnS.Thickness             = 1.2; outfitBtnS.Color = C.accent; outfitBtnS.Transparency = 0.1
-
-                    
-                    
-                    
-                    do
-                        local _opMod = _TL_loadModule("AVATAR-STEAL-PANEL")
-                        if _opMod then
-                            _opMod.init({ _tsProxy = _tsProxy, _genv = _genv or GLOBAL_ENV })
-                            _G._TLInitAvatarOutfit = function()
-                                if not _opMod.isActive() then _opMod.start() end
-                                return { open = _opMod.open, close = _opMod.close, getIsOpen = _opMod.getIsOpen, openForPlayer = _opMod.openForPlayer }
-                            end
-                            outfitBtn.MouseButton1Click:Connect(function()
-                                if not _opMod.isActive() then
-                                    _opMod.start()
-                                    _opMod.open()
-                                else
-                                    if _opMod.getIsOpen() then _opMod.close() else _opMod.open() end
-                                end
-                            end)
-                        end
-                    end
-                end
 
                 do
                     local outfitExpandRow                  = Instance.new("Frame", trollPage)
