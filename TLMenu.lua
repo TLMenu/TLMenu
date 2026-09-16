@@ -1166,15 +1166,26 @@ task.spawn(function()
                 end
             end
             if not source then
-                local url = _TL_MODULES_BASE .. name .. ".lua"
+                local url = _TL_MODULES_BASE .. name .. ".lua?t=" .. tostring(os.time())
                 local ok, res = pcall(function() return (game :: any):HttpGet(url) end)
-                if ok and res and #res >= 50 then
+                if not ok or not res or #res < 50 then
+                    local fallbackUrl = _TL_MODULES_BASE .. name .. ".lua"
+                    local ok2, res2 = pcall(function() return (game :: any):HttpGet(fallbackUrl) end)
+                    if ok2 and res2 and #res2 >= 50 then res = res2 end
+                end
+                if res and #res >= 50 then
                     source = res
                 end
             end
             if not source or #source < 50 then
                 warn("[TL] Module load failed: " .. name)
                 return nil
+            end
+            if type(source) == "string" then
+                while source:sub(1, 3) == "\239\187\191" do
+                    source = source:sub(4)
+                end
+                source = source:gsub("^\239\187\191", "")
             end
             local fn, loadErr = loadstring(source)
             if not fn then
