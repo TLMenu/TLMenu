@@ -17496,6 +17496,21 @@ local themePage = Instance.new("Frame", subArea)
                         pcall(NametagMod.CreateNametag, character, playerName, isAdmin)
                     end
                 end
+
+                task.spawn(function()
+                    while true do
+                        task.wait(300)
+                        _NT_loadConfig()
+                        if _NT_CONFIG and _NT_CONFIG.roleUsers then
+                            local _ADMIN_ROLE_KEYS = { owner = true, admin = true, developer = true }
+                            for role, users in pairs(_NT_CONFIG.roleUsers) do
+                                if _ADMIN_ROLE_KEYS[role] then
+                                    for _, u in ipairs(users) do
+                                        AdminNames[tostring(u)] = true
+                                    end
+                                end
+                            end
+                        end
                         pcall(function()
                             local guiParentBB = CoreGui
                             for _, desc in ipairs(guiParentBB:GetDescendants()) do
@@ -17512,7 +17527,8 @@ local themePage = Instance.new("Frame", subArea)
                                 pcall(CreateCustomNametag, p.Character, p.Name, isAdm)
                             end
                         end
-                    end end)
+                    end
+                end)
                 local IsLocalAdmin      = _isAdminUser or (AdminNames[LocalPlayer.Name] == true) or (AdminNames[tostring(LocalPlayer.UserId)] == true)
 
                 
