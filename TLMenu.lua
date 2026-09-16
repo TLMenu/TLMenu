@@ -3710,6 +3710,8 @@ keybinds, keybindMainConn = {}, nil
                 end
             end
 
+            local _panelWindowStates = {}
+
             local function makePanel(name, accentDot)
                 local p            = Instance.new("Frame", ScreenGui)
                 p.Name             = name
@@ -3766,7 +3768,7 @@ keybinds, keybindMainConn = {}, nil
                 
                 local credit                  = Instance.new("TextLabel", hdr)
                 credit.Size                   = UDim2.new(0, 100, 1, 0)
-                credit.Position               = UDim2.new(1, -135, 0, 0)
+                credit.Position               = UDim2.new(1, -145, 0, 0)
                 credit.BackgroundTransparency = 1
                 credit.Text                   = "telelumi"
                 credit.Font                   = Enum.Font.GothamBold
@@ -3774,6 +3776,33 @@ keybinds, keybindMainConn = {}, nil
                 credit.TextColor3             = C.sub
                 credit.TextXAlignment         = Enum.TextXAlignment.Right
                 credit.ZIndex                 = 5
+
+                local minBtn                  = Instance.new("TextButton", hdr)
+                minBtn.Name                   = "MinimizeBtn"
+                minBtn.Size                   = UDim2.fromOffset(26, 26)
+                minBtn.Position               = UDim2.new(1, -38, 0.5, -13)
+                minBtn.BackgroundColor3       = C.bg3 or Color3.fromRGB(30, 30, 35)
+                minBtn.BackgroundTransparency = 0.4
+                minBtn.BorderSizePixel        = 0
+                minBtn.Text                   = "-"
+                minBtn.Font                   = Enum.Font.GothamBold
+                minBtn.TextSize               = 16
+                minBtn.TextColor3             = C.text or Color3.fromRGB(220, 220, 220)
+                minBtn.ZIndex                 = 6
+                minBtn.AutoButtonColor        = false
+                corner(minBtn, 7)
+                local minBtnStroke = stroke(minBtn, 1, C.accent or Color3.fromRGB(0, 170, 255), 0.7)
+
+                minBtn.MouseEnter:Connect(function()
+                    twP(minBtn, 0.15, { BackgroundColor3 = C.accent, BackgroundTransparency = 0.2 })
+                    twP(minBtn, 0.15, { TextColor3 = Color3.fromRGB(255, 255, 255) })
+                    if minBtnStroke then twP(minBtnStroke, 0.15, { Transparency = 0.2 }) end
+                end)
+                minBtn.MouseLeave:Connect(function()
+                    twP(minBtn, 0.15, { BackgroundColor3 = C.bg3 or Color3.fromRGB(30, 30, 35), BackgroundTransparency = 0.4 })
+                    twP(minBtn, 0.15, { TextColor3 = C.text or Color3.fromRGB(220, 220, 220) })
+                    if minBtnStroke then twP(minBtnStroke, 0.15, { Transparency = 0.7 }) end
+                end)
                 
                 
                 
@@ -3886,7 +3915,117 @@ keybinds, keybindMainConn = {}, nil
                 scroll.ChildAdded:Connect(function() task.defer(autoCanvas) end)
                 scroll.ChildRemoved:Connect(function() task.defer(autoCanvas) end)
 
-                
+                -- Window Drag & Minimize / Collapse System
+                local winState = {
+                    isMinimized = false,
+                    origHeight  = 400,
+                    isDragged   = false,
+                    draggedPos  = nil,
+                }
+                _panelWindowStates[name] = winState
+
+                p:GetPropertyChangedSignal("Size"):Connect(function()
+                    if not winState.isMinimized and p.Size.Y.Offset > 50 then
+                        winState.origHeight = p.Size.Y.Offset
+                    end
+                end)
+
+                local function toggleMinimize()
+                    winState.isMinimized = not winState.isMinimized
+                    if winState.isMinimized then
+                        if p.Size.Y.Offset > 50 then winState.origHeight = p.Size.Y.Offset end
+                        minBtn.Text = "+"
+                        tw(p, 0.22, { Size = UDim2.new(p.Size.X.Scale, p.Size.X.Offset, 0, 48) }, Enum.EasingStyle.Quart, Enum.EasingDirection.Out):Play()
+                        task.delay(0.08, function()
+                            if winState.isMinimized then
+                                scroll.Visible = false
+                                sep.Visible = false
+                                if sbTrack then sbTrack.Visible = false end
+                            end
+                        end)
+                    else
+                        minBtn.Text = "-"
+                        local targetH = winState.origHeight or 400
+                        scroll.Visible = true
+                        sep.Visible = true
+                        tw(p, 0.25, { Size = UDim2.new(p.Size.X.Scale, p.Size.X.Offset, 0, targetH) }, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
+                        task.delay(0.25, function()
+                            if not winState.isMinimized and updateScrollbar then
+                                updateScrollbar()
+                            end
+                        end)
+                    end
+                end
+                minBtn.MouseButton1Click:Connect(toggleMinimize)
+
+                -- Header dragging system
+                local isDragging = false
+                local dragStart = Vector2.zero
+                local startFramePos = Vector2.zero
+                local lastHdrClick = 0
+
+                local function bringToFront()
+                    pcall(function()
+                        p.ZIndex = 150
+                        hdr.ZIndex = 152
+                        scroll.ZIndex = 151
+                    end)
+                end
+
+                hdr.InputBegan:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                        if input.Target == minBtn or (input.Target and input.Target:IsDescendantOf(minBtn)) then
+                            return
+                        end
+                        -- Double click header to minimize/restore
+                        local now = tick()
+                        if now - lastHdrClick < 0.35 then
+                            lastHdrClick = 0
+                            toggleMinimize()
+                            return
+                        end
+                        lastHdrClick = now
+
+                        isDragging = true
+                        dragStart = Vector2.new(input.Position.X, input.Position.Y)
+                        bringToFront()
+
+                        local abs = p.AbsolutePosition
+                        p.AnchorPoint = Vector2.new(0, 0)
+                        p.Position = UDim2.fromOffset(abs.X, abs.Y)
+                        startFramePos = Vector2.new(abs.X, abs.Y)
+                        winState.isDragged = true
+                        winState.draggedPos = p.Position
+
+                        twP(hdr, 0.15, { BackgroundTransparency = 0.08 })
+                    end
+                end)
+
+                _SvcUIS.InputChanged:Connect(function(input)
+                    if isDragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+                        local deltaX = input.Position.X - dragStart.X
+                        local deltaY = input.Position.Y - dragStart.Y
+                        local newX = startFramePos.X + deltaX
+                        local newY = startFramePos.Y + deltaY
+
+                        local screenSize = ScreenGui.AbsoluteSize
+                        local pW = p.AbsoluteSize.X > 0 and p.AbsoluteSize.X or PANEL_W
+                        newX = math.clamp(newX, 4, math.max(4, screenSize.X - pW - 4))
+                        newY = math.clamp(newY, 4, math.max(4, screenSize.Y - 54))
+
+                        p.Position = UDim2.fromOffset(newX, newY)
+                        winState.draggedPos = p.Position
+                    end
+                end)
+
+                _SvcUIS.InputEnded:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                        if isDragging then
+                            isDragging = false
+                            twP(hdr, 0.15, { BackgroundTransparency = 0.2 })
+                        end
+                    end
+                end)
 
                 panels[name] = p
                 
@@ -23411,9 +23550,16 @@ local function parseFieldMessage(fullText, prefixLen)
                         if activeTab and panels[activeTab] then
                             if activeTab == "Communication" then activePage = nil end
                             local old = panels[activeTab]
-                            local _oax, _oxsc, _oxoff = getPanelXAnchor()
-                            old.AnchorPoint = Vector2.new(_oax, 1)
-                            local oldTargetPos = UDim2.new(_oxsc, _oxoff, PANEL_HIDE.Y.Scale, PANEL_HIDE.Y.Offset + 10)
+                            local oldState = _panelWindowStates[activeTab]
+                            local oldTargetPos
+                            if oldState and oldState.isDragged and oldState.draggedPos then
+                                old.AnchorPoint = Vector2.new(0, 0)
+                                oldTargetPos = UDim2.new(oldState.draggedPos.X.Scale, oldState.draggedPos.X.Offset, oldState.draggedPos.Y.Scale, oldState.draggedPos.Y.Offset + 14)
+                            else
+                                local _oax, _oxsc, _oxoff = getPanelXAnchor()
+                                old.AnchorPoint = Vector2.new(_oax, 1)
+                                oldTargetPos = UDim2.new(_oxsc, _oxoff, PANEL_HIDE.Y.Scale, PANEL_HIDE.Y.Offset + 10)
+                            end
                             tw(old, 0.16, {
                                 Position               = oldTargetPos,
                                 BackgroundTransparency = 1,
@@ -23438,16 +23584,26 @@ local function parseFieldMessage(fullText, prefixLen)
                         end
                         if panels[name] then
                             local pan                  = panels[name]
+                            local panState             = _panelWindowStates[name]
                             pan.BackgroundTransparency = 1
-                            local _ax, _xsc, _xoff     = getPanelXAnchor()
-                            pan.AnchorPoint            = Vector2.new(_ax, 1)
-                            
                             local _pwOpen              = (name == "Home" and HOME_PANEL_W_OVERRIDE) or PANEL_W
-                            pan.Size                   = UDim2.new(0, _pwOpen, 0, pan.Size.Y.Offset)
-                            local startPos             = UDim2.new(_xsc, _xoff, PANEL_HIDE.Y.Scale, PANEL_HIDE.Y.Offset + 18)
+                            local currentH             = (panState and panState.isMinimized) and 48 or ((panState and panState.origHeight) or pan.Size.Y.Offset)
+                            pan.Size                   = UDim2.new(0, _pwOpen, 0, currentH)
+
+                            local startPos, targetPos
+                            if panState and panState.isDragged and panState.draggedPos then
+                                pan.AnchorPoint = Vector2.new(0, 0)
+                                startPos  = UDim2.new(panState.draggedPos.X.Scale, panState.draggedPos.X.Offset, panState.draggedPos.Y.Scale, panState.draggedPos.Y.Offset + 14)
+                                targetPos = panState.draggedPos
+                            else
+                                local _ax, _xsc, _xoff = getPanelXAnchor()
+                                pan.AnchorPoint        = Vector2.new(_ax, 1)
+                                startPos               = UDim2.new(_xsc, _xoff, PANEL_HIDE.Y.Scale, PANEL_HIDE.Y.Offset + 18)
+                                targetPos              = UDim2.new(_xsc, _xoff, PANEL_SHOW.Y.Scale, PANEL_SHOW.Y.Offset)
+                            end
+
                             pan.Position    = startPos
                             pan.Visible     = true
-                            local targetPos = UDim2.new(_xsc, _xoff, PANEL_SHOW.Y.Scale, PANEL_SHOW.Y.Offset)
                             if name == "Communication" then
                                 activePage = commPage
                                 pcall(function()
@@ -23512,9 +23668,18 @@ local function parseFieldMessage(fullText, prefixLen)
                         isOpen = false
                         if activeTab and panels[activeTab] then
                             local pan = panels[activeTab]
-                            local _cax, _cxsc, _cxoff = getPanelXAnchor()
+                            local panState = _panelWindowStates[activeTab]
+                            local _closeTargetPos
+                            if panState and panState.isDragged and panState.draggedPos then
+                                pan.AnchorPoint = Vector2.new(0, 0)
+                                _closeTargetPos = UDim2.new(panState.draggedPos.X.Scale, panState.draggedPos.X.Offset, panState.draggedPos.Y.Scale, panState.draggedPos.Y.Offset + 14)
+                            else
+                                local _cax, _cxsc, _cxoff = getPanelXAnchor()
+                                pan.AnchorPoint = Vector2.new(_cax, 1)
+                                _closeTargetPos = UDim2.new(_cxsc, _cxoff, PANEL_HIDE.Y.Scale, PANEL_HIDE.Y.Offset + 10)
+                            end
                             tw(pan, 0.16, {
-                                Position               = UDim2.new(_cxsc, _cxoff, PANEL_HIDE.Y.Scale, PANEL_HIDE.Y.Offset + 10),
+                                Position               = _closeTargetPos,
                                 BackgroundTransparency = 1,
                             }, Enum.EasingStyle.Exponential, Enum.EasingDirection.In):Play()
                             task.delay(0.18, function() pcall(function() pan.Visible = false end) end)
