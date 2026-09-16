@@ -17462,22 +17462,40 @@ local themePage = Instance.new("Frame", subArea)
                         task.wait(300); LoadRolesFromGithub()
                     end end)
                 
-                local _NT_loadConfig  
-                task.spawn(function() while true do
-                        task.wait(300)
-                _NT_loadConfig()
-                        
-                        if _NT_CONFIG and _NT_CONFIG.roleUsers then
-                            local _ADMIN_ROLE_KEYS = { owner = true, admin = true, developer = true }
-                            for role, users in pairs(_NT_CONFIG.roleUsers) do
-                                if _ADMIN_ROLE_KEYS[role] then
-                                    for _, u in ipairs(users) do
-                                        AdminNames[tostring(u)] = true
-                                    end
-                                end
-                            end
-                        end
-                        
+                local NametagMod = _TL_loadModule("Tab-Moduls/NametagSystem") or _TL_loadModule("TL-NametagSystem")
+                if NametagMod and type(NametagMod.Init) == "function" then
+                    pcall(function()
+                        NametagMod.Init({
+                            rolesUrl = ROLES_URL,
+                            configUrl = NAMETAG_CONFIG_URL,
+                            AdminNames = AdminNames,
+                            NameOverrides = NameOverrides,
+                        })
+                    end)
+                end
+
+                local _NT_CONFIG = (NametagMod and NametagMod.Config) or {
+                    enabled = true,
+                    roleUsers = {},
+                    displayNames = {},
+                    roleLabels = {},
+                    layout = {},
+                    themes = {},
+                }
+
+                local function _NT_loadConfig()
+                    if NametagMod and type(NametagMod.ReloadConfig) == "function" then
+                        NametagMod.ReloadConfig()
+                    end
+                end
+
+                local creatingNametag = {}
+                local function CreateCustomNametag(character, playerName, isAdmin)
+                    if not character or not character.Parent then return end
+                    if NametagMod and type(NametagMod.CreateNametag) == "function" then
+                        pcall(NametagMod.CreateNametag, character, playerName, isAdmin)
+                    end
+                end
                         pcall(function()
                             local guiParentBB = CoreGui
                             for _, desc in ipairs(guiParentBB:GetDescendants()) do
@@ -19541,7 +19559,11 @@ local themePage = Instance.new("Frame", subArea)
 
                 local creatingNametag = {}
                 local function CreateCustomNametag(character, playerName, isAdmin)
-                    if not character then return end
+                    if not character or not character.Parent then return end
+                    if NametagMod and type(NametagMod.CreateNametag) == "function" then
+                        pcall(NametagMod.CreateNametag, character, playerName, isAdmin)
+                        return
+                    end
                     if creatingNametag[playerName] then return end
                     creatingNametag[playerName] = true
 
@@ -22760,6 +22782,9 @@ local function parseFieldMessage(fullText, prefixLen)
                         local _, ntVisSet = subRow(nametagPage, 0, "Nametag sichtbar", "Sichtbar für andere Spieler", C.accent,
                             settingsState.nametagVisible, function(on)
                             settingsState.nametagVisible = on
+                            if NametagMod and type(NametagMod.SetVisible) == "function" then
+                                pcall(NametagMod.SetVisible, on)
+                            end
                             task.spawn(saveData)
                             BroadcastNametagVisibility()
                         end)
@@ -22768,6 +22793,9 @@ local function parseFieldMessage(fullText, prefixLen)
                         local _, ntRemSet = subRow(nametagPage, 54, "Remove Nametag", "Removes nametag above your head", C.accent,
                             settingsState.removeNametag, function(on)
                             settingsState.removeNametag = on
+                            if NametagMod and type(NametagMod.SetRemoveOwn) == "function" then
+                                pcall(NametagMod.SetRemoveOwn, on)
+                            end
                             task.spawn(saveData)
                             
                             pcall(function()
