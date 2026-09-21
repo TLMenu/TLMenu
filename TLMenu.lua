@@ -1,6 +1,5 @@
 --!nocheck
-_G._invisSinkEnabled = true; _G._invisAnimEnabled = true; _invisSinkEnabled = true; _invisAnimEnabled = true; local _realTS =
-game:GetService("TweenService")
+_G._invisSinkEnabled = true; _G._invisAnimEnabled = true; _invisSinkEnabled = true; _invisAnimEnabled = true; local _realTS = game:GetService("TweenService")
 local _tsProxy       = setmetatable({}, {
     __index = function(self, k)
         if k == "Create" then
