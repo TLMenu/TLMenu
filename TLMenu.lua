@@ -4007,10 +4007,10 @@ keybinds, keybindMainConn = {}, nil
                 end
                 minBtn.MouseButton1Click:Connect(toggleMinimize)
 
-                -- Header dragging system (Supports scale compensation & window detachment)
-                local isDragging = false
-                local dragStartMouse = Vector2.zero
-                local startOffsetPos = Vector2.zero
+                -- Header dragging system (Clean pattern from TL-Panel-Dragging-Logic)
+                local isDragging  = false
+                local dragStart   = Vector3.zero
+                local startPos    = UDim2.new()
                 local lastHdrClick = 0
 
                 local function bringToFront()
@@ -4022,8 +4022,9 @@ keybinds, keybindMainConn = {}, nil
                     end)
                 end
 
-                local function startDrag(input)
-                    if input.UserInputType ~= Enum.UserInputType.MouseButton1 and input.UserInputType ~= Enum.UserInputType.Touch then
+                dragHandle.InputBegan:Connect(function(input)
+                    if input.UserInputType ~= Enum.UserInputType.MouseButton1
+                       and input.UserInputType ~= Enum.UserInputType.Touch then
                         return
                     end
 
@@ -4041,7 +4042,7 @@ keybinds, keybindMainConn = {}, nil
                     bringToFront()
 
                     local scale = _getPanelGuiScale()
-                    dragStartMouse = Vector2.new(input.Position.X, input.Position.Y)
+                    dragStart = input.Position
 
                     local abs = p.AbsolutePosition
                     local curOffsetX = abs.X / scale
@@ -4049,26 +4050,35 @@ keybinds, keybindMainConn = {}, nil
 
                     p.AnchorPoint = Vector2.new(0, 0)
                     p.Position = UDim2.fromOffset(curOffsetX, curOffsetY)
-                    startOffsetPos = Vector2.new(curOffsetX, curOffsetY)
+                    startPos = p.Position
 
-                    winState.isDragged = true
+                    winState.isDragged  = true
                     winState.isDetached = true
                     winState.draggedPos = p.Position
 
                     twP(hdr, 0.15, { BackgroundTransparency = 0.08 })
-                end
 
-                dragHandle.InputBegan:Connect(startDrag)
+                    -- End-Detection via input.Changed (clean, self-cleaning connection)
+                    local endConn
+                    endConn = input.Changed:Connect(function()
+                        if input.UserInputState == Enum.UserInputState.End then
+                            isDragging = false
+                            twP(hdr, 0.15, { BackgroundTransparency = 0.2 })
+                            if endConn then endConn:Disconnect() end
+                        end
+                    end)
+                end)
 
                 _SvcUIS.InputChanged:Connect(function(input)
-                    if isDragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+                    if isDragging and (input.UserInputType == Enum.UserInputType.MouseMovement
+                       or input.UserInputType == Enum.UserInputType.Touch) then
                         local scale = _getPanelGuiScale()
-                        local deltaX = (input.Position.X - dragStartMouse.X) / scale
-                        local deltaY = (input.Position.Y - dragStartMouse.Y) / scale
+                        local delta = input.Position - dragStart
 
-                        local newX = startOffsetPos.X + deltaX
-                        local newY = startOffsetPos.Y + deltaY
+                        local newX = startPos.X.Offset + delta.X / scale
+                        local newY = startPos.Y.Offset + delta.Y / scale
 
+                        -- Screen clamping
                         local screenSize = ScreenGui.AbsoluteSize
                         local pW = p.AbsoluteSize.X > 0 and (p.AbsoluteSize.X / scale) or PANEL_W
                         local maxScaledX = math.max(10, (screenSize.X / scale) - pW - 4)
@@ -4079,15 +4089,6 @@ keybinds, keybindMainConn = {}, nil
 
                         p.Position = UDim2.fromOffset(newX, newY)
                         winState.draggedPos = p.Position
-                    end
-                end)
-
-                _SvcUIS.InputEnded:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                        if isDragging then
-                            isDragging = false
-                            twP(hdr, 0.15, { BackgroundTransparency = 0.2 })
-                        end
                     end
                 end)
 
