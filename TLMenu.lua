@@ -1312,10 +1312,7 @@ task.spawn(function()
             local _C3_BLACK  = Color3.fromRGB(0, 0, 0)
             local _C3_TEXT3  = Color3.fromRGB(210, 212, 218)
             local _C3_DRED   = Color3.fromRGB(255, 60, 60) 
-            local _C3_RED    = Color3.fromRGB(255, 80, 80)
-
-            
-            
+            local _C3_RED    = Color3.fromRGB(255, 80, 80)        
             
             local _TL_IMG_THEMES = { theboys=true, onepiece=true, dragonball=true, deathnote=true, dexter=true }
             local function _TL_isImgTheme(tid) return _TL_IMG_THEMES[tid] or false end
@@ -1482,12 +1479,6 @@ task.spawn(function()
                 corner(frame, radius or 8)
                 return stroke(frame, 1, C.bg3 or Color3.fromRGB(45, 45, 45), 0.28)
             end
-
-            
-            
-            
-                        
-            
             
 local _TL_THEMES = {
                 { id = "matrix",   name = "Matrix",   accent = Color3.fromRGB(30, 255, 90), accent2 = Color3.fromRGB(0, 200, 55), sub = Color3.fromRGB(0, 140, 35), borderdim = Color3.fromRGB(30, 30, 30), text = Color3.fromRGB(210, 255, 220), panelBg = Color3.fromRGB(10, 10, 10), panelHdr = Color3.fromRGB(20, 20, 20) },
@@ -1535,12 +1526,7 @@ local _TL_THEMES = {
                 local function close(a, b, tol) 
                     return math.abs(a.R - b.R) < tol and math.abs(a.G - b.G) < tol and math.abs(a.B - b.B) < tol
                 end
-                
-                
-                
-                
-                
-                
+                    
                 
                 local anchors   = {
                     { oldT.accent,    newT.accent },
@@ -1558,13 +1544,7 @@ local _TL_THEMES = {
                     { C.green,        newT.accent },
                     { C.gradL,        newT.accent },
                     { C.gradR,        newT.accent2 },
-                    { C.border,       newT.accent },
-                    
-                    
-                    
-                    
-                    
-                    
+                    { C.border,       newT.accent },                                            
                 }
                 local function remapColor(col)
                     
@@ -1574,7 +1554,6 @@ local _TL_THEMES = {
                     return nil
                 end
 
-                
                 C.accent          = newT.accent
                 C.accent2         = newT.accent2
                 C.sub             = newT.sub
@@ -1584,8 +1563,6 @@ local _TL_THEMES = {
                 C.gradL           = newT.accent
                 C.gradR           = newT.accent2
                 C.border          = newT.accent
-                
-                
                 
                 local themeFallbacks = {
                     matrix     = { panelBg = Color3.fromRGB(10, 10, 10), panelHdr = Color3.fromRGB(20, 20, 20) },
@@ -1643,9 +1620,6 @@ local _TL_THEMES = {
                     end
                 end)
                 if paletteOnly then
-                    
-                    
-                    
                     _TL_lastRenderedThemeId = themeId
                     pcall(function()
                     if getgenv and not _isSpecialTheme then _genv._TL_savedTheme = themeId end
@@ -1653,14 +1627,11 @@ local _TL_THEMES = {
                     return
                 end
                 
-
-                
                 local sg = nil
                 pcall(function() sg = _TL_refs and _TL_refs._TL_ScreenGui end)
                 if not sg then pcall(function() sg = ScreenGui end) end
                 if not sg or not sg.Parent then return end
 
-                
                 local function cancelBgTweens(obj)
                     pcall(function()
                         if obj and obj.Parent then
@@ -1689,7 +1660,6 @@ local _TL_THEMES = {
                                 end)
                             end
                             if d.BackgroundTransparency < 0.99 then
-                                
                                 cancelBgTweens(d)
                                 local currentCol = d.BackgroundColor3
                                 if not _origColorProps[d] then _origColorProps[d] = currentCol end
@@ -1697,10 +1667,8 @@ local _TL_THEMES = {
                                 
                                 if n then
                                     local isAcc = close(n, newT.accent, 0.01) or close(n, newT.accent2, 0.01)
-                                    
                                     local wasBg = close(_origColorProps[d], oldT.panelBg or Color3.new(), 0.06)
                                         or close(_origColorProps[d], oldT.panelHdr or Color3.new(), 0.06)
-                                    
                                     
                                     local looksLikeBg = close(currentCol, Color3.fromRGB(10, 10, 10), 0.08)
                                         or close(currentCol, Color3.fromRGB(15, 15, 15), 0.08)
@@ -1750,16 +1718,9 @@ local _TL_THEMES = {
                         end
                     end)
                 end
-
-                
-                
-                
                 
                 C.panelBg  = Color3.fromRGB(0, 0, 0)
                 C.panelHdr = Color3.fromRGB(0, 0, 0)
-
-                
-                
                 pcall(function()
                     if _panelAccentObjs then
                         for _, r in ipairs(_panelAccentObjs) do
@@ -7956,7 +7917,7 @@ local function RunCustomAnimation(Char)
                         end
                         
                     end
-
+                end
 
 
                 do
@@ -8459,7 +8420,7 @@ visualPage = Instance.new("Frame", sSubArea)
                     shLbl.TextXAlignment = Enum.TextXAlignment.Left
                     local shSub = Instance.new("TextLabel", shRow)
                     shSub.Size = UDim2.new(0, 160, 0, 12); shSub.Position = UDim2.new(0, 14, 0, 26)
-                    shSub.BackgroundTransparency = 1; shSub.Text = if _shdMod then "Basic Realistic Shaders" else "Module offline"
+                    shSub.BackgroundTransparency = 1; shSub.Text = _shdMod and "Basic Realistic Shaders" or "Module offline"
                     shSub.Font = Enum.Font.Gotham; shSub.TextSize = 9
                     shSub.TextColor3 = Color3.fromRGB(99, 155, 255)
                     shSub.TextXAlignment = Enum.TextXAlignment.Left
