@@ -7917,7 +7917,7 @@ local function RunCustomAnimation(Char)
                         end
                         
                     end
-                end
+
 
 
                 do
@@ -18462,6 +18462,8 @@ local themePage = Instance.new("Frame", subArea)
                     local ok, json = pcall(function() return _SvcHttp:JSONDecode(clean) end)
                     if not ok or type(json) ~= "table" then
                         warn("[NametagConfig] JSON parse failed — using defaults")
+                        if not ok then warn("[NametagConfig] Parse error:", tostring(json)) end
+                        warn("[NametagConfig] Response length:", #clean, "| Starts with:", clean:sub(1, 80))
                         return false
                     end
 
