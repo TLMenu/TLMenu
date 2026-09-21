@@ -1,5 +1,6 @@
 --!nocheck
-_G._invisSinkEnabled = true; _G._invisAnimEnabled = true; _invisSinkEnabled = true; _invisAnimEnabled = true; local _realTS = game:GetService("TweenService")
+_G._invisSinkEnabled = true; _G._invisAnimEnabled = true; _invisSinkEnabled = true; _invisAnimEnabled = true; local _realTS =
+game:GetService("TweenService")
 local _tsProxy       = setmetatable({}, {
     __index = function(self, k)
         if k == "Create" then
@@ -236,7 +237,7 @@ local function _TL_loadManifest()
         local decodeOk, decoded = pcall(function() return _SvcHttp:JSONDecode(cached) end)
         if decodeOk and decoded then return decoded end
     end
-    local fetchOk, fetched = pcall(function() return (game :: any):HttpGet(_TL_MANIFEST_URL) end)
+    local fetchOk, fetched = pcall(function() return game:HttpGet(_TL_MANIFEST_URL) end)
     if fetchOk and fetched then
         pcall(writefile, _TL_MANIFEST_CACHE, fetched)
         local decodeOk, decoded = pcall(function() return _SvcHttp:JSONDecode(fetched) end)
@@ -272,7 +273,7 @@ local function _TL_syncAssetsFromManifest()
             if dir ~= "" and not _TL_safeIsFolder(dir) then
                 pcall(function() _TL_safeMakeFolder(dir) end)
             end
-            local ok, bytes = pcall(function() return (game :: any):HttpGet(entry.url) end)
+            local ok, bytes = pcall(function() return game:HttpGet(entry.url) end)
             if ok and type(bytes) == "string" and #bytes > 0 then
                 _TL_safeWriteFile(entry.file, bytes)
             end
@@ -448,7 +449,7 @@ task.spawn(function()
             pcall(function() _TL_safeMakeFolder(dir) end)
         end
         _TL_assetLoader.current = "Downloading " .. entry.name
-        local ok, bytes = pcall(function() return (game :: any):HttpGet(entry.url) end)
+        local ok, bytes = pcall(function() return game:HttpGet(entry.url) end)
         if ok and type(bytes) == "string" and #bytes > 0 then
             local writeOk = _TL_safeWriteFile(entry.file, bytes)
             if not writeOk then
@@ -603,7 +604,7 @@ task.spawn(function()
                     if dir ~= "" and not _TL_safeIsFolder(dir) then
                         pcall(function() _TL_safeMakeFolder(dir) end)
                     end
-                    local ok, bytes = pcall(function() return (game :: any):HttpGet(info.url) end)
+                    local ok, bytes = pcall(function() return game:HttpGet(info.url) end)
                     if ok and type(bytes) == "string" and #bytes > 0 then
                         _TL_safeWriteFile(filePath, bytes)
                     end
@@ -621,7 +622,7 @@ task.spawn(function()
                             if dir ~= "" and not _TL_safeIsFolder(dir) then
                                 pcall(function() _TL_safeMakeFolder(dir) end)
                             end
-                            local ok, bytes = pcall(function() return (game :: any):HttpGet(info.url) end)
+                            local ok, bytes = pcall(function() return game:HttpGet(info.url) end)
                             if ok and type(bytes) == "string" and #bytes > 0 then
                                 _TL_safeWriteFile(filePath, bytes)
                             end
@@ -755,14 +756,14 @@ if not _genv.getidentity then _genv.getidentity = function() return 2 end end
 if not _genv.setidentity then _genv.setidentity = function() end end
 if not _genv.checkcaller then _genv.checkcaller = function() return false end end
 
-if not _genv.getrawmetatable then _genv.getrawmetatable = function(o) return (debug :: any).getmetatable(o) end end
+if not _genv.getrawmetatable then _genv.getrawmetatable = function(o) return debug.getmetatable(o) end end
 if not _genv.setreadonly then _genv.setreadonly = function() end end
 if not _genv.make_writeable then _genv.make_writeable = function() end end
 
 if not _genv.request then
     _genv.request = function(options)
         local success, result = pcall(function()
-            return (game :: any):HttpGet(options.Url)
+            return game:HttpGet(options.Url)
         end)
         return { Success = success, Body = result }
     end
@@ -1166,10 +1167,10 @@ task.spawn(function()
             end
             if not source then
                 local url = _TL_MODULES_BASE .. name .. ".lua?t=" .. tostring(os.time())
-                local ok, res = pcall(function() return (game :: any):HttpGet(url) end)
+                local ok, res = pcall(function() return game:HttpGet(url) end)
                 if not ok or not res or #res < 50 then
                     local fallbackUrl = _TL_MODULES_BASE .. name .. ".lua"
-                    local ok2, res2 = pcall(function() return (game :: any):HttpGet(fallbackUrl) end)
+                    local ok2, res2 = pcall(function() return game:HttpGet(fallbackUrl) end)
                     if ok2 and res2 and #res2 >= 50 then res = res2 end
                 end
                 if res and #res >= 50 then
@@ -2343,7 +2344,7 @@ local _TL_THEMES = {
                     mkRow("premium", mem)
                     local ping = "?"
                     pcall(function()
-                        ping = math.floor((game:GetService("Stats") :: any).Network.ServerStatsItem["Data Ping"]:GetValue()) .. "ms"
+                        ping = math.floor(game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue()) .. "ms"
                     end)
                     mkRow("ping", ping)
                     mkRow("team", (p.Team and p.Team.Name) or "nil")
@@ -2366,14 +2367,14 @@ local _TL_THEMES = {
                     task.spawn(function()
                         local HS = game:GetService("HttpService")
                         pcall(function()
-                            local d = HS:JSONDecode((game :: any):HttpGet("https://users.roblox.com/v1/users/" .. p.UserId))
+                            local d = HS:JSONDecode(game:HttpGet("https://users.roblox.com/v1/users/" .. p.UserId))
                             if d and d.created then
                                 local y, m, dd = d.created:match("(%d+)-(%d+)-(%d+)")
                                 if y and vJoin.Parent then vJoin.Text = dd .. "." .. m .. "." .. y end
                             end
                         end)
                         pcall(function()
-                            local d = HS:JSONDecode((game :: any):HttpGet(
+                            local d = HS:JSONDecode(game:HttpGet(
                                 "https://users.roblox.com/v1/users/" .. p.UserId .. "/username-history?limit=10"))
                             if d and d.data and #d.data > 0 then
                                 local ns = {}; for _, v in ipairs(d.data) do ns[#ns + 1] = v.name end
@@ -2384,7 +2385,7 @@ local _TL_THEMES = {
                             end
                         end)
                         pcall(function()
-                            local d = HS:JSONDecode((game :: any):HttpGet(
+                            local d = HS:JSONDecode(game:HttpGet(
                                 "https://friends.roblox.com/v1/users/" .. p.UserId .. "/friends/count"))
                             if d and d.count ~= nil and vFriends.Parent then vFriends.Text = tostring(d.count) end
                         end)
@@ -2672,7 +2673,7 @@ local _TL_THEMES = {
                             pop.Size = UDim2.new(0, POP_W, 0, 68)
                             task.spawn(function()
                                 local ok, res = pcall(function()
-                                    local data = (game :: any):HttpGet("https://users.roblox.com/v1/users/" ..
+                                    local data = game:HttpGet("https://users.roblox.com/v1/users/" ..
                                     p.UserId .. "/username-history?limit=10")
                                     local d = game:GetService("HttpService"):JSONDecode(data)
                                     local ns = {}
@@ -4472,7 +4473,7 @@ sendNotif = function(title, text, dur, accentOverride)
                 }
                 task.spawn(function()
                     local ok, src = pcall(function()
-                        return (game :: any):HttpGet("https://raw.githubusercontent.com/TLMenu/TLMenuParts/refs/heads/main/TL-ROLE-DETECTOR.lua")
+                        return game:HttpGet("https://raw.githubusercontent.com/TLMenu/TLMenuParts/refs/heads/main/TL-ROLE-DETECTOR.lua")
                     end)
                     if ok and src and #src > 50 then
                         src = src:gsub('ROBLOX_STAFF%s*=%s*true', 'ROBLOX_STAFF = false')
@@ -4943,7 +4944,7 @@ makePanel("Home", C.accent)
                 local _fa, _ff, _sa = 0, 0, 0
                 local _homeSvcStats; pcall(function() _homeSvcStats = game:GetService("Stats") end)
                 local _homeStatPingItem; pcall(function()
-                    local _s = (_homeSvcStats :: any)
+                    local _s = _homeSvcStats
                     if _s then _homeStatPingItem = _s.Network.ServerStatsItem["Data Ping"] or
                         _s.Network.ServerStatsItem["DataPing"] end
                 end)
@@ -5001,7 +5002,7 @@ makePanel("Home", C.accent)
                 makeSrvBtn(bw + 12, 0, bw, 52, "Server Hop", "New Server", function()
                     local x = {}
                     pcall(function()
-                        local data = (game :: any):HttpGet("https://games.roblox.com/v1/games/" ..
+                        local data = game:HttpGet("https://games.roblox.com/v1/games/" ..
                         game.PlaceId .. "/servers/Public?sortOrder=Desc&limit=100")
                         for _, v in ipairs(game:GetService("HttpService"):JSONDecode(data).data) do
                             if v.maxPlayers > v.playing and v.id ~= game.JobId then x[#x + 1] = v.id end
@@ -7999,7 +8000,7 @@ local function RunCustomAnimation(Char)
                     do
                         local _oeUrl = _TL_MODULES_BASE .. "TL-OUTFIT-EXPAND.lua"
                         outfitExpandBtn.MouseButton1Click:Connect(function()
-                            local ok, source = pcall(function() return (game :: any):HttpGet(_oeUrl) end)
+                            local ok, source = pcall(function() return game:HttpGet(_oeUrl) end)
                             if not ok or not source or #source < 50 then
                                 warn("[TL] Module load failed: TL-OUTFIT-EXPAND — " .. tostring(source))
                                 sendNotif("Outfit Expand", "Module offline ❌", 2)
@@ -17203,7 +17204,7 @@ local themePage = Instance.new("Frame", subArea)
                 
                 
                 LoadRolesFromGithub = function()
-                    local success, result = pcall(function() return (game :: any):HttpGet(ROLES_URL) end)
+                    local success, result = pcall(function() return game:HttpGet(ROLES_URL) end)
                     if not success or not result or result == "" then
                         warn("[CovertNet] GitHub load failed – nametag roles unavailable")
                         return
@@ -17798,7 +17799,7 @@ local themePage = Instance.new("Frame", subArea)
                 end
 
                 local function Exec_Reset()
-                    local ok, src = pcall(function() return (game :: any):HttpGet(SCRIPT_URL) end)
+                    local ok, src = pcall(function() return game:HttpGet(SCRIPT_URL) end)
                     local scriptSrc = (ok and src and #src > 10) and src or nil
                     LocalPlayer:LoadCharacter()
                     ShowToast("Respawned by admin", "neutral")
@@ -18478,7 +18479,7 @@ local themePage = Instance.new("Frame", subArea)
 
                 _NT_loadConfig = function()
                     local success, result = pcall(function()
-                        return (game :: any):HttpGet(NAMETAG_CONFIG_URL)
+                        return game:HttpGet(NAMETAG_CONFIG_URL)
                     end)
                     if not success or not result or result == "" then
                         warn("[NametagConfig] Remote fetch failed — using defaults")
@@ -18645,7 +18646,7 @@ local themePage = Instance.new("Frame", subArea)
                                     local dir = img.file:match("^(.+/)") or ""
                                     if dir ~= "" and not _TL_safeIsFolder(dir) then pcall(function() _TL_safeMakeFolder(dir) end) end
                                     local ok, bytes = pcall(function()
-                                        return (game :: any):HttpGet(img.url)
+                                        return game:HttpGet(img.url)
                                     end)
                                     if ok and bytes and bytes ~= "" then
                                         _TL_safeWriteFile(img.file, bytes)
@@ -18660,7 +18661,7 @@ local themePage = Instance.new("Frame", subArea)
                                     local dir = pic.file:match("^(.+/)") or ""
                                     if dir ~= "" and not _TL_safeIsFolder(dir) then pcall(function() _TL_safeMakeFolder(dir) end) end
                                     local ok, bytes = pcall(function()
-                                        return (game :: any):HttpGet(pic.url)
+                                        return game:HttpGet(pic.url)
                                     end)
                                     if ok and bytes and bytes ~= "" then
                                         _TL_safeWriteFile(pic.file, bytes)
@@ -25488,7 +25489,7 @@ local function _TL_showLoadingScreen()
 end)
 
 task.spawn(function()
-    local ok, src = pcall(function() return (game :: any):HttpGet(EMOTEWHEEL_URL) end)
+    local ok, src = pcall(function() return game:HttpGet(EMOTEWHEEL_URL) end)
     if ok and src and #src > 10 then
         local fn, err = loadstring(src); if fn then pcall(fn) end
     end
