@@ -21959,9 +21959,9 @@ local function parseFieldMessage(fullText, prefixLen)
                             local head = char:FindFirstChild("Head")
                             if head then
                                 local guiParentBB = CoreGui
-                                local tag = guiParentBB:FindFirstChild("CovertPeerTag_" .. p.Name)
+                                local tag = head:FindFirstChild("CovertPeerTag_" .. p.Name)
+                                    or guiParentBB:FindFirstChild("CovertPeerTag_" .. p.Name)
 
-                                
                                 if not creatingNametag[p.Name] then
                                     local needsRecreate = false
                                     if not tag then
@@ -21979,9 +21979,9 @@ local function parseFieldMessage(fullText, prefixLen)
                                 end
                             end
                         else
-                            
                             local guiParentBB = CoreGui
-                            local tag = guiParentBB:FindFirstChild("CovertPeerTag_" .. p.Name)
+                            local tag = (char and char:FindFirstChild("Head") and char.Head:FindFirstChild("CovertPeerTag_" .. p.Name))
+                                or guiParentBB:FindFirstChild("CovertPeerTag_" .. p.Name)
                             if tag then
                                 pcall(function() tag:Destroy() end)
                             end
