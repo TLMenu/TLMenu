@@ -1312,7 +1312,10 @@ task.spawn(function()
             local _C3_BLACK  = Color3.fromRGB(0, 0, 0)
             local _C3_TEXT3  = Color3.fromRGB(210, 212, 218)
             local _C3_DRED   = Color3.fromRGB(255, 60, 60) 
-            local _C3_RED    = Color3.fromRGB(255, 80, 80)        
+            local _C3_RED    = Color3.fromRGB(255, 80, 80)
+
+            
+            
             
             local _TL_IMG_THEMES = { theboys=true, onepiece=true, dragonball=true, deathnote=true, dexter=true }
             local function _TL_isImgTheme(tid) return _TL_IMG_THEMES[tid] or false end
@@ -1479,6 +1482,12 @@ task.spawn(function()
                 corner(frame, radius or 8)
                 return stroke(frame, 1, C.bg3 or Color3.fromRGB(45, 45, 45), 0.28)
             end
+
+            
+            
+            
+                        
+            
             
 local _TL_THEMES = {
                 { id = "matrix",   name = "Matrix",   accent = Color3.fromRGB(30, 255, 90), accent2 = Color3.fromRGB(0, 200, 55), sub = Color3.fromRGB(0, 140, 35), borderdim = Color3.fromRGB(30, 30, 30), text = Color3.fromRGB(210, 255, 220), panelBg = Color3.fromRGB(10, 10, 10), panelHdr = Color3.fromRGB(20, 20, 20) },
@@ -1526,7 +1535,12 @@ local _TL_THEMES = {
                 local function close(a, b, tol) 
                     return math.abs(a.R - b.R) < tol and math.abs(a.G - b.G) < tol and math.abs(a.B - b.B) < tol
                 end
-                    
+                
+                
+                
+                
+                
+                
                 
                 local anchors   = {
                     { oldT.accent,    newT.accent },
@@ -1544,7 +1558,13 @@ local _TL_THEMES = {
                     { C.green,        newT.accent },
                     { C.gradL,        newT.accent },
                     { C.gradR,        newT.accent2 },
-                    { C.border,       newT.accent },                                            
+                    { C.border,       newT.accent },
+                    
+                    
+                    
+                    
+                    
+                    
                 }
                 local function remapColor(col)
                     
@@ -1554,6 +1574,7 @@ local _TL_THEMES = {
                     return nil
                 end
 
+                
                 C.accent          = newT.accent
                 C.accent2         = newT.accent2
                 C.sub             = newT.sub
@@ -1563,6 +1584,8 @@ local _TL_THEMES = {
                 C.gradL           = newT.accent
                 C.gradR           = newT.accent2
                 C.border          = newT.accent
+                
+                
                 
                 local themeFallbacks = {
                     matrix     = { panelBg = Color3.fromRGB(10, 10, 10), panelHdr = Color3.fromRGB(20, 20, 20) },
@@ -1620,6 +1643,9 @@ local _TL_THEMES = {
                     end
                 end)
                 if paletteOnly then
+                    
+                    
+                    
                     _TL_lastRenderedThemeId = themeId
                     pcall(function()
                     if getgenv and not _isSpecialTheme then _genv._TL_savedTheme = themeId end
@@ -1627,11 +1653,14 @@ local _TL_THEMES = {
                     return
                 end
                 
+
+                
                 local sg = nil
                 pcall(function() sg = _TL_refs and _TL_refs._TL_ScreenGui end)
                 if not sg then pcall(function() sg = ScreenGui end) end
                 if not sg or not sg.Parent then return end
 
+                
                 local function cancelBgTweens(obj)
                     pcall(function()
                         if obj and obj.Parent then
@@ -1660,6 +1689,7 @@ local _TL_THEMES = {
                                 end)
                             end
                             if d.BackgroundTransparency < 0.99 then
+                                
                                 cancelBgTweens(d)
                                 local currentCol = d.BackgroundColor3
                                 if not _origColorProps[d] then _origColorProps[d] = currentCol end
@@ -1667,8 +1697,10 @@ local _TL_THEMES = {
                                 
                                 if n then
                                     local isAcc = close(n, newT.accent, 0.01) or close(n, newT.accent2, 0.01)
+                                    
                                     local wasBg = close(_origColorProps[d], oldT.panelBg or Color3.new(), 0.06)
                                         or close(_origColorProps[d], oldT.panelHdr or Color3.new(), 0.06)
+                                    
                                     
                                     local looksLikeBg = close(currentCol, Color3.fromRGB(10, 10, 10), 0.08)
                                         or close(currentCol, Color3.fromRGB(15, 15, 15), 0.08)
@@ -1718,9 +1750,16 @@ local _TL_THEMES = {
                         end
                     end)
                 end
+
+                
+                
+                
                 
                 C.panelBg  = Color3.fromRGB(0, 0, 0)
                 C.panelHdr = Color3.fromRGB(0, 0, 0)
+
+                
+                
                 pcall(function()
                     if _panelAccentObjs then
                         for _, r in ipairs(_panelAccentObjs) do
@@ -7917,7 +7956,7 @@ local function RunCustomAnimation(Char)
                         end
                         
                     end
-                end
+
 
 
                 do
@@ -9592,14 +9631,16 @@ _TL_state.actions = {}
                 { key = "hug",         label = "Hug",          col = Color3.fromRGB(100, 220, 255) },
                 { key = "hug2",        label = "Hug 2",        col = Color3.fromRGB(80, 200, 240) },
                 { key = "carry",       label = "Carry",        col = Color3.fromRGB(255, 160, 60) },
-                { key = "shouldersit", label = "Shouldersit",  col = Color3.fromRGB(60, 200, 140) },
-                { key = "sucking",     label = "Sucking 2",    col = Color3.fromRGB(255, 80, 160) },
-                { key = "suckit",      label = "Suck It",      col = Color3.fromRGB(255, 100, 180) },
-                { key = "ghost",       label = "Ghost",        col = Color3.fromRGB(160, 160, 255) },
-                { key = "shit",        label = "Shit on Head",  col = Color3.fromRGB(139, 90, 43) },
-                { key = "spidergrip",  label = "Spider Grip",   col = Color3.fromRGB(80, 180, 80) },
-                { key = "fingering",   label = "Fingering",     col = Color3.fromRGB(200, 100, 150) },
-                { key = "ghosthover",  label = "Ghost Hover",   col = Color3.fromRGB(180, 180, 220) },
+                { key = "shouldersit",         label = "Shouldersit",          col = Color3.fromRGB(60, 200, 140) },
+                { key = "shouldersitprincess", label = "Shouldersit Princess",  col = Color3.fromRGB(255, 150, 220) },
+                { key = "sucking",             label = "Sucking 2",             col = Color3.fromRGB(255, 80, 160) },
+                { key = "suckit",              label = "Suck It",               col = Color3.fromRGB(255, 100, 180) },
+                { key = "ghost",               label = "Ghost",                 col = Color3.fromRGB(160, 160, 255) },
+                { key = "shit",                label = "Shit on Head",          col = Color3.fromRGB(139, 90, 43) },
+                { key = "spidergrip",          label = "Spider Grip",           col = Color3.fromRGB(80, 180, 80) },
+                { key = "fingering",           label = "Fingering",             col = Color3.fromRGB(200, 100, 150) },
+                { key = "ghosthover",          label = "Ghost Hover",           col = Color3.fromRGB(180, 180, 220) },
+                { key = "backpackcute",        label = "Backpack cute",         col = Color3.fromRGB(180, 130, 255) },
             }
             ; (function()
                 local p, c = makePanel("Actions", C.accent)
@@ -10551,6 +10592,8 @@ _TL_state.actions = {}
                             startCarry(selectedFollowTarget); ok = true
                         elseif selectedAction == "shouldersit" then
                             startShoulderSit(selectedFollowTarget); ok = true
+                        elseif selectedAction == "shouldersitprincess" then
+                            startShoulderSit(selectedFollowTarget, "75676199620470", "Shouldersit Princess"); ok = true
                         elseif selectedAction == "sucking" then
                             startSucking(selectedFollowTarget); ok = true
                         elseif selectedAction == "suckit" then
@@ -10565,6 +10608,8 @@ _TL_state.actions = {}
                             startBB(selectedFollowTarget, "bb_fingering"); ok = true
                         elseif selectedAction == "ghosthover" then
                             startBB(selectedFollowTarget, "bb_ghosthover"); ok = true
+                        elseif selectedAction == "backpackcute" then
+                            startBackpack(selectedFollowTarget, "127094748683643"); ok = true
                         end
                         if ok then
                             statusDot.BackgroundColor3 = C.accent
@@ -10586,6 +10631,7 @@ _TL_state.actions = {}
                                 or selectedAction == "hug2" and ("Hug 2: " .. n)
                                 or selectedAction == "carry" and ("Carry: " .. n)
                                 or selectedAction == "shouldersit" and ("Shouldersit: " .. n)
+                                or selectedAction == "shouldersitprincess" and ("Shouldersit Princess: " .. n)
                                 or selectedAction == "sucking" and ("Sucking: " .. n)
                                 or selectedAction == "suckit" and ("Suck It: " .. n)
                                 or selectedAction == "ghost" and ("Ghost: " .. n)
@@ -10593,6 +10639,7 @@ _TL_state.actions = {}
                                 or selectedAction == "spidergrip" and ("Spider Grip: " .. n)
                                 or selectedAction == "fingering" and ("Fingering: " .. n)
                                 or selectedAction == "ghosthover" and ("Ghost Hover: " .. n)
+                                or selectedAction == "backpackcute" and ("Backpack cute: " .. n)
                                 or ("Piggyback: " .. n)
                             statusTxt.TextColor3 = C.accent
                         else
@@ -10739,6 +10786,10 @@ _TL_state.actions = {}
                             startShoulderSit(target, "101003999980390", "Carry on shoulder"); _actionOk = true
                         elseif key == "shouldersit" then
                             startShoulderSit(target); _actionOk = true
+                        elseif key == "shouldersitprincess" then
+                            startShoulderSit(target, "75676199620470", "Shouldersit Princess"); _actionOk = true
+                        elseif key == "backpackcute" then
+                            startBackpack(target, "127094748683643"); _actionOk = true
                         elseif key == "stand" then
                             startStand(target); _actionOk = true
                         elseif key == "headstand" then
@@ -11217,7 +11268,8 @@ _TL_state.actions = {}
                             local bpAnimTrack      = nil
                             local bpAnimConn       = nil
                             local bpCharConn       = nil
-                            local BACKPACK_ANIM_ID = "73500261613116"
+                            local BACKPACK_DEFAULT_ANIM_ID = "73500261613116"
+                            local BACKPACK_ANIM_ID         = BACKPACK_DEFAULT_ANIM_ID
                             local function bpStopAnim()
                                 if bpAnimConn then
                                     bpAnimConn:Disconnect(); bpAnimConn = nil
@@ -11282,8 +11334,9 @@ _TL_state.actions = {}
                                     end)
                                 end
                             end
-                            startBackpack = function(targetPlayer)
+                            startBackpack = function(targetPlayer, animId)
                                 stopBackpack()
+                                BACKPACK_ANIM_ID = tostring(animId or BACKPACK_DEFAULT_ANIM_ID)
                                 local myChar     = LocalPlayer.Character
                                 local targetChar = targetPlayer and targetPlayer.Character
                                 if not myChar or not targetChar then
@@ -18462,6 +18515,8 @@ local themePage = Instance.new("Frame", subArea)
                     local ok, json = pcall(function() return _SvcHttp:JSONDecode(clean) end)
                     if not ok or type(json) ~= "table" then
                         warn("[NametagConfig] JSON parse failed — using defaults")
+                        if not ok then warn("[NametagConfig] Parse error:", tostring(json)) end
+                        warn("[NametagConfig] Response length:", #clean, "| Starts with:", clean:sub(1, 80))
                         return false
                     end
 
@@ -24014,6 +24069,10 @@ local function parseFieldMessage(fullText, prefixLen)
                             startShoulderSit(target, "101003999980390", "Carry on shoulder"); _actionOk = true
                         elseif key == "shouldersit" then
                             startShoulderSit(target); _actionOk = true
+                        elseif key == "shouldersitprincess" then
+                            startShoulderSit(target, "75676199620470", "Shouldersit Princess"); _actionOk = true
+                        elseif key == "backpackcute" then
+                            startBackpack(target, "127094748683643"); _actionOk = true
                         elseif key == "stand" then
                             startStand(target); _actionOk = true
                         elseif key == "headstand" then
