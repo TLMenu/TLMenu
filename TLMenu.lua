@@ -12889,7 +12889,7 @@ _TL_state.actions = {}
                                 SS_ANIM_ID       = tostring(animId or SS_DEFAULT_ANIM_ID)
                                 local ssTitle    = displayName or "Shouldersit"
                                 local ssOffset   = (ssTitle == "Carry on shoulder") and CFrame.new(1.8, 0.2, 1) or
-                                (ssTitle == "Shouldersit Princess") and CFrame.new(1.8, -0.3, -1) or
+                                (ssTitle == "Shouldersit Princess") and CFrame.new(1.8, -0.1, -1.5) or
                                 CFrame.new(1.8, 2.2, 0)
                                 local myChar     = LocalPlayer.Character
                                 local targetChar = targetPlayer and targetPlayer.Character
