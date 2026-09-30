@@ -11357,7 +11357,7 @@ _TL_state.actions = {}
                                     local myR = getRootPart(); if myR then myR:SetNetworkOwner(LocalPlayer) end
                                 end)
                                 pcall(sethiddenproperty, myRoot, "PhysicsRepRootPart", tgtRoot)
-                                local _bpkDist = (BACKPACK_ANIM_ID == "127094748683643") and -2.2 or -1.2
+                                local _bpkDist = (BACKPACK_ANIM_ID == "127094748683643") and -0.2 or -1.2
                                 local _bpkY = (BACKPACK_ANIM_ID == "127094748683643") and 1.5 or 2.5
                                 local _bpkTP = tgtTorso.Position + tgtTorso.CFrame.LookVector * _bpkDist +
                                 Vector3.new(0, _bpkY, 0); local _bpkCP = _bpkTP
@@ -11374,7 +11374,7 @@ _TL_state.actions = {}
                                     local myR = _myC and _myC:FindFirstChild("HumanoidRootPart")
                                     if not myR then return end
                                     pcall(sethiddenproperty, myR, "PhysicsRepRootPart", tgtRoot)
-                                    local _bpkDist = (BACKPACK_ANIM_ID == "127094748683643") and -2.2 or -1.2
+                                    local _bpkDist = (BACKPACK_ANIM_ID == "127094748683643") and -0.2 or -1.2
                                     local _bpkY = (BACKPACK_ANIM_ID == "127094748683643") and 1.5 or 2.5
                                     _bpkTP = torso.Position + torso.CFrame.LookVector * _bpkDist + Vector3.new(0, _bpkY, 0)
                                     local _bpkA = 1 - (1 - 0.98) ^ (1 / 60 * 60); _bpkCP = _bpkCP:Lerp(_bpkTP, _bpkA)
@@ -12889,7 +12889,7 @@ _TL_state.actions = {}
                                 SS_ANIM_ID       = tostring(animId or SS_DEFAULT_ANIM_ID)
                                 local ssTitle    = displayName or "Shouldersit"
                                 local ssOffset   = (ssTitle == "Carry on shoulder") and CFrame.new(1.8, 0.2, 1) or
-                                (ssTitle == "Shouldersit Princess") and CFrame.new(1.8, 1.2, -1) or
+                                (ssTitle == "Shouldersit Princess") and CFrame.new(1.8, -0.3, -1) or
                                 CFrame.new(1.8, 2.2, 0)
                                 local myChar     = LocalPlayer.Character
                                 local targetChar = targetPlayer and targetPlayer.Character
