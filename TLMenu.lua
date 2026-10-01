@@ -22447,7 +22447,7 @@ local function parseFieldMessage(fullText, prefixLen)
                             },
                         },
                     }
-                    local TRACK_ROW_H     = 38
+                    local TRACK_ROW_H     = 44
                     local PL_HEADER_H     = 44
                     local PL_PAD_TOP      = 8 
                     local _plOpen         = false
@@ -22590,44 +22590,71 @@ local function parseFieldMessage(fullText, prefixLen)
                         local function _unhighlightRow(r)
                             for _, rf in ipairs(_plRowFrames) do
                                 if rf.row == r then
-                                    twP(rf.row, 0.12, { BackgroundTransparency = 0.92 })
+                                    twP(rf.row, 0.12, { BackgroundTransparency = 0.50 })
                                     twP(rf.nameL, 0.12, { TextColor3 = C.text or _C3_TEXT })
+                                    if rf.numBadge then twP(rf.numBadge, 0.12, { BackgroundTransparency = 0.82 }) end
+                                    if rf.accentBar then twP(rf.accentBar, 0.12, { BackgroundTransparency = 0.70 }) end
+                                    if rf.playDot then twP(rf.playDot, 0.12, { BackgroundTransparency = 1 }) end
                                 end
                             end
                         end
 
                         for i, track in ipairs(pl.tracks) do
-                            local ry                   = (i - 1) * TRACK_ROW_H + 3
+                            local ry                   = (i - 1) * TRACK_ROW_H + 4
                             local row                  = Instance.new("Frame", rowContainer)
-                            row.Size                   = UDim2.new(1, -8, 0, TRACK_ROW_H - 4)
-                            row.Position               = UDim2.new(0, 4, 0, ry)
-                            row.BackgroundColor3       = pl.col; row.BackgroundTransparency = 0.92
-                            row.BorderSizePixel        = 0; corner(row, 8)
+                            row.Size                   = UDim2.new(1, -10, 0, TRACK_ROW_H - 6)
+                            row.Position               = UDim2.new(0, 5, 0, ry)
+                            row.BackgroundColor3       = Color3.fromRGB(20, 21, 26)
+                            row.BackgroundTransparency = 0.50
+                            row.BorderSizePixel        = 0; corner(row, 10)
                             local rowStroke            = _makeDummyStroke(row)
-                            rowStroke.Thickness        = 1; rowStroke.Color = pl.col; rowStroke.Transparency = 0.75
+                            rowStroke.Thickness        = 1; rowStroke.Color = pl.col; rowStroke.Transparency = 0.80
+
+                            -- Left accent bar
+                            local accentBar = Instance.new("Frame", row)
+                            accentBar.Size = UDim2.new(0, 3, 1, -8); accentBar.Position = UDim2.new(0, 0, 0, 4)
+                            accentBar.BackgroundColor3 = pl.col; accentBar.BackgroundTransparency = 0.70
+                            accentBar.BorderSizePixel = 0; corner(accentBar, 99)
+
+                            -- Track number badge
+                            local numBadge = Instance.new("Frame", row)
+                            numBadge.Size = UDim2.new(0, 22, 0, 22); numBadge.Position = UDim2.new(0, 8, 0.5, -11)
+                            numBadge.BackgroundColor3 = pl.col; numBadge.BackgroundTransparency = 0.82
+                            numBadge.BorderSizePixel = 0; corner(numBadge, 6)
+                            local numLbl = Instance.new("TextLabel", numBadge)
+                            numLbl.Size = UDim2.new(1, 0, 1, 0); numLbl.BackgroundTransparency = 1
+                            numLbl.Text = tostring(i); numLbl.Font = Enum.Font.GothamBlack
+                            numLbl.TextSize = 10; numLbl.TextColor3 = pl.col
+                            numLbl.TextXAlignment = Enum.TextXAlignment.Center
+
+                            -- Track name
+                            local nameL = Instance.new("TextLabel", row)
+                            nameL.Size = UDim2.new(1, -58, 0, 18); nameL.Position = UDim2.new(0, 36, 0.5, -9)
+                            nameL.BackgroundTransparency = 1; nameL.Text = track.name
+                            nameL.Font = Enum.Font.GothamBold; nameL.TextSize = 12
+                            nameL.TextColor3 = C.text or _C3_TEXT; nameL.TextXAlignment = Enum.TextXAlignment.Left
+                            nameL.TextTruncate = Enum.TextTruncate.AtEnd
+
+                            -- Play indicator dot (right side, hidden by default)
+                            local playDot = Instance.new("Frame", row)
+                            playDot.Size = UDim2.new(0, 6, 0, 6); playDot.Position = UDim2.new(1, -14, 0.5, -3)
+                            playDot.BackgroundColor3 = pl.col; playDot.BackgroundTransparency = 1
+                            playDot.BorderSizePixel = 0; corner(playDot, 99)
 
                             local rowBtn = Instance.new("TextButton", row)
                             rowBtn.Size = UDim2.new(1, 0, 1, 0)
                             rowBtn.BackgroundTransparency = 1; rowBtn.Text = ""; rowBtn.ZIndex = 5
 
-                            local noteL = Instance.new("TextLabel", row)
-                            noteL.Size = UDim2.new(0, 24, 1, 0); noteL.Position = UDim2.new(0, 6, 0, 0)
-                            noteL.BackgroundTransparency = 1; noteL.Text = "♪"
-                            noteL.Font = Enum.Font.GothamBold; noteL.TextSize = 13
-                            noteL.TextColor3 = pl.col; noteL.TextXAlignment = Enum.TextXAlignment.Center
-
-                            local nameL = Instance.new("TextLabel", row)
-                            nameL.Size = UDim2.new(1, -50, 0, 16); nameL.Position = UDim2.new(0, 32, 0.5, -8)
-                            nameL.BackgroundTransparency = 1; nameL.Text = track.name
-                            nameL.Font = Enum.Font.GothamBold; nameL.TextSize = 12
-                            nameL.TextColor3 = C.text or _C3_TEXT; nameL.TextXAlignment = Enum.TextXAlignment.Left
-
                             table.insert(_plRowFrames,
-                                { row = row, nameL = nameL, id = track.id, col = pl.col, name = track.name })
+                                { row = row, nameL = nameL, numBadge = numBadge, numLbl = numLbl, accentBar = accentBar, playDot = playDot, id = track.id, col = pl.col, name = track.name })
 
                             local trackId  = track.id
                             local rowRef   = row
                             local nameLRef = nameL
+                            local numBRef  = numBadge
+                            local numLRef  = numLbl
+                            local aBarRef  = accentBar
+                            local dotRef   = playDot
 
                             rowBtn.MouseButton1Click:Connect(function()
                                 if _activeMusicRow == rowRef then
@@ -22641,8 +22668,9 @@ local function parseFieldMessage(fullText, prefixLen)
                                     _unhighlightRow(_activeMusicRow)
                                     for _, rf in ipairs(_cmRowFrames) do
                                         if rf.row == _activeMusicRow then
-                                            twP(rf.row, 0.12, { BackgroundTransparency = 0.35 })
+                                            twP(rf.row, 0.12, { BackgroundTransparency = 0.50 })
                                             twP(rf.nl, 0.12, { TextColor3 = C.text or _C3_TEXT })
+                                            if rf.dot then twP(rf.dot, 0.12, { BackgroundTransparency = 1 }) end
                                         end
                                     end
                                 end
@@ -22650,18 +22678,23 @@ local function parseFieldMessage(fullText, prefixLen)
                                 _currentTrackIdx = i
                                 _playMusicId(trackId, _musicVol, track.name)
                                 _activeMusicRow = rowRef
-                                twP(rowRef, 0.15, { BackgroundTransparency = 0.75 })
+                                twP(rowRef, 0.15, { BackgroundTransparency = 0.25 })
                                 twP(nameLRef, 0.15, { TextColor3 = pl.col })
+                                twP(numBRef, 0.15, { BackgroundTransparency = 0.60 })
+                                twP(aBarRef, 0.15, { BackgroundTransparency = 0.30 })
+                                twP(dotRef, 0.15, { BackgroundTransparency = 0.0 })
                                 playBtn.Image = "rbxassetid://" .. tostring(_STOP_IMG)
                             end)
                             rowBtn.MouseEnter:Connect(function()
                                 if _activeMusicRow ~= rowRef then
-                                    twP(rowRef, 0.08, { BackgroundTransparency = 0.82 })
+                                    twP(rowRef, 0.08, { BackgroundTransparency = 0.35 })
+                                    twP(aBarRef, 0.08, { BackgroundTransparency = 0.55 })
                                 end
                             end)
                             rowBtn.MouseLeave:Connect(function()
                                 if _activeMusicRow ~= rowRef then
-                                    twP(rowRef, 0.08, { BackgroundTransparency = 0.92 })
+                                    twP(rowRef, 0.08, { BackgroundTransparency = 0.50 })
+                                    twP(aBarRef, 0.08, { BackgroundTransparency = 0.70 })
                                 end
                             end)
                         end
@@ -22743,7 +22776,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     local _cmFolder = nil
                     local _cmTracks = {}
                     local _cmRowFrames = {}
-                    local _CM_ROW_H = 38
+                    local _CM_ROW_H = 44
 
                     local function _cmEnsureFolder()
                         if type(isfolder) ~= "function" or type(makefolder) ~= "function" then return nil end
@@ -22783,59 +22816,109 @@ local function parseFieldMessage(fullText, prefixLen)
                         local rowCont = _cmCard:FindFirstChild("CMRowCont")
                         if not rowCont then return end
                         for i, trk in ipairs(_cmTracks) do
-                            local ry = (i - 1) * _CM_ROW_H + 3
+                            local ry = (i - 1) * _CM_ROW_H + 4
                             local row = Instance.new("Frame", rowCont)
-                            row.Size = UDim2.new(1, -8, 0, _CM_ROW_H - 4)
-                            row.Position = UDim2.new(0, 4, 0, ry)
-                            row.BackgroundColor3 = Color3.fromRGB(26, 27, 34); row.BackgroundTransparency = 0.35
-                            row.BorderSizePixel = 0; corner(row, 8)
+                            row.Size = UDim2.new(1, -10, 0, _CM_ROW_H - 6)
+                            row.Position = UDim2.new(0, 5, 0, ry)
+                            row.BackgroundColor3 = Color3.fromRGB(20, 21, 26); row.BackgroundTransparency = 0.50
+                            row.BorderSizePixel = 0; corner(row, 10)
                             local rowStroke = _makeDummyStroke(row)
-                            rowStroke.Thickness = 1; rowStroke.Color = C.bg3 or _C3_BG3; rowStroke.Transparency = 0.6
+                            rowStroke.Thickness = 1; rowStroke.Color = C.accent or _C3_ACC; rowStroke.Transparency = 0.80
+
+                            -- Left accent bar
+                            local aBar = Instance.new("Frame", row)
+                            aBar.Size = UDim2.new(0, 3, 1, -8); aBar.Position = UDim2.new(0, 0, 0, 4)
+                            aBar.BackgroundColor3 = C.accent or _C3_ACC; aBar.BackgroundTransparency = 0.70
+                            aBar.BorderSizePixel = 0; corner(aBar, 99)
+
+                            -- Track number badge
+                            local numB = Instance.new("Frame", row)
+                            numB.Size = UDim2.new(0, 22, 0, 22); numB.Position = UDim2.new(0, 8, 0.5, -11)
+                            numB.BackgroundColor3 = C.accent or _C3_ACC; numB.BackgroundTransparency = 0.82
+                            numB.BorderSizePixel = 0; corner(numB, 6)
+                            local numLb = Instance.new("TextLabel", numB)
+                            numLb.Size = UDim2.new(1, 0, 1, 0); numLb.BackgroundTransparency = 1
+                            numLb.Text = tostring(i); numLb.Font = Enum.Font.GothamBlack
+                            numLb.TextSize = 10; numLb.TextColor3 = C.accent or _C3_ACC
+                            numLb.TextXAlignment = Enum.TextXAlignment.Center
 
                             local rb = Instance.new("TextButton", row)
                             rb.Size = UDim2.new(1, 0, 1, 0); rb.BackgroundTransparency = 1; rb.Text = ""; rb.ZIndex = 5
 
-                            local note = Instance.new("TextLabel", row)
-                            note.Size = UDim2.new(0, 24, 1, 0); note.Position = UDim2.new(0, 6, 0, 0)
-                            note.BackgroundTransparency = 1; note.Text = "♫"
-                            note.Font = Enum.Font.GothamBold; note.TextSize = 13
-                            note.TextColor3 = (C.accent or _C3_ACC); note.TextXAlignment = Enum.TextXAlignment.Center
-
                             local nl = Instance.new("TextLabel", row)
-                            nl.Size = UDim2.new(1, -50, 0, 16); nl.Position = UDim2.new(0, 32, 0.5, -8)
+                            nl.Size = UDim2.new(1, -58, 0, 18); nl.Position = UDim2.new(0, 36, 0.5, -9)
                             nl.BackgroundTransparency = 1; nl.Text = trk.name
                             nl.Font = Enum.Font.GothamBold; nl.TextSize = 12
                             nl.TextColor3 = C.text or _C3_TEXT; nl.TextXAlignment = Enum.TextXAlignment.Left
+                            nl.TextTruncate = Enum.TextTruncate.AtEnd
 
-                            _cmRowFrames[#_cmRowFrames + 1] = { row = row, nl = nl, id = trk.id, col = (C.accent or _C3_ACC), name = trk.name }
+                            -- Playing dot indicator
+                            local dot = Instance.new("Frame", row)
+                            dot.Size = UDim2.new(0, 6, 0, 6); dot.Position = UDim2.new(1, -14, 0.5, -3)
+                            dot.BackgroundColor3 = C.accent or _C3_ACC; dot.BackgroundTransparency = 1
+                            dot.BorderSizePixel = 0; corner(dot, 99)
+
+                            _cmRowFrames[#_cmRowFrames + 1] = { row = row, nl = nl, id = trk.id, col = (C.accent or _C3_ACC), name = trk.name, dot = dot, numB = numB, aBar = aBar }
                             local tid, rr, nlr = trk.id, row, nl
+                            local dotRef, numBRef, aBarRef = dot, numB, aBar
 
                             rb.MouseButton1Click:Connect(function()
                                 if _activeMusicRow == rr then
                                     _stopMusic(); _activeMusicRow = nil; _currentTrackIdx = nil
                                     for _, rf in ipairs(_cmRowFrames) do
-                                        if rf.row == rr then twP(rf.row, 0.12, { BackgroundTransparency = 0.35 }); twP(rf.nl, 0.12, { TextColor3 = C.text or _C3_TEXT }) end
+                                        if rf.row == rr then
+                                            twP(rf.row, 0.12, { BackgroundTransparency = 0.50 })
+                                            twP(rf.nl, 0.12, { TextColor3 = C.text or _C3_TEXT })
+                                            if rf.dot then twP(rf.dot, 0.12, { BackgroundTransparency = 1 }) end
+                                            if rf.numB then twP(rf.numB, 0.12, { BackgroundTransparency = 0.82 }) end
+                                            if rf.aBar then twP(rf.aBar, 0.12, { BackgroundTransparency = 0.70 }) end
+                                        end
                                     end
                                     playBtn.Image = "rbxassetid://" .. tostring(_PLAY_IMG)
                                     return
                                 end
                                 if _activeMusicRow then
                                     for _, rf in ipairs(_plRowFrames) do
-                                        if rf.row == _activeMusicRow then twP(rf.row, 0.12, { BackgroundTransparency = 0.92 }); twP(rf.nameL, 0.12, { TextColor3 = C.text or _C3_TEXT }) end
+                                        if rf.row == _activeMusicRow then
+                                            twP(rf.row, 0.12, { BackgroundTransparency = 0.50 })
+                                            twP(rf.nameL, 0.12, { TextColor3 = C.text or _C3_TEXT })
+                                            if rf.playDot then twP(rf.playDot, 0.12, { BackgroundTransparency = 1 }) end
+                                            if rf.numBadge then twP(rf.numBadge, 0.12, { BackgroundTransparency = 0.82 }) end
+                                            if rf.accentBar then twP(rf.accentBar, 0.12, { BackgroundTransparency = 0.70 }) end
+                                        end
                                     end
                                     for _, rf in ipairs(_cmRowFrames) do
-                                        if rf.row == _activeMusicRow then twP(rf.row, 0.12, { BackgroundTransparency = 0.35 }); twP(rf.nl, 0.12, { TextColor3 = C.text or _C3_TEXT }) end
+                                        if rf.row == _activeMusicRow then
+                                            twP(rf.row, 0.12, { BackgroundTransparency = 0.50 })
+                                            twP(rf.nl, 0.12, { TextColor3 = C.text or _C3_TEXT })
+                                            if rf.dot then twP(rf.dot, 0.12, { BackgroundTransparency = 1 }) end
+                                            if rf.numB then twP(rf.numB, 0.12, { BackgroundTransparency = 0.82 }) end
+                                            if rf.aBar then twP(rf.aBar, 0.12, { BackgroundTransparency = 0.70 }) end
+                                        end
                                     end
                                 end
                                 _currentTracks = _cmTracks; _currentTrackIdx = i
                                 _playMusicId(tid, _musicVol, trk.name)
                                 _activeMusicRow = rr
-                                twP(rr, 0.15, { BackgroundTransparency = 0.20 })
+                                twP(rr, 0.15, { BackgroundTransparency = 0.25 })
                                 twP(nlr, 0.15, { TextColor3 = (C.accent or _C3_ACC) })
+                                twP(dotRef, 0.15, { BackgroundTransparency = 0.0 })
+                                twP(numBRef, 0.15, { BackgroundTransparency = 0.60 })
+                                twP(aBarRef, 0.15, { BackgroundTransparency = 0.30 })
                                 playBtn.Image = "rbxassetid://" .. tostring(_STOP_IMG)
                             end)
-                            rb.MouseEnter:Connect(function() if _activeMusicRow ~= rr then twP(rr, 0.08, { BackgroundTransparency = 0.20 }) end end)
-                            rb.MouseLeave:Connect(function() if _activeMusicRow ~= rr then twP(rr, 0.08, { BackgroundTransparency = 0.35 }) end end)
+                            rb.MouseEnter:Connect(function()
+                                if _activeMusicRow ~= rr then
+                                    twP(rr, 0.08, { BackgroundTransparency = 0.35 })
+                                    twP(aBarRef, 0.08, { BackgroundTransparency = 0.55 })
+                                end
+                            end)
+                            rb.MouseLeave:Connect(function()
+                                if _activeMusicRow ~= rr then
+                                    twP(rr, 0.08, { BackgroundTransparency = 0.50 })
+                                    twP(aBarRef, 0.08, { BackgroundTransparency = 0.70 })
+                                end
+                            end)
                         end
                     end
 
@@ -22847,46 +22930,84 @@ local function parseFieldMessage(fullText, prefixLen)
 
                         if n == 0 then
                             local em = Instance.new("Frame", musicPage)
-                            em.Size = UDim2.new(1, -16, 0, 36)
+                            em.Size = UDim2.new(1, -16, 0, 52)
                             em.BackgroundColor3 = Color3.fromRGB(20, 21, 26)
-                            em.BackgroundTransparency = 0.45
+                            em.BackgroundTransparency = 0.40
                             em.BorderSizePixel = 0
-                            corner(em, 10)
+                            corner(em, 12)
                             local emS = _makeDummyStroke(em)
-                            emS.Thickness = 1; emS.Color = C.bg3 or _C3_BG3; emS.Transparency = 0.65
+                            emS.Thickness = 1; emS.Color = C.bg3 or _C3_BG3; emS.Transparency = 0.60
+
+                            local emIcon = Instance.new("TextLabel", em)
+                            emIcon.Size = UDim2.new(0, 28, 1, 0); emIcon.Position = UDim2.new(0, 12, 0, 0)
+                            emIcon.BackgroundTransparency = 1; emIcon.Text = "📁"
+                            emIcon.Font = Enum.Font.GothamBold; emIcon.TextSize = 18
+                            emIcon.TextColor3 = C.sub or _C3_SUB; emIcon.TextXAlignment = Enum.TextXAlignment.Center
 
                             local emLbl = Instance.new("TextLabel", em)
-                            emLbl.Size = UDim2.new(1, -20, 1, 0); emLbl.Position = UDim2.new(0, 10, 0, 0)
-                            emLbl.BackgroundTransparency = 1; emLbl.Text = "📁  Custom-Music folder empty (.mp3, .ogg, .wav)"
-                            emLbl.Font = Enum.Font.Gotham; emLbl.TextSize = 11
-                            emLbl.TextColor3 = C.sub or _C3_SUB; emLbl.TextXAlignment = Enum.TextXAlignment.Center
+                            emLbl.Size = UDim2.new(1, -52, 0, 16); emLbl.Position = UDim2.new(0, 44, 0, 10)
+                            emLbl.BackgroundTransparency = 1; emLbl.Text = "Custom-Music Ordner leer"
+                            emLbl.Font = Enum.Font.GothamBold; emLbl.TextSize = 12
+                            emLbl.TextColor3 = C.sub or _C3_SUB; emLbl.TextXAlignment = Enum.TextXAlignment.Left
+
+                            local emSub = Instance.new("TextLabel", em)
+                            emSub.Size = UDim2.new(1, -52, 0, 14); emSub.Position = UDim2.new(0, 44, 0, 28)
+                            emSub.BackgroundTransparency = 1; emSub.Text = ".mp3  .ogg  .wav  .webm  .opus"
+                            emSub.Font = Enum.Font.Gotham; emSub.TextSize = 10
+                            emSub.TextColor3 = C.sub or _C3_SUB; emSub.TextXAlignment = Enum.TextXAlignment.Left
 
                             _cmCard = em
                             _layoutMusicPage()
                             return
                         end
 
-                        local hdrH = 32
+                        local hdrH = 40
                         local card = Instance.new("Frame", musicPage)
-                        card.Size = UDim2.new(1, -16, 0, hdrH + 6 + math.min(n, 4) * _CM_ROW_H + 4)
+                        card.Size = UDim2.new(1, -16, 0, hdrH + 4 + math.min(n, 4) * _CM_ROW_H + 6)
                         card.BackgroundColor3 = Color3.fromRGB(20, 21, 26)
                         card.BackgroundTransparency = 0.35
                         card.BorderSizePixel = 0
-                        corner(card, 12)
+                        corner(card, 14)
                         local cs = _makeDummyStroke(card)
-                        cs.Thickness = 1; cs.Color = (C.accent or _C3_ACC); cs.Transparency = 0.55
+                        cs.Thickness = 1; cs.Color = (C.accent or _C3_ACC); cs.Transparency = 0.60
                         _cmCard = card
 
+                        -- Header accent line
+                        local cmAccLine = Instance.new("Frame", card)
+                        cmAccLine.Size = UDim2.new(1, -20, 0, 2); cmAccLine.Position = UDim2.new(0, 10, 0, 0)
+                        cmAccLine.BackgroundColor3 = C.accent or _C3_ACC; cmAccLine.BackgroundTransparency = 0.50
+                        cmAccLine.BorderSizePixel = 0; corner(cmAccLine, 2)
+
+                        -- Icon
+                        local cmIcon = Instance.new("Frame", card)
+                        cmIcon.Size = UDim2.new(0, 28, 0, 28); cmIcon.Position = UDim2.new(0, 8, 0, 6)
+                        cmIcon.BackgroundColor3 = C.accent or _C3_ACC; cmIcon.BackgroundTransparency = 0.85
+                        cmIcon.BorderSizePixel = 0; corner(cmIcon, 8)
+                        local cmIconS = _makeDummyStroke(cmIcon)
+                        cmIconS.Thickness = 1; cmIconS.Color = C.accent or _C3_ACC; cmIconS.Transparency = 0.65
+                        local cmIconLbl = Instance.new("TextLabel", cmIcon)
+                        cmIconLbl.Size = UDim2.new(1, 0, 1, 0); cmIconLbl.BackgroundTransparency = 1
+                        cmIconLbl.Text = "♫"; cmIconLbl.Font = Enum.Font.GothamBlack; cmIconLbl.TextSize = 14
+                        cmIconLbl.TextColor3 = C.accent or _C3_ACC; cmIconLbl.TextXAlignment = Enum.TextXAlignment.Center
+
                         local hi = Instance.new("TextLabel", card)
-                        hi.Size = UDim2.new(1, -90, 0, 18); hi.Position = UDim2.new(0, 12, 0, 7)
-                        hi.BackgroundTransparency = 1; hi.Text = "♫  Custom Music"
+                        hi.Size = UDim2.new(1, -120, 0, 16); hi.Position = UDim2.new(0, 42, 0, 6)
+                        hi.BackgroundTransparency = 1; hi.Text = "Custom Music"
                         hi.Font = Enum.Font.GothamBold; hi.TextSize = 12
                         hi.TextColor3 = (C.accent or _C3_ACC); hi.TextXAlignment = Enum.TextXAlignment.Left
 
+                        local hiSub = Instance.new("TextLabel", card)
+                        hiSub.Size = UDim2.new(1, -120, 0, 13); hiSub.Position = UDim2.new(0, 42, 0, 22)
+                        hiSub.BackgroundTransparency = 1; hiSub.Text = "Eigene Musikdateien"
+                        hiSub.Font = Enum.Font.Gotham; hiSub.TextSize = 10
+                        hiSub.TextColor3 = C.sub or _C3_SUB; hiSub.TextXAlignment = Enum.TextXAlignment.Left
+
                         local hBadge = Instance.new("Frame", card)
-                        hBadge.Size = UDim2.new(0, 56, 0, 16); hBadge.Position = UDim2.new(1, -68, 0, 8)
+                        hBadge.Size = UDim2.new(0, 56, 0, 18); hBadge.Position = UDim2.new(1, -66, 0, 11)
                         hBadge.BackgroundColor3 = (C.accent or _C3_ACC); hBadge.BackgroundTransparency = 0.85
                         hBadge.BorderSizePixel = 0; corner(hBadge, 99)
+                        local hBadgeS = _makeDummyStroke(hBadge)
+                        hBadgeS.Thickness = 1; hBadgeS.Color = C.accent or _C3_ACC; hBadgeS.Transparency = 0.65
                         local hs = Instance.new("TextLabel", hBadge); hs.Name = "CMSub"
                         hs.Size = UDim2.new(1, 0, 1, 0); hs.BackgroundTransparency = 1
                         hs.Text = n .. " Track" .. (n ~= 1 and "s" or "")
@@ -22895,7 +23016,7 @@ local function parseFieldMessage(fullText, prefixLen)
 
                         local sep = Instance.new("Frame", card)
                         sep.Size = UDim2.new(1, -20, 0, 1); sep.Position = UDim2.new(0, 10, 0, hdrH)
-                        sep.BackgroundColor3 = (C.accent or _C3_ACC); sep.BackgroundTransparency = 0.7; sep.BorderSizePixel = 0
+                        sep.BackgroundColor3 = (C.accent or _C3_ACC); sep.BackgroundTransparency = 0.70; sep.BorderSizePixel = 0
 
                         local vis = math.min(n, 4)
                         local rcH = vis * _CM_ROW_H
