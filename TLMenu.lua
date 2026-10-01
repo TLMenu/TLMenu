@@ -21832,8 +21832,26 @@ local function parseFieldMessage(fullText, prefixLen)
                 local _PLAY_IMG         = 109215952992723
                 local _STOP_IMG         = 129830110201524
                 local _playBtnRef       = nil
+                local _navigateTrackRef = nil
+                local _timeUpdateConn   = nil
+                local _pbFillRef        = nil
+                local _pbKnobRef        = nil
+                local _timeCurRef       = nil
+                local _timeTotalRef     = nil
+                local _pbDrag           = false
+
+                local function _formatTime(sec)
+                    if not sec or sec <= 0 or sec ~= sec then return "0:00" end
+                    local m = math.floor(sec / 60)
+                    local s = math.floor(sec % 60)
+                    return string.format("%d:%02d", m, s)
+                end
 
                 local function _stopMusic()
+                    if _timeUpdateConn then
+                        pcall(function() _timeUpdateConn:Disconnect() end)
+                        _timeUpdateConn = nil
+                    end
                     if _activeMusicSound then
                         pcall(function()
                             _activeMusicSound:Stop(); _activeMusicSound:Destroy()
@@ -21852,7 +21870,12 @@ local function parseFieldMessage(fullText, prefixLen)
                     if _playBtnRef then
                         pcall(function() _playBtnRef.Image = "rbxassetid://" .. tostring(_PLAY_IMG) end)
                     end
+                    if _pbFillRef then _pbFillRef.Size = UDim2.new(0, 0, 1, 0) end
+                    if _pbKnobRef then _pbKnobRef.Position = UDim2.new(0, -5, 0.5, -5) end
+                    if _timeCurRef then _timeCurRef.Text = "0:00" end
+                    if _timeTotalRef then _timeTotalRef.Text = "--:--" end
                 end
+
                 local function _playMusicId(id, vol, trackName)
                     _stopMusic()
                     local snd              = Instance.new("Sound", workspace)
@@ -21872,6 +21895,29 @@ local function parseFieldMessage(fullText, prefixLen)
                     snd:Play()
                     _activeMusicSound = snd
                     _musicPlaying = true
+
+                    snd.Ended:Connect(function()
+                        if _navigateTrackRef then _navigateTrackRef(1) end
+                    end)
+
+                    _timeUpdateConn = _SvcRS.Heartbeat:Connect(function()
+                        if not _activeMusicSound or not _activeMusicSound.Parent then return end
+                        if not _musicPlaying then return end
+                        local cur = _activeMusicSound.TimePosition or 0
+                        local dur = _activeMusicSound.TimeLength or 0
+                        if dur > 0 and _timeTotalRef then
+                            _timeTotalRef.Text = _formatTime(dur)
+                        elseif _timeTotalRef then
+                            _timeTotalRef.Text = "--:--"
+                        end
+                        if not _pbDrag and _pbFillRef and _pbKnobRef and _timeCurRef then
+                            local pct = (dur > 0) and math.clamp(cur / dur, 0, 1) or 0
+                            _pbFillRef.Size = UDim2.new(pct, 0, 1, 0)
+                            _pbKnobRef.Position = UDim2.new(pct, -5, 0.5, -5)
+                            _timeCurRef.Text = _formatTime(cur)
+                        end
+                    end)
+
                     if _nowPlayingLabel and trackName then
                         _nowPlayingLabel.Text = tostring(trackName)
                         pcall(function() _nowPlayingLabel.TextColor3 = C.accent or _C3_ACC end)
@@ -21891,21 +21937,22 @@ local function parseFieldMessage(fullText, prefixLen)
                     local MUSIC_BASE_H               = 218 
 
                     -- ═══════════════════════════════════════════════════
-                    -- 1. Now Playing Showcase Card
+                    -- 1. Spotify-Style Player Card
                     -- ═══════════════════════════════════════════════════
-                    local nowCard = Instance.new("Frame", musicPage)
-                    nowCard.Size = UDim2.new(1, -16, 0, 68)
-                    nowCard.Position = UDim2.new(0, 8, 0, 8)
-                    nowCard.BackgroundColor3 = Color3.fromRGB(20, 21, 26)
-                    nowCard.BackgroundTransparency = 0.35
-                    nowCard.BorderSizePixel = 0
-                    corner(nowCard, 12)
-                    local nowCard_Stroke = _makeDummyStroke(nowCard)
-                    nowCard_Stroke.Thickness = 1
-                    nowCard_Stroke.Color = C.bg3 or _C3_BG3
-                    nowCard_Stroke.Transparency = 0.55
+                    local playerCard = Instance.new("Frame", musicPage)
+                    playerCard.Size = UDim2.new(1, -16, 0, 138)
+                    playerCard.Position = UDim2.new(0, 8, 0, 8)
+                    playerCard.BackgroundColor3 = Color3.fromRGB(20, 21, 26)
+                    playerCard.BackgroundTransparency = 0.35
+                    playerCard.BorderSizePixel = 0
+                    corner(playerCard, 14)
+                    local playerCard_Stroke = _makeDummyStroke(playerCard)
+                    playerCard_Stroke.Thickness = 1
+                    playerCard_Stroke.Color = C.bg3 or _C3_BG3
+                    playerCard_Stroke.Transparency = 0.55
 
-                    local nowAccentLine = Instance.new("Frame", nowCard)
+                    -- Top subtle accent line
+                    local nowAccentLine = Instance.new("Frame", playerCard)
                     nowAccentLine.Size = UDim2.new(1, -20, 0, 2)
                     nowAccentLine.Position = UDim2.new(0, 10, 0, 0)
                     nowAccentLine.BackgroundColor3 = C.accent or _C3_ACC
@@ -21913,31 +21960,53 @@ local function parseFieldMessage(fullText, prefixLen)
                     nowAccentLine.BorderSizePixel = 0
                     corner(nowAccentLine, 2)
 
-                    local nowBadge = Instance.new("Frame", nowCard)
-                    nowBadge.Size = UDim2.new(0, 84, 0, 20)
-                    nowBadge.Position = UDim2.new(0, 10, 0, 8)
-                    nowBadge.BackgroundColor3 = C.accent or _C3_ACC
-                    nowBadge.BackgroundTransparency = 0.85
-                    nowBadge.BorderSizePixel = 0
-                    corner(nowBadge, 99)
-                    local nowBadge_Stroke = _makeDummyStroke(nowBadge)
-                    nowBadge_Stroke.Thickness = 1
-                    nowBadge_Stroke.Color = C.accent or _C3_ACC
-                    nowBadge_Stroke.Transparency = 0.65
+                    -- Top Track Info & Quick Actions
+                    local iconBadge = Instance.new("Frame", playerCard)
+                    iconBadge.Size = UDim2.new(0, 32, 0, 32)
+                    iconBadge.Position = UDim2.new(0, 10, 0, 10)
+                    iconBadge.BackgroundColor3 = C.accent or _C3_ACC
+                    iconBadge.BackgroundTransparency = 0.85
+                    iconBadge.BorderSizePixel = 0
+                    corner(iconBadge, 8)
+                    local iconBadgeS = _makeDummyStroke(iconBadge)
+                    iconBadgeS.Thickness = 1; iconBadgeS.Color = C.accent or _C3_ACC; iconBadgeS.Transparency = 0.65
 
-                    local nowBadgeText = Instance.new("TextLabel", nowBadge)
-                    nowBadgeText.Size = UDim2.new(1, 0, 1, 0)
+                    local iconBadgeLbl = Instance.new("TextLabel", iconBadge)
+                    iconBadgeLbl.Size = UDim2.new(1, 0, 1, 0)
+                    iconBadgeLbl.BackgroundTransparency = 1
+                    iconBadgeLbl.Font = Enum.Font.GothamBlack
+                    iconBadgeLbl.TextSize = 14
+                    iconBadgeLbl.Text = "♫"
+                    iconBadgeLbl.TextColor3 = C.accent or _C3_ACC
+                    iconBadgeLbl.TextXAlignment = Enum.TextXAlignment.Center
+
+                    local musicHint = Instance.new("TextLabel", playerCard)
+                    musicHint.Size = UDim2.new(1, -170, 0, 18)
+                    musicHint.Position = UDim2.new(0, 48, 0, 8)
+                    musicHint.BackgroundTransparency = 1
+                    musicHint.Text = "No track playing"
+                    musicHint.Font = Enum.Font.GothamBold
+                    musicHint.TextSize = 12
+                    musicHint.TextColor3 = C.sub or _C3_SUB
+                    musicHint.TextXAlignment = Enum.TextXAlignment.Left
+                    musicHint.TextTruncate = Enum.TextTruncate.AtEnd
+                    _nowPlayingLabel = musicHint
+
+                    local nowBadgeText = Instance.new("TextLabel", playerCard)
+                    nowBadgeText.Size = UDim2.new(1, -170, 0, 14)
+                    nowBadgeText.Position = UDim2.new(0, 48, 0, 26)
                     nowBadgeText.BackgroundTransparency = 1
-                    nowBadgeText.Font = Enum.Font.GothamBold
-                    nowBadgeText.TextSize = 9
+                    nowBadgeText.Font = Enum.Font.Gotham
+                    nowBadgeText.TextSize = 10
                     nowBadgeText.TextColor3 = C.sub or _C3_SUB
                     nowBadgeText.Text = "♫ STANDBY"
-                    nowBadgeText.TextXAlignment = Enum.TextXAlignment.Center
+                    nowBadgeText.TextXAlignment = Enum.TextXAlignment.Left
                     _nowPlayingBadge = nowBadgeText
 
-                    local loadBtn = Instance.new("TextButton", nowCard)
-                    loadBtn.Size = UDim2.new(0, 72, 0, 20)
-                    loadBtn.Position = UDim2.new(1, -154, 0, 8)
+                    -- Quick Action Buttons in Top Right
+                    local loadBtn = Instance.new("TextButton", playerCard)
+                    loadBtn.Size = UDim2.new(0, 52, 0, 22)
+                    loadBtn.Position = UDim2.new(1, -114, 0, 10)
                     loadBtn.BackgroundColor3 = C.accent or _C3_ACC
                     loadBtn.BackgroundTransparency = 0.75
                     loadBtn.BorderSizePixel = 0
@@ -21961,15 +22030,15 @@ local function parseFieldMessage(fullText, prefixLen)
                         if _cmActions.load then _cmActions.load() end
                     end)
 
-                    local copyBtn = Instance.new("TextButton", nowCard)
-                    copyBtn.Size = UDim2.new(0, 72, 0, 20)
-                    copyBtn.Position = UDim2.new(1, -78, 0, 8)
+                    local copyBtn = Instance.new("TextButton", playerCard)
+                    copyBtn.Size = UDim2.new(0, 52, 0, 22)
+                    copyBtn.Position = UDim2.new(1, -58, 0, 10)
                     copyBtn.BackgroundColor3 = C.bg3 or _C3_BG3
                     copyBtn.BackgroundTransparency = 0.50
                     copyBtn.BorderSizePixel = 0
                     copyBtn.Font = Enum.Font.GothamBold
                     copyBtn.TextSize = 10
-                    copyBtn.Text = "📋 Folder"
+                    copyBtn.Text = "📋 Path"
                     copyBtn.TextColor3 = C.sub or _C3_SUB
                     corner(copyBtn, 6)
                     local copyBtnS = _makeDummyStroke(copyBtn)
@@ -21984,32 +22053,215 @@ local function parseFieldMessage(fullText, prefixLen)
                         if _sc._playClickSound then _sc._playClickSound() end
                         local path = _cmEnsureFolder() or "Custom-Music"
                         pcall(function() setclipboard(path) end)
-                        copyBtn.Text = "✓ Copied"
+                        copyBtn.Text = "✓ Done"
                         copyBtn.TextColor3 = C.accent or _C3_ACC
                         task.delay(1.5, function()
-                            copyBtn.Text = "📋 Folder"
+                            copyBtn.Text = "📋 Path"
                             copyBtn.TextColor3 = C.sub or _C3_SUB
                         end)
                     end)
 
-                    local musicHint = Instance.new("TextLabel", nowCard)
-                    musicHint.Size = UDim2.new(1, -24, 0, 24)
-                    musicHint.Position = UDim2.new(0, 12, 0, 36)
-                    musicHint.BackgroundTransparency = 1
-                    musicHint.Text = "No track playing"
-                    musicHint.Font = Enum.Font.GothamBold
-                    musicHint.TextSize = 13
-                    musicHint.TextColor3 = C.sub or _C3_SUB
-                    musicHint.TextXAlignment = Enum.TextXAlignment.Left
-                    musicHint.TextTruncate = Enum.TextTruncate.AtEnd
-                    _nowPlayingLabel = musicHint
+                    -- ───────────────────────────────────────────────────
+                    -- Spotify Controls Row (Centered above progress bar)
+                    -- ───────────────────────────────────────────────────
+                    local BTN_W, BTN_H = 38, 32
+                    local PLAY_W, PLAY_H = 46, 40
+                    local GAP = 14
+                    local TOTAL_CTRL_W = BTN_W + GAP + PLAY_W + GAP + BTN_W
+                    local HALF_W = math.floor(TOTAL_CTRL_W / 2)
+                    local CTRL_Y = 48
+
+                    -- Prev Button (asset 131323738229242)
+                    local backBtn = Instance.new("ImageButton", playerCard)
+                    backBtn.Size = UDim2.new(0, BTN_W, 0, BTN_H)
+                    backBtn.Position = UDim2.new(0.5, -HALF_W, 0, CTRL_Y + math.floor((PLAY_H - BTN_H) / 2))
+                    backBtn.BackgroundColor3 = C.bg3 or _C3_BG3
+                    backBtn.BackgroundTransparency = 0.45
+                    backBtn.BorderSizePixel = 0
+                    backBtn.AutoButtonColor = false
+                    backBtn.Image = "rbxassetid://131323738229242"
+                    backBtn.ImageColor3 = C.text or _C3_TEXT
+                    backBtn.ScaleType = Enum.ScaleType.Fit
+                    corner(backBtn, 10)
+                    local backS = _makeDummyStroke(backBtn)
+                    backS.Thickness = 1; backS.Color = C.bg3 or _C3_BG3; backS.Transparency = 0.55
+
+                    backBtn.MouseEnter:Connect(function()
+                        twP(backBtn, 0.10, { BackgroundTransparency = 0.20 })
+                        twP(backBtn, 0.10, { ImageColor3 = C.accent or _C3_ACC })
+                    end)
+                    backBtn.MouseLeave:Connect(function()
+                        twP(backBtn, 0.12, { BackgroundTransparency = 0.45 })
+                        twP(backBtn, 0.12, { ImageColor3 = C.text or _C3_TEXT })
+                    end)
+
+                    -- Center Play/Pause Button (Hero Button, asset 109215952992723 / 129830110201524)
+                    local playBtn = Instance.new("ImageButton", playerCard)
+                    playBtn.Size = UDim2.new(0, PLAY_W, 0, PLAY_H)
+                    playBtn.Position = UDim2.new(0.5, -math.floor(PLAY_W / 2), 0, CTRL_Y)
+                    playBtn.BackgroundColor3 = C.accent or _C3_ACC
+                    playBtn.BackgroundTransparency = 0.15
+                    playBtn.BorderSizePixel = 0
+                    playBtn.AutoButtonColor = false
+                    playBtn.Image = "rbxassetid://" .. tostring(_PLAY_IMG)
+                    playBtn.ImageColor3 = Color3.fromRGB(255, 255, 255)
+                    playBtn.ScaleType = Enum.ScaleType.Fit
+                    corner(playBtn, 12)
+                    local playS = _makeDummyStroke(playBtn)
+                    playS.Thickness = 1.5; playS.Color = C.accent or _C3_ACC; playS.Transparency = 0.35
+                    _playBtnRef = playBtn
+
+                    playBtn.MouseEnter:Connect(function()
+                        twP(playBtn, 0.10, { BackgroundTransparency = 0.0 })
+                        twP(playS, 0.10, { Transparency = 0.15 })
+                    end)
+                    playBtn.MouseLeave:Connect(function()
+                        twP(playBtn, 0.12, { BackgroundTransparency = 0.15 })
+                        twP(playS, 0.12, { Transparency = 0.35 })
+                    end)
+
+                    -- Skip Button (asset 115665337119894)
+                    local skipBtn = Instance.new("ImageButton", playerCard)
+                    skipBtn.Size = UDim2.new(0, BTN_W, 0, BTN_H)
+                    skipBtn.Position = UDim2.new(0.5, HALF_W - BTN_W, 0, CTRL_Y + math.floor((PLAY_H - BTN_H) / 2))
+                    skipBtn.BackgroundColor3 = C.bg3 or _C3_BG3
+                    skipBtn.BackgroundTransparency = 0.45
+                    skipBtn.BorderSizePixel = 0
+                    skipBtn.AutoButtonColor = false
+                    skipBtn.Image = "rbxassetid://115665337119894"
+                    skipBtn.ImageColor3 = C.text or _C3_TEXT
+                    skipBtn.ScaleType = Enum.ScaleType.Fit
+                    corner(skipBtn, 10)
+                    local skipS = _makeDummyStroke(skipBtn)
+                    skipS.Thickness = 1; skipS.Color = C.bg3 or _C3_BG3; skipS.Transparency = 0.55
+
+                    skipBtn.MouseEnter:Connect(function()
+                        twP(skipBtn, 0.10, { BackgroundTransparency = 0.20 })
+                        twP(skipBtn, 0.10, { ImageColor3 = C.accent or _C3_ACC })
+                    end)
+                    skipBtn.MouseLeave:Connect(function()
+                        twP(skipBtn, 0.12, { BackgroundTransparency = 0.45 })
+                        twP(skipBtn, 0.12, { ImageColor3 = C.text or _C3_TEXT })
+                    end)
+
+                    -- ───────────────────────────────────────────────────
+                    -- Spotify Wiedergabeleiste (Progress Bar directly below buttons)
+                    -- ───────────────────────────────────────────────────
+                    local PB_Y = 100
+                    local timeCur = Instance.new("TextLabel", playerCard)
+                    timeCur.Size = UDim2.new(0, 30, 0, 16)
+                    timeCur.Position = UDim2.new(0, 8, 0, PB_Y + 2)
+                    timeCur.BackgroundTransparency = 1
+                    timeCur.Font = Enum.Font.GothamBold
+                    timeCur.TextSize = 10
+                    timeCur.TextColor3 = C.sub or _C3_SUB
+                    timeCur.Text = "0:00"
+                    timeCur.TextXAlignment = Enum.TextXAlignment.Right
+                    _timeCurRef = timeCur
+
+                    local pbTrack = Instance.new("Frame", playerCard)
+                    pbTrack.Size = UDim2.new(1, -84, 0, 4)
+                    pbTrack.Position = UDim2.new(0, 42, 0, PB_Y + 8)
+                    pbTrack.BackgroundColor3 = Color3.fromRGB(45, 48, 56)
+                    pbTrack.BorderSizePixel = 0
+                    corner(pbTrack, 99)
+
+                    local pbFill = Instance.new("Frame", pbTrack)
+                    pbFill.Size = UDim2.new(0, 0, 1, 0)
+                    pbFill.Position = UDim2.new(0, 0, 0, 0)
+                    pbFill.BackgroundColor3 = C.accent or _C3_ACC
+                    pbFill.BorderSizePixel = 0
+                    corner(pbFill, 99)
+                    _pbFillRef = pbFill
+
+                    local pbKnob = Instance.new("Frame", pbTrack)
+                    pbKnob.Size = UDim2.new(0, 10, 0, 10)
+                    pbKnob.Position = UDim2.new(0, -5, 0.5, -5)
+                    pbKnob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                    pbKnob.BorderSizePixel = 0
+                    corner(pbKnob, 99)
+                    local pbKnobS = _makeDummyStroke(pbKnob)
+                    pbKnobS.Thickness = 1.5; pbKnobS.Color = C.accent or _C3_ACC; pbKnobS.Transparency = 0.2
+                    _pbKnobRef = pbKnob
+
+                    local timeTotal = Instance.new("TextLabel", playerCard)
+                    timeTotal.Size = UDim2.new(0, 30, 0, 16)
+                    timeTotal.Position = UDim2.new(1, -38, 0, PB_Y + 2)
+                    timeTotal.BackgroundTransparency = 1
+                    timeTotal.Font = Enum.Font.GothamBold
+                    timeTotal.TextSize = 10
+                    timeTotal.TextColor3 = C.sub or _C3_SUB
+                    timeTotal.Text = "--:--"
+                    timeTotal.TextXAlignment = Enum.TextXAlignment.Left
+                    _timeTotalRef = timeTotal
+
+                    local pbBtn = Instance.new("TextButton", playerCard)
+                    pbBtn.Size = UDim2.new(1, -84, 0, 20)
+                    pbBtn.Position = UDim2.new(0, 42, 0, PB_Y)
+                    pbBtn.BackgroundTransparency = 1
+                    pbBtn.Text = ""
+
+                    local function _seekFromInput(inp)
+                        if not _activeMusicSound then return end
+                        local absX = pbTrack.AbsolutePosition.X
+                        local absW = pbTrack.AbsoluteSize.X
+                        if absW <= 0 then return end
+                        local pct = math.clamp((inp.Position.X - absX) / absW, 0, 1)
+                        local dur = _activeMusicSound.TimeLength or 0
+                        if dur > 0 then
+                            pcall(function()
+                                _activeMusicSound.TimePosition = pct * dur
+                            end)
+                        end
+                        pbFill.Size = UDim2.new(pct, 0, 1, 0)
+                        pbKnob.Position = UDim2.new(pct, -5, 0.5, -5)
+                        local curSec = pct * dur
+                        timeCur.Text = _formatTime(curSec)
+                    end
+
+                    pbBtn.InputBegan:Connect(function(inp)
+                        if inp.UserInputType == Enum.UserInputType.MouseButton1
+                            or inp.UserInputType == Enum.UserInputType.Touch then
+                            _pbDrag = true
+                            _seekFromInput(inp)
+                            twP(pbTrack, 0.08, { Size = UDim2.new(1, -84, 0, 6) })
+                            twP(pbKnob, 0.08, { Size = UDim2.new(0, 12, 0, 12) })
+                        end
+                    end)
+                    pbBtn.InputEnded:Connect(function(inp)
+                        if inp.UserInputType == Enum.UserInputType.MouseButton1
+                            or inp.UserInputType == Enum.UserInputType.Touch then
+                            _pbDrag = false
+                            twP(pbTrack, 0.12, { Size = UDim2.new(1, -84, 0, 4) })
+                            twP(pbKnob, 0.12, { Size = UDim2.new(0, 10, 0, 10) })
+                        end
+                    end)
+                    _SvcUIS.InputChanged:Connect(function(inp)
+                        if not _pbDrag then return end
+                        if inp.UserInputType == Enum.UserInputType.MouseMovement
+                            or inp.UserInputType == Enum.UserInputType.Touch then
+                            _seekFromInput(inp)
+                        end
+                    end)
+                    pbBtn.MouseEnter:Connect(function()
+                        if not _pbDrag then
+                            twP(pbTrack, 0.08, { Size = UDim2.new(1, -84, 0, 5) })
+                            twP(pbKnob, 0.08, { Size = UDim2.new(0, 12, 0, 12) })
+                        end
+                    end)
+                    pbBtn.MouseLeave:Connect(function()
+                        if not _pbDrag then
+                            twP(pbTrack, 0.12, { Size = UDim2.new(1, -84, 0, 4) })
+                            twP(pbKnob, 0.12, { Size = UDim2.new(0, 10, 0, 10) })
+                        end
+                    end)
 
                     -- ═══════════════════════════════════════════════════
                     -- 2. Volume Card
                     -- ═══════════════════════════════════════════════════
                     local volCard = Instance.new("Frame", musicPage)
                     volCard.Size = UDim2.new(1, -16, 0, 52)
-                    volCard.Position = UDim2.new(0, 8, 0, 84)
+                    volCard.Position = UDim2.new(0, 8, 0, 154)
                     volCard.BackgroundColor3 = Color3.fromRGB(20, 21, 26)
                     volCard.BackgroundTransparency = 0.35
                     volCard.BorderSizePixel = 0
@@ -22098,98 +22350,6 @@ local function parseFieldMessage(fullText, prefixLen)
                         end
                     end)
 
-                    -- ═══════════════════════════════════════════════════
-                    -- 3. Transport / Playback Controls Card
-                    -- ═══════════════════════════════════════════════════
-                    local tCard = Instance.new("Frame", musicPage)
-                    tCard.Size = UDim2.new(1, -16, 0, 62)
-                    tCard.Position = UDim2.new(0, 8, 0, 144)
-                    tCard.BackgroundColor3 = Color3.fromRGB(20, 21, 26)
-                    tCard.BackgroundTransparency = 0.35
-                    tCard.BorderSizePixel = 0
-                    corner(tCard, 12)
-                    local tCard_Stroke = _makeDummyStroke(tCard)
-                    tCard_Stroke.Thickness = 1; tCard_Stroke.Color = C.bg3 or _C3_BG3; tCard_Stroke.Transparency = 0.55
-
-                    local BTN_W, BTN_H = 46, 38
-                    local PLAY_W, PLAY_H = 56, 44
-                    local GAP = 14
-                    local TOTAL_CTRL_W = BTN_W + GAP + PLAY_W + GAP + BTN_W
-                    local HALF_W = math.floor(TOTAL_CTRL_W / 2)
-
-                    -- Prev Button (asset 131323738229242)
-                    local backBtn = Instance.new("ImageButton", tCard)
-                    backBtn.Size = UDim2.new(0, BTN_W, 0, BTN_H)
-                    backBtn.Position = UDim2.new(0.5, -HALF_W, 0.5, -math.floor(BTN_H / 2))
-                    backBtn.BackgroundColor3 = C.bg3 or _C3_BG3
-                    backBtn.BackgroundTransparency = 0.45
-                    backBtn.BorderSizePixel = 0
-                    backBtn.AutoButtonColor = false
-                    backBtn.Image = "rbxassetid://131323738229242"
-                    backBtn.ImageColor3 = C.text or _C3_TEXT
-                    backBtn.ScaleType = Enum.ScaleType.Fit
-                    corner(backBtn, 10)
-                    local backS = _makeDummyStroke(backBtn)
-                    backS.Thickness = 1; backS.Color = C.bg3 or _C3_BG3; backS.Transparency = 0.55
-
-                    backBtn.MouseEnter:Connect(function()
-                        twP(backBtn, 0.10, { BackgroundTransparency = 0.20 })
-                        twP(backBtn, 0.10, { ImageColor3 = C.accent or _C3_ACC })
-                    end)
-                    backBtn.MouseLeave:Connect(function()
-                        twP(backBtn, 0.12, { BackgroundTransparency = 0.45 })
-                        twP(backBtn, 0.12, { ImageColor3 = C.text or _C3_TEXT })
-                    end)
-
-                    -- Hero Play/Pause Button (asset 109215952992723 / 129830110201524)
-                    local playBtn = Instance.new("ImageButton", tCard)
-                    playBtn.Size = UDim2.new(0, PLAY_W, 0, PLAY_H)
-                    playBtn.Position = UDim2.new(0.5, -math.floor(PLAY_W / 2), 0.5, -math.floor(PLAY_H / 2))
-                    playBtn.BackgroundColor3 = C.accent or _C3_ACC
-                    playBtn.BackgroundTransparency = 0.15
-                    playBtn.BorderSizePixel = 0
-                    playBtn.AutoButtonColor = false
-                    playBtn.Image = "rbxassetid://" .. tostring(_PLAY_IMG)
-                    playBtn.ImageColor3 = Color3.fromRGB(255, 255, 255)
-                    playBtn.ScaleType = Enum.ScaleType.Fit
-                    corner(playBtn, 12)
-                    local playS = _makeDummyStroke(playBtn)
-                    playS.Thickness = 1.5; playS.Color = C.accent or _C3_ACC; playS.Transparency = 0.35
-                    _playBtnRef = playBtn
-
-                    playBtn.MouseEnter:Connect(function()
-                        twP(playBtn, 0.10, { BackgroundTransparency = 0.0 })
-                        twP(playS, 0.10, { Transparency = 0.15 })
-                    end)
-                    playBtn.MouseLeave:Connect(function()
-                        twP(playBtn, 0.12, { BackgroundTransparency = 0.15 })
-                        twP(playS, 0.12, { Transparency = 0.35 })
-                    end)
-
-                    -- Skip Button (asset 115665337119894)
-                    local skipBtn = Instance.new("ImageButton", tCard)
-                    skipBtn.Size = UDim2.new(0, BTN_W, 0, BTN_H)
-                    skipBtn.Position = UDim2.new(0.5, HALF_W - BTN_W, 0.5, -math.floor(BTN_H / 2))
-                    skipBtn.BackgroundColor3 = C.bg3 or _C3_BG3
-                    skipBtn.BackgroundTransparency = 0.45
-                    skipBtn.BorderSizePixel = 0
-                    skipBtn.AutoButtonColor = false
-                    skipBtn.Image = "rbxassetid://115665337119894"
-                    skipBtn.ImageColor3 = C.text or _C3_TEXT
-                    skipBtn.ScaleType = Enum.ScaleType.Fit
-                    corner(skipBtn, 10)
-                    local skipS = _makeDummyStroke(skipBtn)
-                    skipS.Thickness = 1; skipS.Color = C.bg3 or _C3_BG3; skipS.Transparency = 0.55
-
-                    skipBtn.MouseEnter:Connect(function()
-                        twP(skipBtn, 0.10, { BackgroundTransparency = 0.20 })
-                        twP(skipBtn, 0.10, { ImageColor3 = C.accent or _C3_ACC })
-                    end)
-                    skipBtn.MouseLeave:Connect(function()
-                        twP(skipBtn, 0.12, { BackgroundTransparency = 0.45 })
-                        twP(skipBtn, 0.12, { ImageColor3 = C.text or _C3_TEXT })
-                    end)
-
                     local function _navigateTrack(delta)
                         if not _currentTracks or not _currentTrackIdx then return end
                         local n = #_currentTracks
@@ -22225,6 +22385,7 @@ local function parseFieldMessage(fullText, prefixLen)
                         end
                         playBtn.Image = "rbxassetid://" .. tostring(_STOP_IMG)
                     end
+                    _navigateTrackRef = _navigateTrack
 
                     backBtn.MouseButton1Click:Connect(function()
                         if _sc._playClickSound then _sc._playClickSound() end
