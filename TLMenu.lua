@@ -3973,7 +3973,8 @@ keybinds, keybindMainConn = {}, nil
 
                 local function setContentVisible(vis)
                     for _, ch in ipairs(p:GetChildren()) do
-                        if ch ~= hdr and not ch:IsA("UIStroke") and not ch:IsA("UICorner") and not ch:IsA("UIGradient") then
+                        if ch ~= hdr and not ch:IsA("UIStroke") and not ch:IsA("UICorner") and not ch:IsA("UIGradient")
+                            and not tostring(ch.Name):find("Bg") and not tostring(ch.Name):find("Background") then
                             pcall(function() ch.Visible = vis end)
                         end
                     end
@@ -13669,7 +13670,7 @@ _TL_state.actions = {}
 
                 
                 local _OP_PlBgImg                  = Instance.new("ImageLabel")
-                _OP_PlBgImg.Name                   = "TLMenu_OP_PlBg"
+                _OP_PlBgImg.Name                   = "OnePieceBg"
                 _OP_PlBgImg.Size                   = UDim2.new(1, 0, 1, 0)
                 _OP_PlBgImg.Position               = UDim2.new(0, 0, 0, 0)
                 _OP_PlBgImg.BackgroundTransparency = 1
@@ -13681,6 +13682,11 @@ _TL_state.actions = {}
                 _OP_PlBgImg.Parent                 = p
                 corner(_OP_PlBgImg, 12)
                 _TL_refs._OP_PlBgImg              = _OP_PlBgImg
+                _OP_PlBgImg:GetPropertyChangedSignal("Visible"):Connect(function()
+                    if _TL_activeThemeId ~= "onepiece" and _OP_PlBgImg.Visible then
+                        _OP_PlBgImg.Visible = false
+                    end
+                end)
 
                 local PAD                         = 16
                 local PW                          = PANEL_W - PAD * 2
