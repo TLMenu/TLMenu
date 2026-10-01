@@ -22350,26 +22350,50 @@ local function parseFieldMessage(fullText, prefixLen)
                         end
                     end)
 
+                    local _plRowFrames = {}
+                    local _cmRowFrames = {}
+
+                    local function _unhighlightAllRows()
+                        for _, rf in ipairs(_plRowFrames) do
+                            if rf.row then
+                                twP(rf.row, 0.12, { BackgroundTransparency = 0.50 })
+                                if rf.nameL then twP(rf.nameL, 0.12, { TextColor3 = C.text or _C3_TEXT }) end
+                                if rf.numBadge then twP(rf.numBadge, 0.12, { BackgroundTransparency = 0.82 }) end
+                                if rf.accentBar then twP(rf.accentBar, 0.12, { BackgroundTransparency = 0.70 }) end
+                                if rf.playDot then twP(rf.playDot, 0.12, { BackgroundTransparency = 1 }) end
+                            end
+                        end
+                        for _, rf in ipairs(_cmRowFrames) do
+                            if rf.row then
+                                twP(rf.row, 0.12, { BackgroundTransparency = 0.50 })
+                                if rf.nl then twP(rf.nl, 0.12, { TextColor3 = C.text or _C3_TEXT }) end
+                                if rf.numB then twP(rf.numB, 0.12, { BackgroundTransparency = 0.82 }) end
+                                if rf.aBar then twP(rf.aBar, 0.12, { BackgroundTransparency = 0.70 }) end
+                                if rf.dot then twP(rf.dot, 0.12, { BackgroundTransparency = 1 }) end
+                            end
+                        end
+                    end
+
+                    local function _highlightTrackRow(rf)
+                        if not rf or not rf.row then return end
+                        twP(rf.row, 0.15, { BackgroundTransparency = 0.25 })
+                        local lbl = rf.nameL or rf.nl
+                        if lbl then twP(lbl, 0.15, { TextColor3 = rf.col or (C.accent or _C3_ACC) }) end
+                        local nb = rf.numBadge or rf.numB
+                        if nb then twP(nb, 0.15, { BackgroundTransparency = 0.60 }) end
+                        local ab = rf.accentBar or rf.aBar
+                        if ab then twP(ab, 0.15, { BackgroundTransparency = 0.30 }) end
+                        local dot = rf.playDot or rf.dot
+                        if dot then twP(dot, 0.15, { BackgroundTransparency = 0.0 }) end
+                    end
+
                     local function _navigateTrack(delta)
                         if not _currentTracks or not _currentTrackIdx then return end
                         local n = #_currentTracks
                         if n == 0 then return end
                         local newIdx = ((_currentTrackIdx - 1 + delta) % n) + 1
                         
-                        if _activeMusicRow then
-                            for _, rf in ipairs(_plRowFrames) do
-                                if rf.row == _activeMusicRow then
-                                    twP(rf.row, 0.12, { BackgroundTransparency = 0.92 })
-                                    twP(rf.nameL, 0.12, { TextColor3 = C.text or _C3_TEXT })
-                                end
-                            end
-                            for _, rf in ipairs(_cmRowFrames) do
-                                if rf.row == _activeMusicRow then
-                                    twP(rf.row, 0.12, { BackgroundTransparency = 0.35 })
-                                    twP(rf.nl, 0.12, { TextColor3 = C.text or _C3_TEXT })
-                                end
-                            end
-                        end
+                        _unhighlightAllRows()
                         
                         local track = _currentTracks[newIdx]
                         _currentTrackIdx = newIdx
@@ -22378,10 +22402,7 @@ local function parseFieldMessage(fullText, prefixLen)
                         local target = _plRowFrames[newIdx] or _cmRowFrames[newIdx]
                         if target then
                             _activeMusicRow = target.row
-                            local isCM = (target.nl ~= nil)
-                            twP(target.row, 0.15, { BackgroundTransparency = isCM and 0.20 or 0.75 })
-                            local lbl = target.nameL or target.nl
-                            if lbl then twP(lbl, 0.15, { TextColor3 = target.col or (C.accent or _C3_ACC) }) end
+                            _highlightTrackRow(target)
                         end
                         playBtn.Image = "rbxassetid://" .. tostring(_STOP_IMG)
                     end
@@ -22454,7 +22475,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     local _plCard         = nil
                     local _plChevron      = nil
                     local _plCurTheme     = nil
-                    local _plRowFrames    = {}
+                    _plRowFrames          = {}
                     local _plInnerH       = 0 
                     
                     local function _refreshMusicPanelH()
@@ -22587,18 +22608,6 @@ local function parseFieldMessage(fullText, prefixLen)
                         chev.ScaleType = Enum.ScaleType.Fit
                         _plChevron = chev
 
-                        local function _unhighlightRow(r)
-                            for _, rf in ipairs(_plRowFrames) do
-                                if rf.row == r then
-                                    twP(rf.row, 0.12, { BackgroundTransparency = 0.50 })
-                                    twP(rf.nameL, 0.12, { TextColor3 = C.text or _C3_TEXT })
-                                    if rf.numBadge then twP(rf.numBadge, 0.12, { BackgroundTransparency = 0.82 }) end
-                                    if rf.accentBar then twP(rf.accentBar, 0.12, { BackgroundTransparency = 0.70 }) end
-                                    if rf.playDot then twP(rf.playDot, 0.12, { BackgroundTransparency = 1 }) end
-                                end
-                            end
-                        end
-
                         for i, track in ipairs(pl.tracks) do
                             local ry                   = (i - 1) * TRACK_ROW_H + 4
                             local row                  = Instance.new("Frame", rowContainer)
@@ -22660,20 +22669,11 @@ local function parseFieldMessage(fullText, prefixLen)
                                 if _activeMusicRow == rowRef then
                                     _stopMusic(); _activeMusicRow = nil
                                     _currentTrackIdx = nil
-                                    _unhighlightRow(rowRef)
+                                    _unhighlightAllRows()
                                     playBtn.Image = "rbxassetid://" .. tostring(_PLAY_IMG)
                                     return
                                 end
-                                if _activeMusicRow then
-                                    _unhighlightRow(_activeMusicRow)
-                                    for _, rf in ipairs(_cmRowFrames) do
-                                        if rf.row == _activeMusicRow then
-                                            twP(rf.row, 0.12, { BackgroundTransparency = 0.50 })
-                                            twP(rf.nl, 0.12, { TextColor3 = C.text or _C3_TEXT })
-                                            if rf.dot then twP(rf.dot, 0.12, { BackgroundTransparency = 1 }) end
-                                        end
-                                    end
-                                end
+                                _unhighlightAllRows()
                                 _currentTracks = pl.tracks
                                 _currentTrackIdx = i
                                 _playMusicId(trackId, _musicVol, track.name)
@@ -22775,7 +22775,7 @@ local function parseFieldMessage(fullText, prefixLen)
                     -- ═══════════════════════════════════════════════════
                     local _cmFolder = nil
                     local _cmTracks = {}
-                    local _cmRowFrames = {}
+                    _cmRowFrames = {}
                     local _CM_ROW_H = 44
 
                     local function _cmEnsureFolder()
@@ -22865,38 +22865,11 @@ local function parseFieldMessage(fullText, prefixLen)
                             rb.MouseButton1Click:Connect(function()
                                 if _activeMusicRow == rr then
                                     _stopMusic(); _activeMusicRow = nil; _currentTrackIdx = nil
-                                    for _, rf in ipairs(_cmRowFrames) do
-                                        if rf.row == rr then
-                                            twP(rf.row, 0.12, { BackgroundTransparency = 0.50 })
-                                            twP(rf.nl, 0.12, { TextColor3 = C.text or _C3_TEXT })
-                                            if rf.dot then twP(rf.dot, 0.12, { BackgroundTransparency = 1 }) end
-                                            if rf.numB then twP(rf.numB, 0.12, { BackgroundTransparency = 0.82 }) end
-                                            if rf.aBar then twP(rf.aBar, 0.12, { BackgroundTransparency = 0.70 }) end
-                                        end
-                                    end
+                                    _unhighlightAllRows()
                                     playBtn.Image = "rbxassetid://" .. tostring(_PLAY_IMG)
                                     return
                                 end
-                                if _activeMusicRow then
-                                    for _, rf in ipairs(_plRowFrames) do
-                                        if rf.row == _activeMusicRow then
-                                            twP(rf.row, 0.12, { BackgroundTransparency = 0.50 })
-                                            twP(rf.nameL, 0.12, { TextColor3 = C.text or _C3_TEXT })
-                                            if rf.playDot then twP(rf.playDot, 0.12, { BackgroundTransparency = 1 }) end
-                                            if rf.numBadge then twP(rf.numBadge, 0.12, { BackgroundTransparency = 0.82 }) end
-                                            if rf.accentBar then twP(rf.accentBar, 0.12, { BackgroundTransparency = 0.70 }) end
-                                        end
-                                    end
-                                    for _, rf in ipairs(_cmRowFrames) do
-                                        if rf.row == _activeMusicRow then
-                                            twP(rf.row, 0.12, { BackgroundTransparency = 0.50 })
-                                            twP(rf.nl, 0.12, { TextColor3 = C.text or _C3_TEXT })
-                                            if rf.dot then twP(rf.dot, 0.12, { BackgroundTransparency = 1 }) end
-                                            if rf.numB then twP(rf.numB, 0.12, { BackgroundTransparency = 0.82 }) end
-                                            if rf.aBar then twP(rf.aBar, 0.12, { BackgroundTransparency = 0.70 }) end
-                                        end
-                                    end
-                                end
+                                _unhighlightAllRows()
                                 _currentTracks = _cmTracks; _currentTrackIdx = i
                                 _playMusicId(tid, _musicVol, trk.name)
                                 _activeMusicRow = rr
