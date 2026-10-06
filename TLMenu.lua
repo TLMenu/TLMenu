@@ -316,13 +316,37 @@ local function _TL_syncAssetsFromManifest()
     end
 end
 
+local _TL_ENGINE_URL = "https://raw.githubusercontent.com/TLMenu/TLMenuParts/refs/heads/main/TL%20Engine/TL-ASSET-CHECKER.lua"
+
 task.spawn(function()
     pcall(_TL_syncAssetsFromManifest)
     pcall(function()
-        if type(readfile) == "function" and type(loadstring) == "function" then
-            if _TL_safeIsFile("TL Engine/TL-ASSET-CHECKER.lua") then
-                local checkerFn = loadstring(readfile("TL Engine/TL-ASSET-CHECKER.lua"))
-                if checkerFn then checkerFn() end
+        local engineSrc = nil
+        -- Priorität 1: Lokale Datei im Workspace (für Entwickler)
+        if _TL_safeIsFile("TL Engine/TL-ASSET-CHECKER.lua") then
+            local ok, src = pcall(readfile, "TL Engine/TL-ASSET-CHECKER.lua")
+            if ok and src and #src > 100 then
+                engineSrc = src
+            end
+        end
+        -- Priorität 2: GitHub Repo (TLMenuParts) – immer aktuell für alle User
+        if not engineSrc then
+            local ok, src = pcall(function() return game:HttpGet(_TL_ENGINE_URL, true) end)
+            if ok and src and #src > 100 then
+                engineSrc = src
+                -- Optional: Lokal cachen damit der nächste Start schneller ist
+                pcall(function()
+                    if not _TL_safeIsFolder("TL Engine") then _TL_safeMakeFolder("TL Engine") end
+                    _TL_safeWriteFile("TL Engine/TL-ASSET-CHECKER.lua", src)
+                end)
+            end
+        end
+        if engineSrc then
+            local fn, err = loadstring(engineSrc)
+            if fn then
+                pcall(fn)
+            else
+                warn("[TL ENGINE] Fehler beim Laden des TL-ASSET-CHECKER: " .. tostring(err))
             end
         end
     end)
