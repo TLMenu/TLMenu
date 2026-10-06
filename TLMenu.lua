@@ -21831,6 +21831,7 @@ local function parseFieldMessage(fullText, prefixLen)
                 local _activeMusicRow   = nil 
                 local _nowPlayingLabel  = nil 
                 local _nowPlayingBadge  = nil
+                local _badgePauseIcon   = nil
                 local _currentTrackIdx  = nil 
                 local _currentTracks    = nil 
                 local _musicPlaying     = false
@@ -21870,9 +21871,10 @@ local function parseFieldMessage(fullText, prefixLen)
                         pcall(function() _nowPlayingLabel.TextColor3 = C.sub or _C3_SUB end)
                     end
                     if _nowPlayingBadge then
-                        _nowPlayingBadge.Text = "♫ STANDBY"
+                        _nowPlayingBadge.Text = "STANDBY"
                         pcall(function() _nowPlayingBadge.TextColor3 = C.sub or _C3_SUB end)
                     end
+                    if _badgePauseIcon then _badgePauseIcon.Visible = false end
                     if _playBtnRef then
                         pcall(function() _playBtnRef.Image = "rbxassetid://" .. tostring(_PLAY_IMG) end)
                     end
@@ -21929,9 +21931,10 @@ local function parseFieldMessage(fullText, prefixLen)
                         pcall(function() _nowPlayingLabel.TextColor3 = C.accent or _C3_ACC end)
                     end
                     if _nowPlayingBadge then
-                        _nowPlayingBadge.Text = "▶ PLAYING"
+                        _nowPlayingBadge.Text = "PLAYING"
                         pcall(function() _nowPlayingBadge.TextColor3 = C.accent or _C3_ACC end)
                     end
+                    if _badgePauseIcon then _badgePauseIcon.Visible = false end
                     if _playBtnRef then
                         pcall(function() _playBtnRef.Image = "rbxassetid://" .. tostring(_STOP_IMG) end)
                     end
@@ -22000,14 +22003,29 @@ local function parseFieldMessage(fullText, prefixLen)
 
                     local nowBadgeText = Instance.new("TextLabel", playerCard)
                     nowBadgeText.Size = UDim2.new(1, -170, 0, 14)
-                    nowBadgeText.Position = UDim2.new(0, 48, 0, 26)
+                    nowBadgeText.Position = UDim2.new(0, 60, 0, 26)
                     nowBadgeText.BackgroundTransparency = 1
                     nowBadgeText.Font = Enum.Font.Gotham
                     nowBadgeText.TextSize = 10
                     nowBadgeText.TextColor3 = C.sub or _C3_SUB
-                    nowBadgeText.Text = "♫ STANDBY"
+                    nowBadgeText.Text = "STANDBY"
                     nowBadgeText.TextXAlignment = Enum.TextXAlignment.Left
                     _nowPlayingBadge = nowBadgeText
+
+                    -- Pause icon displayed left of the badge text when paused
+                    local _pauseIconImg = Instance.new("ImageLabel", playerCard)
+                    _pauseIconImg.Size = UDim2.new(0, 12, 0, 12)
+                    _pauseIconImg.Position = UDim2.new(0, 46, 0, 27)
+                    _pauseIconImg.BackgroundTransparency = 1
+                    _pauseIconImg.BorderSizePixel = 0
+                    _pauseIconImg.ScaleType = Enum.ScaleType.Fit
+                    _pauseIconImg.ImageColor3 = C.sub or _C3_SUB
+                    pcall(function()
+                        local _pi = _TL_safeGetCustomAsset("assets/TL-DEFAULT/MusicPause-Icon.png")
+                        if _pi then _pauseIconImg.Image = _pi end
+                    end)
+                    _pauseIconImg.Visible = false
+                    _badgePauseIcon = _pauseIconImg
 
                     -- Quick Action Buttons in Top Right
                     local loadBtn = Instance.new("TextButton", playerCard)
@@ -22018,11 +22036,24 @@ local function parseFieldMessage(fullText, prefixLen)
                     loadBtn.BorderSizePixel = 0
                     loadBtn.Font = Enum.Font.GothamBold
                     loadBtn.TextSize = 10
-                    loadBtn.Text = "↻ Scan"
+                    loadBtn.Text = "  Scan"
                     loadBtn.TextColor3 = C.text or _C3_TEXT
+                    loadBtn.TextXAlignment = Enum.TextXAlignment.Right
                     corner(loadBtn, 6)
                     local loadBtnS = _makeDummyStroke(loadBtn)
                     loadBtnS.Thickness = 1; loadBtnS.Color = C.accent or _C3_ACC; loadBtnS.Transparency = 0.55
+                    -- Custom scan icon inside loadBtn
+                    local scanIconLbl = Instance.new("ImageLabel", loadBtn)
+                    scanIconLbl.Size = UDim2.new(0, 12, 0, 12)
+                    scanIconLbl.Position = UDim2.new(0, 5, 0.5, -6)
+                    scanIconLbl.BackgroundTransparency = 1
+                    scanIconLbl.BorderSizePixel = 0
+                    scanIconLbl.ScaleType = Enum.ScaleType.Fit
+                    scanIconLbl.ImageColor3 = C.text or _C3_TEXT
+                    pcall(function()
+                        local _si = _TL_safeGetCustomAsset("assets/TL-DEFAULT/Search2-Icon.png")
+                        if _si then scanIconLbl.Image = _si end
+                    end)
                     loadBtn.MouseEnter:Connect(function()
                         twP(loadBtn, 0.10, { BackgroundTransparency = 0.45 })
                     end)
@@ -22439,9 +22470,10 @@ local function parseFieldMessage(fullText, prefixLen)
                                 pcall(function() _nowPlayingLabel.TextColor3 = C.accent or _C3_ACC end)
                             end
                             if _nowPlayingBadge then
-                                _nowPlayingBadge.Text = "▶ PLAYING"
+                                _nowPlayingBadge.Text = "PLAYING"
                                 pcall(function() _nowPlayingBadge.TextColor3 = C.accent or _C3_ACC end)
                             end
+                            if _badgePauseIcon then _badgePauseIcon.Visible = false end
                         else
                             pcall(function() _activeMusicSound:Pause() end)
                             playBtn.Image = "rbxassetid://" .. tostring(_PLAY_IMG)
@@ -22451,8 +22483,12 @@ local function parseFieldMessage(fullText, prefixLen)
                                 pcall(function() _nowPlayingLabel.TextColor3 = C.sub or _C3_SUB end)
                             end
                             if _nowPlayingBadge then
-                                _nowPlayingBadge.Text = "⏸ PAUSED"
+                                _nowPlayingBadge.Text = "PAUSED"
                                 pcall(function() _nowPlayingBadge.TextColor3 = C.sub or _C3_SUB end)
+                            end
+                            if _badgePauseIcon then
+                                _badgePauseIcon.Visible = true
+                                pcall(function() _badgePauseIcon.ImageColor3 = C.sub or _C3_SUB end)
                             end
                         end
                     end)
