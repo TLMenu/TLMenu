@@ -22028,24 +22028,31 @@ local function parseFieldMessage(fullText, prefixLen)
                     _badgePauseIcon = _pauseIconImg
 
                     -- Quick Action Buttons in Top Right
+                    local _SCAN_BTN_W, _SCAN_BTN_H = 66, 26
                     local loadBtn = Instance.new("TextButton", playerCard)
-                    loadBtn.Size = UDim2.new(0, 52, 0, 22)
-                    loadBtn.Position = UDim2.new(1, -114, 0, 10)
+                    loadBtn.Size = UDim2.new(0, _SCAN_BTN_W, 0, _SCAN_BTN_H)
+                    loadBtn.Position = UDim2.new(1, -(_SCAN_BTN_W + 4 + 58), 0, 8)
                     loadBtn.BackgroundColor3 = C.accent or _C3_ACC
                     loadBtn.BackgroundTransparency = 0.75
                     loadBtn.BorderSizePixel = 0
+                    loadBtn.AutoButtonColor = false
                     loadBtn.Font = Enum.Font.GothamBold
-                    loadBtn.TextSize = 10
-                    loadBtn.Text = "  Scan"
+                    loadBtn.TextSize = 11
+                    -- Icon (14px) + 4px gap + text; we fake centering via UIPadding
+                    loadBtn.Text = "Scan"
                     loadBtn.TextColor3 = C.text or _C3_TEXT
-                    loadBtn.TextXAlignment = Enum.TextXAlignment.Right
-                    corner(loadBtn, 6)
+                    loadBtn.TextXAlignment = Enum.TextXAlignment.Center
+                    corner(loadBtn, 7)
                     local loadBtnS = _makeDummyStroke(loadBtn)
                     loadBtnS.Thickness = 1; loadBtnS.Color = C.accent or _C3_ACC; loadBtnS.Transparency = 0.55
-                    -- Custom scan icon inside loadBtn
+                    -- Shift text right to make room for the icon on the left
+                    local loadBtnPad = Instance.new("UIPadding", loadBtn)
+                    loadBtnPad.PaddingLeft = UDim.new(0, 16)
+                    loadBtnPad.PaddingRight = UDim.new(0, 4)
+                    -- Custom scan icon inside loadBtn, vertically centered, left-aligned
                     local scanIconLbl = Instance.new("ImageLabel", loadBtn)
-                    scanIconLbl.Size = UDim2.new(0, 12, 0, 12)
-                    scanIconLbl.Position = UDim2.new(0, 5, 0.5, -6)
+                    scanIconLbl.Size = UDim2.new(0, 14, 0, 14)
+                    scanIconLbl.Position = UDim2.new(0, 6, 0.5, -7)
                     scanIconLbl.BackgroundTransparency = 1
                     scanIconLbl.BorderSizePixel = 0
                     scanIconLbl.ScaleType = Enum.ScaleType.Fit
@@ -22068,8 +22075,8 @@ local function parseFieldMessage(fullText, prefixLen)
                     end)
 
                     local copyBtn = Instance.new("TextButton", playerCard)
-                    copyBtn.Size = UDim2.new(0, 52, 0, 22)
-                    copyBtn.Position = UDim2.new(1, -58, 0, 10)
+                    copyBtn.Size = UDim2.new(0, 54, 0, 26)
+                    copyBtn.Position = UDim2.new(1, -58, 0, 8)
                     copyBtn.BackgroundColor3 = C.bg3 or _C3_BG3
                     copyBtn.BackgroundTransparency = 0.50
                     copyBtn.BorderSizePixel = 0
