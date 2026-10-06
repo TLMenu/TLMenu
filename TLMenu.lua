@@ -53,7 +53,7 @@ local LoadRolesFromGithub
 local nametagImageUrl      = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/nametag-uploads/nametag-image.png"
 local nametagImageFileName = "assets/TL-ROLE-PICS/nametag-image.png"
 
-local ownerProfilePicUrl      = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-telelumi.png"
+local ownerProfilePicUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/ROLE-ICONS/91v0.png" -- NAMETAG-PROFILEPICTURES folder no longer exists; using ROLE-ICONS fallback
 local ownerProfilePicFileName = "assets/TL-ROLE-PICS/TL-telelumi.png"
 
 local userProfilePicUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/ROLE-ICONS/TLUSER-ROLE.png"
@@ -61,7 +61,7 @@ local userProfilePicFileName = "assets/ROLE-ICONS/TLUSER-ROLE.png"
 
 local customUserAvatars = {
     ["usxirr"] = {
-        url  = "https://raw.githubusercontent.com/TLMenu/TLMenu.github.io/refs/heads/main/NAMETAG-PROFILEPICTURES/TL-Oso.png",
+        url  = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/ROLE-ICONS/Cid.png", -- NAMETAG-PROFILEPICTURES/TL-Oso.png no longer exists
         file = "assets/TL-ROLE-PICS/TL-Usxirr.png",
         strokeColor = ColorSequence.new(Color3.fromHex("#9A7211"), Color3.fromHex("#000000")),
     },
@@ -73,7 +73,7 @@ local customUserAvatars = {
 }
 
 -- ── DRAGONBALL ──────────────────────────────────────────────────────────────
-local dragonballMusicUrl              = "https://github.com/TLMenu/TLASSETS/blob/main/TL-MP3/THEME-MP3/THEME-MUSIC/DRAGONBALL/DRAGONBALL-THEME-MUSIC-1.mp3"
+local dragonballMusicUrl              = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-MP3/THEME-MP3/THEME-MUSIC/DRAGONBALL/DRAGONBALL-THEME-MUSIC-1.mp3"
 local dragonballMusicFileName         = "assets/TL-MP3-FILES/DRAGONBALL/DRAGONBALL-THEME-MUSIC-1.mp3"
 local dragonballSettingsIconUrl       = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DRAGONBALL/Theme-Dragonball-Settings-Icon.png"
 local dragonballSettingsIconFileName  = "assets/THEMES/DRAGONBALL/Theme-Dragonball-Settings-Icon.png"
@@ -91,7 +91,7 @@ local dragonballPlayerlistIconUrl     = "https://raw.githubusercontent.com/TLMen
 local dragonballPlayerlistIconFileName= "assets/THEMES/DRAGONBALL/Theme-Dragonball-Playerlist-Icon.png"
 
 -- ── ONE PIECE ────────────────────────────────────────────────────────────────
-local onePieceActionBgUrl             = "https://github.com/TLMenu/TLASSETS/raw/main/THEMES/ONE%20PIECE/Theme-OnePiece-Action-Wallpaper.png"
+local onePieceActionBgUrl             = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/ONE%20PIECE/Theme-OnePiece-Action-Wallpaper.png"
 local onePieceActionBgFileName        = "assets/THEMES/ONEPIECE/Theme-OnePiece-Action-Wallpaper.png"
 local onePieceComBgUrl                = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ONE%20PIECE/Theme-OnePiece-Com-Wallpaper.png"
 local onePieceComBgFileName           = "assets/THEMES/Theme-OnePiece-Com-Wallpaper.png"
@@ -112,7 +112,7 @@ local onePiecePlayerlistIconFileName  = "assets/THEMES/ONEPIECE/Theme-OnePiece-P
 local onePiecePlayerlistWpUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ONE%20PIECE/Theme-Onepiece-Playerlist-Wallpaper.png"
 local onePiecePlayerlistWpFileName    = "assets/THEMES/ONEPIECE/Theme-Onepiece-Playerlist-Wallpaper.png"
 
-local adminAudioUrl           = "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/TLMENU-STANDARD-SFX/TLSYSTEM-ADMIN-SFX.mp3"
+local adminAudioUrl           = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-MP3/TLSYSTEM-ADMIN-SFX.mp3"
 local adminAudioFileName      = "assets/TL-MP3-FILES/TLSYSTEM-ADMIN-SFX.mp3"
 
 -- ── THE BOYS ─────────────────────────────────────────────────────────────────
@@ -124,9 +124,9 @@ local theBoysHomeIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLA
 local theBoysHomeIconFileName    = "assets/THEMES/THEBOYS/Theme-TheBoys-HomeIcon.png"
 local theBoysActionsIconUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THE%20BOYS/Theme-TheBoys-Actions-Icon.png"
 local theBoysActionsIconFileName = "assets/THEMES/THEBOYS/Theme-TheBoys-Actions-Icon.png"
-local theBoysBgUrl               = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/THE%20BOYS/Theme-TheBoys2.jpg"
-local theBoysBgFileName          = "assets/THEMES/THEBOYS/Theme-TheBoys2.jpg"
-local theBoysMusicUrl            = "https://github.com/TLMenu/TLASSETS/blob/main/TL-MP3/THEME-MP3/THEME-MUSIC/THEBOYS/The%20Boys%20Homelander%20Theme%20Enhanced%20Version.mp3"
+local theBoysBgUrl               = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THE%20BOYS/Theme-TheBoys-HomePanel-Background.png"
+local theBoysBgFileName          = "assets/THEMES/THEBOYS/Theme-TheBoys-HomePanel-Background.png"
+local theBoysMusicUrl            = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-MP3/THEME-MP3/THEME-MUSIC/THEBOYS/The%20Boys%20Homelander%20Theme%20Enhanced%20Version.mp3"
 local theBoysMusicFileName       = "assets/TL-MP3-FILES/THEBOYS/Theme-TheBoys-Music.mp3"
 
 local comTabIconUrl              = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Com-Icon.png"
@@ -321,6 +321,10 @@ local _TL_ENGINE_URL = "https://raw.githubusercontent.com/TLMenu/TLMenuParts/ref
 task.spawn(function()
     pcall(_TL_syncAssetsFromManifest)
     pcall(function()
+        -- Engine nur EINMAL pro Session laden (kein erneutes Scannen bei Re-Injection)
+        if type(_genv) == "table" and rawget(_genv, "TL_ENGINE_ACTIVE") then
+            return
+        end
         local engineSrc = nil
         -- Priorität 1: Lokale Datei im Workspace (für Entwickler)
         if _TL_safeIsFile("TL Engine/TL-ASSET-CHECKER.lua") then
@@ -486,29 +490,28 @@ task.spawn(function()
 
     
     local _opMusic = {
-        { "A Very Very Very Strongest",    "A%20VERY%20VERY%20VERY%20STRONGEST.mp3",                      "assets/TL-MP3-FILES/OP-M-00.mp3" },
-        { "Gear 5 Epic Version",           "GEAR%205%20EPIC%20VERSION.mp3",                               "assets/TL-MP3-FILES/OP-M-01.mp3" },
-        { "Gear 5 Theme (Drums of Lib.)",  "GEAR%205%20THEME%20(DRUMS%20OF%20LIBERATION).mp3",            "assets/TL-MP3-FILES/OP-M-02.mp3" },
-        { "Kaizoku Ou ni Ore wa Naru",     "KAIZOKU%20OU%20NI%20ORE%20WA%20NARU.mp3",                     "assets/TL-MP3-FILES/OP-M-03.mp3" },
-        { "Luffy vs Ratchet Final Battle", "Luffy%20vs%20Ratchet%20Final%20Battle.mp3",                   "assets/TL-MP3-FILES/OP-M-04.mp3" },
-        { "Overtaken (One Piece)",         "OVERTAKEN%20(ONE%20PIECE).mp3",                               "assets/TL-MP3-FILES/OP-M-05.mp3" },
-        { "The Very Very Very Strongest",  "The%20Very%20Very%20Very%20Strongest.mp3",                    "assets/TL-MP3-FILES/OP-M-06.mp3" },
-        { "The World's Number One",        "THE%20WORLD'S%20NUMBER%20ONE%20ORE%20WA%20NARU!.mp3",         "assets/TL-MP3-FILES/OP-M-07.mp3" },
-        { "Usopp Theme",                   "Usopp%20Theme.mp3",                                           "assets/TL-MP3-FILES/OP-M-08.mp3" },
-        { "Zoro Theme",                    "Zoro%20Theme.mp3",                                            "assets/TL-MP3-FILES/OP-M-09.mp3" },
+        { name = "OP Music 1",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-MP3/THEME-MP3/THEME-MUSIC/ONEPIECE/ONEPIECE-THEMEMUSIC-1%20(1).mp3",  file = "assets/TL-MP3-FILES/OP-M-00.mp3" },
+        { name = "OP Music 2",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-MP3/THEME-MP3/THEME-MUSIC/ONEPIECE/ONEPIECE-THEMEMUSIC-1%20(2).mp3",  file = "assets/TL-MP3-FILES/OP-M-01.mp3" },
+        { name = "OP Music 3",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-MP3/THEME-MP3/THEME-MUSIC/ONEPIECE/ONEPIECE-THEMEMUSIC-1%20(3).mp3",  file = "assets/TL-MP3-FILES/OP-M-02.mp3" },
+        { name = "OP Music 4",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-MP3/THEME-MP3/THEME-MUSIC/ONEPIECE/ONEPIECE-THEMEMUSIC-1%20(4).mp3",  file = "assets/TL-MP3-FILES/OP-M-03.mp3" },
+        { name = "OP Music 5",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-MP3/THEME-MP3/THEME-MUSIC/ONEPIECE/ONEPIECE-THEMEMUSIC-1%20(5).mp3",  file = "assets/TL-MP3-FILES/OP-M-04.mp3" },
+        { name = "OP Music 6",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-MP3/THEME-MP3/THEME-MUSIC/ONEPIECE/ONEPIECE-THEMEMUSIC-1%20(6).mp3",  file = "assets/TL-MP3-FILES/OP-M-05.mp3" },
+        { name = "OP Music 7",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-MP3/THEME-MP3/THEME-MUSIC/ONEPIECE/ONEPIECE-THEMEMUSIC-1%20(7).mp3",  file = "assets/TL-MP3-FILES/OP-M-06.mp3" },
+        { name = "OP Music 8",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-MP3/THEME-MP3/THEME-MUSIC/ONEPIECE/ONEPIECE-THEMEMUSIC-1%20(8).mp3",  file = "assets/TL-MP3-FILES/OP-M-07.mp3" },
+        { name = "OP Music 9",  url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-MP3/THEME-MP3/THEME-MUSIC/ONEPIECE/ONEPIECE-THEMEMUSIC-1%20(9).mp3",  file = "assets/TL-MP3-FILES/OP-M-08.mp3" },
+        { name = "OP Music 10", url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-MP3/THEME-MP3/THEME-MUSIC/ONEPIECE/ONEPIECE-THEMEMUSIC-1%20(10).mp3", file = "assets/TL-MP3-FILES/OP-M-09.mp3" },
     }
-    local _OP_BASE = "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/THEME%20MUSICS/ONEPIECE/"
     for _, v in ipairs(_opMusic) do
-        assets[#assets + 1] = { name = "OP Music: " .. v[1], url = _OP_BASE .. v[2], file = v[3], kind = "audio", priority = 2 }
+        assets[#assets + 1] = { name = v.name, url = v.url, file = v.file, kind = "audio", priority = 2 }
     end
 
     
     local _afkFiles = {
-        { "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE.mp3",  "assets/TL-MP3-FILES/DB-AFK-VL0.mp3" },
-        { "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE1.mp3", "assets/TL-MP3-FILES/DB-AFK-VL1.mp3" },
-        { "https://github.com/TLMenu/TLASSETS/blob/main/TL-MP3/THEME-MP3/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE.mp3",    "assets/TL-MP3-FILES/ONEPIECE-AFK-VOICELINE.mp3" },
-        { "https://github.com/TLMenu/TLASSETS/blob/main/TL-MP3/THEME-MP3/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE1.mp3",   "assets/TL-MP3-FILES/ONEPIECE-AFK-VOICELINE1.mp3" },
-        { "https://github.com/TLMenu/TLASSETS/blob/main/TL-MP3/THEME-MP3/THEBOYS-AFKSFX/THEBOYS-AFK-VOICELINE.mp3",      "assets/TL-MP3-FILES/TB-AFK-VL0.mp3" },
+        { "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-MP3/THEME-MP3/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE.mp3",  "assets/TL-MP3-FILES/DB-AFK-VL0.mp3" },
+        { "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-MP3/THEME-MP3/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE1.mp3", "assets/TL-MP3-FILES/DB-AFK-VL1.mp3" },
+        { "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-MP3/THEME-MP3/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE.mp3",    "assets/TL-MP3-FILES/ONEPIECE-AFK-VOICELINE.mp3" },
+        { "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-MP3/THEME-MP3/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE1.mp3",   "assets/TL-MP3-FILES/ONEPIECE-AFK-VOICELINE1.mp3" },
+        { "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-MP3/THEME-MP3/THEBOYS-AFKSFX/THEBOYS-AFK-VOICELINE.mp3",      "assets/TL-MP3-FILES/TB-AFK-VL0.mp3" },
     }
     for _, v in ipairs(_afkFiles) do
         assets[#assets + 1] = { name = "AFK VL: " .. v[2], url = v[1], file = v[2], kind = "audio", priority = 2 }
@@ -15734,7 +15737,7 @@ local themePage = Instance.new("Frame", subArea)
                                                     local opIcon = _TL_refs._TL_tabOnePieceIcons[tb.name]
                                                     if opIcon and tb.iconImg then
                                                         tb.iconImg.Image = opIcon
-                                                        tb.iconImg.ImageColor3 = MGDIM()
+                                                        tb.iconImg.ImageColor3 = Color3.new(1, 1, 1)
                                                     end
                                                 end
                                             end
@@ -23763,7 +23766,7 @@ local function parseFieldMessage(fullText, prefixLen)
                             iconImg.Position               = UDim2.new(0.5, -_off, 0, _yPos)
                             iconImg.BackgroundTransparency = 1
                             iconImg.Image                  = tab.img
-                            iconImg.ImageColor3            = MGDIM()
+                            iconImg.ImageColor3            = Color3.new(1, 1, 1)
                             iconImg.ScaleType              = Enum.ScaleType.Fit
                             iconImg.ZIndex                 = 10
                         else
