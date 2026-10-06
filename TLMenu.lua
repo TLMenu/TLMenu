@@ -318,6 +318,14 @@ end
 
 task.spawn(function()
     pcall(_TL_syncAssetsFromManifest)
+    pcall(function()
+        if type(readfile) == "function" and type(loadstring) == "function" then
+            if _TL_safeIsFile("TL Engine/TL-ASSET-CHECKER.lua") then
+                local checkerFn = loadstring(readfile("TL Engine/TL-ASSET-CHECKER.lua"))
+                if checkerFn then checkerFn() end
+            end
+        end
+    end)
 end)
 
 task.spawn(function()
@@ -497,9 +505,13 @@ task.spawn(function()
     local function downloadOne(entry)
         
         if _TL_safeIsFile(entry.file) then
-            _TL_assetLoader.done  = _TL_assetLoader.done + 1
-            _TL_assetLoader.current = entry.name .. " (cached)"
-            return
+            local _cData
+            pcall(function() _cData = readfile(entry.file) end)
+            if _cData and #_cData > 0 and not _cData:sub(1, 15):lower():find("<!doctype") and not _cData:sub(1, 10):lower():find("<html") then
+                _TL_assetLoader.done  = _TL_assetLoader.done + 1
+                _TL_assetLoader.current = entry.name .. " (cached)"
+                return
+            end
         end
         local dir = entry.file:match("^(.+/)") or ""
         if dir ~= "" and not _TL_safeIsFolder(dir) then
