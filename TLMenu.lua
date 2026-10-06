@@ -15783,7 +15783,7 @@ local themePage = Instance.new("Frame", subArea)
                                                     abg.Size = UDim2.new(1, 0, 1, 0)
                                                     abg.Position = UDim2.new(0, 0, 0, 0)
                                                     abg.BackgroundTransparency = 1
-                                                    abg.Image = _TL_safeGetCustomAsset("assets/THEMES/ONEPIECE/OP-ACT-BG.png") or "rbxassetid://132090006833323"
+                                                    abg.Image = _TL_safeGetCustomAsset(onePieceActionBgFileName) or "rbxassetid://132090006833323"
                                                     abg.ScaleType = Enum.ScaleType.Crop
                                                     abg.ImageTransparency = 1
                                                     abg.ZIndex = 0
@@ -17580,7 +17580,7 @@ local themePage = Instance.new("Frame", subArea)
                         _OP_ComPanelBgImg.Size = UDim2.new(1, 0, 1, 0)
                         _OP_ComPanelBgImg.Position = UDim2.new(0, 0, 0, 0)
                         _OP_ComPanelBgImg.BackgroundTransparency = 1
-                        local _opComBgFile = "assets/THEMES/ONEPIECE/OP-COM-BG.png"
+                        local _opComBgFile = onePieceComBgFileName
                         _OP_ComPanelBgImg.Image = _TL_safeGetCustomAsset(_opComBgFile) or "rbxassetid://132090006833323"
                         _OP_ComPanelBgImg.ScaleType = Enum.ScaleType.Crop
                         _OP_ComPanelBgImg.ImageTransparency = 0.35
@@ -23817,18 +23817,16 @@ local function parseFieldMessage(fullText, prefixLen)
                     }
                     
                     _TL_refs._TL_tabOnePieceIcons = {
-                        Home       = "rbxassetid://98331541002580",
-                        Character  = "rbxassetid://89458904008601",
-                        Playerlist = "rbxassetid://99305081178541",
-                        Settings   = "rbxassetid://104468772328182",
+                        Home       = _TL_getCustomIcon and _TL_getCustomIcon(onePieceHomeIconFileName,       "rbxassetid://98331541002580")  or "rbxassetid://98331541002580",
+                        Character  = _TL_getCustomIcon and _TL_getCustomIcon(onePieceCharIconFileName,       "rbxassetid://89458904008601")  or "rbxassetid://89458904008601",
+                        Playerlist = _TL_getCustomIcon and _TL_getCustomIcon(onePiecePlayerlistIconFileName, "rbxassetid://99305081178541")  or "rbxassetid://99305081178541",
+                        Settings   = _TL_getCustomIcon and _TL_getCustomIcon(onePieceSettingsIconFileName,   "rbxassetid://104468772328182") or "rbxassetid://104468772328182",
                         Actions    = "rbxassetid://84685771974677",
                     }
                     _TL_refs._TL_tabDragonballIcons = {
-                        Home       = "rbxassetid://73282723782417",
-                        Character  = "rbxassetid://75090359908318",
-                        Playerlist = "rbxassetid://98892794324034",
-                        
-                        
+                        Home       = _TL_getCustomIcon and _TL_getCustomIcon(dragonballHomeIconFileName,       "rbxassetid://73282723782417") or "rbxassetid://73282723782417",
+                        Character  = _TL_getCustomIcon and _TL_getCustomIcon(dragonballCharIconFileName,       "rbxassetid://75090359908318")  or "rbxassetid://75090359908318",
+                        Playerlist = _TL_getCustomIcon and _TL_getCustomIcon(dragonballPlayerlistIconFileName, "rbxassetid://98892794324034")  or "rbxassetid://98892794324034",
                         Settings   = (function()
                             if dragonballSettingsIconFileName and _TL_safeIsFile(dragonballSettingsIconFileName) then
                                 local r = _TL_safeGetCustomAsset(dragonballSettingsIconFileName)
@@ -23874,10 +23872,11 @@ local function parseFieldMessage(fullText, prefixLen)
                     end
                     
                     _TL_refs._TL_tabDexterIcons = {
-                        Character     = _TL_getCustomIcon(dexterCharIconFileName,     "rbxassetid://130511578744559"),
-                        Playerlist    = _TL_getCustomIcon(dexterPlayerlistIconFileName, "rbxassetid://133167021592598"),
-                        Settings      = _TL_getCustomIcon(dexterSettingsIconFileName, "rbxassetid://117318347375651"),
-                        Scripts       = _TL_getCustomIcon(dexterScriptsIconFileName,  "rbxassetid://99174931681951"),
+                        Home          = _TL_getCustomIcon(dexterHomeIconFileName,         "rbxassetid://79298842483031"),
+                        Character     = _TL_getCustomIcon(dexterCharIconFileName,         "rbxassetid://130511578744559"),
+                        Playerlist    = _TL_getCustomIcon(dexterPlayerlistIconFileName,   "rbxassetid://133167021592598"),
+                        Settings      = _TL_getCustomIcon(dexterSettingsIconFileName,     "rbxassetid://117318347375651"),
+                        Scripts       = _TL_getCustomIcon(dexterScriptsIconFileName,      "rbxassetid://99174931681951"),
                     }
                     
                     if _TL_activeThemeId == "dexter" then
@@ -25898,7 +25897,7 @@ local function _TL_showLoadingScreen()
 
                 local _afkFiles = {
                     dragonball = { "assets/TL-MP3-FILES/DB-AFK-VL0.mp3", "assets/TL-MP3-FILES/DB-AFK-VL1.mp3" },
-                    onepiece   = { "assets/TL-MP3-FILES/OP-AFK-VL0.mp3", "assets/TL-MP3-FILES/OP-AFK-VL1.mp3" },
+                    onepiece   = { "assets/TL-MP3-FILES/ONEPIECE-AFK-VOICELINE.mp3", "assets/TL-MP3-FILES/ONEPIECE-AFK-VOICELINE1.mp3" },
                     theboys    = { "assets/TL-MP3-FILES/TB-AFK-VL0.mp3" },
                 }
 
