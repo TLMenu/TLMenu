@@ -72,33 +72,62 @@ local customUserAvatars = {
     },
 }
 
-local dragonballMusicUrl             = "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/THEME%20MUSICS/DRAGONBALL/DRAGONBALL-THEME-MUSIC-1.mp3"
-local dragonballMusicFileName        = "assets/TL-MP3-FILES/DragonBall-Music1.mp3"
+-- ── DRAGONBALL ──────────────────────────────────────────────────────────────
+local dragonballMusicUrl              = "https://github.com/TLMenu/TLASSETS/blob/main/TL-MP3/THEME-MP3/THEME-MUSIC/DRAGONBALL/DRAGONBALL-THEME-MUSIC-1.mp3"
+local dragonballMusicFileName         = "assets/TL-MP3-FILES/DRAGONBALL/DRAGONBALL-THEME-MUSIC-1.mp3"
+local dragonballSettingsIconUrl       = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DRAGONBALL/Theme-Dragonball-Settings-Icon.png"
+local dragonballSettingsIconFileName  = "assets/THEMES/DRAGONBALL/Theme-Dragonball-Settings-Icon.png"
+local dragonballBgUrl                 = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DRAGONBALL/Theme-Dragonball-Home-Wallpaper.png"
+local dragonballBgFileName            = "assets/THEMES/DRAGONBALL/Theme-Dragonball-Home-Wallpaper.png"
+local dragonballCharIconUrl           = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DRAGONBALL/Theme-Dragonball-CharacterIcon.png"
+local dragonballCharIconFileName      = "assets/THEMES/DRAGONBALL/Theme-Dragonball-CharacterIcon.png"
+local dragonballCharBgUrl             = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DRAGONBALL/Theme-Dragonball-CharacterPanel.png"
+local dragonballCharBgFileName        = "assets/THEMES/DRAGONBALL/Theme-Dragonball-CharacterPanel.png"
+local dragonballHomeIconUrl           = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DRAGONBALL/Theme-Dragonball-HomeIcon.png"
+local dragonballHomeIconFileName      = "assets/THEMES/DRAGONBALL/Theme-Dragonball-HomeIcon.png"
+local dragonballLoadingScreenUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DRAGONBALL/Theme-Dragonball-Loading-Screen.png"
+local dragonballLoadingScreenFileName = "assets/THEMES/DRAGONBALL/Theme-Dragonball-Loading-Screen.png"
+local dragonballPlayerlistIconUrl     = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DRAGONBALL/Theme-Dragonball-Playerlist-Icon.png"
+local dragonballPlayerlistIconFileName= "assets/THEMES/DRAGONBALL/Theme-Dragonball-Playerlist-Icon.png"
 
-local dragonballSettingsIconUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DRAGONBALL/Theme-Dragonball-Settings-Icon.png"
-local dragonballSettingsIconFileName = "assets/THEMES/DRAGONBALL/Theme-Dragonball-Settings-Icon.png"
-
-local dragonballBgUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DRAGONBALL/Theme-Dragonball-Home-Wallpaper.jpg"
-local dragonballBgFileName = "assets/THEMES/DRAGONBALL/Theme-Dragonball-Home-Wallpaper.jpg"
-
-local onePieceActionBgUrl      = "https://github.com/TLMenu/TLASSETS/raw/main/THEMES/ONE%20PIECE/Theme-OnePiece-Action-Wallpaper.png"
-local onePieceActionBgFileName = "assets/THEMES/ONEPIECE/OP-ACT-BG.png"
+-- ── ONE PIECE ────────────────────────────────────────────────────────────────
+local onePieceActionBgUrl             = "https://github.com/TLMenu/TLASSETS/raw/main/THEMES/ONE%20PIECE/Theme-OnePiece-Action-Wallpaper.png"
+local onePieceActionBgFileName        = "assets/THEMES/ONEPIECE/Theme-OnePiece-Action-Wallpaper.png"
+local onePieceComBgUrl                = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ONE%20PIECE/Theme-OnePiece-Com-Wallpaper.png"
+local onePieceComBgFileName           = "assets/THEMES/Theme-OnePiece-Com-Wallpaper.png"
+local onePieceHomeIconUrl             = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ONE%20PIECE/Theme-OnePiece-HomeIcon.png"
+local onePieceHomeIconFileName        = "assets/THEMES/ONEPIECE/Theme-OnePiece-HomeIcon.png"
+local onePieceCharIconUrl             = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ONE%20PIECE/Theme-OnePiece-CharacterIcon.png"
+local onePieceCharIconFileName        = "assets/THEMES/ONEPIECE/Theme-OnePiece-CharacterIcon.png"
+local onePieceSettingsIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ONE%20PIECE/Theme-OnePiece-SettingsIcon.png"
+local onePieceSettingsIconFileName    = "assets/THEMES/ONEPIECE/Theme-OnePiece-SettingsIcon.png"
+local onePieceSettingsWpUrl           = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ONE%20PIECE/Theme-OnePiece-Setting-Wallpaper.png"
+local onePieceSettingsWpFileName      = "assets/THEMES/ONEPIECE/Theme-OnePiece-Setting-Wallpaper.png"
+local onePieceHomeWpUrl               = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ONE%20PIECE/Theme-OnePiece-Home-Wallpaper2.png"
+local onePieceHomeWpFileName          = "assets/THEMES/ONEPIECE/Theme-OnePiece-Home-Wallpaper2.png"
+local onePieceLoadingScreenUrl        = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ONE%20PIECE/Theme-OnePiece-Loading-Screen.png"
+local onePieceLoadingScreenFileName   = "assets/THEMES/ONEPIECE/Theme-OnePiece-Loading-Screen.png"
+local onePiecePlayerlistIconUrl       = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ONE%20PIECE/Theme-OnePiece-Playerlist-Icon.png"
+local onePiecePlayerlistIconFileName  = "assets/THEMES/ONEPIECE/Theme-OnePiece-Playerlist-Icon.png"
+local onePiecePlayerlistWpUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/ONE%20PIECE/Theme-Onepiece-Playerlist-Wallpaper.png"
+local onePiecePlayerlistWpFileName    = "assets/THEMES/ONEPIECE/Theme-Onepiece-Playerlist-Wallpaper.png"
 
 local adminAudioUrl           = "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/TLMENU-STANDARD-SFX/TLSYSTEM-ADMIN-SFX.mp3"
 local adminAudioFileName      = "assets/TL-MP3-FILES/TLSYSTEM-ADMIN-SFX.mp3"
 
-local theBoysScriptsIconUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/THE%20BOYS/Theme-TheBoys-Scripts-Icon.png"
+-- ── THE BOYS ─────────────────────────────────────────────────────────────────
+local theBoysScriptsIconUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THE%20BOYS/Theme-TheBoys-Scripts-Icon.png"
 local theBoysScriptsIconFileName = "assets/THEMES/THEBOYS/Theme-TheBoys-Scripts-Icon.png"
-local theBoysSettingsIconUrl     = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/THE%20BOYS/Theme-TheBoys-Settings-Icon.png"
+local theBoysSettingsIconUrl     = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THE%20BOYS/Theme-TheBoys-Settings-Icon.png"
 local theBoysSettingsIconFileName = "assets/THEMES/THEBOYS/Theme-TheBoys-Settings-Icon.png"
-local theBoysHomeIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/THE%20BOYS/Theme-TheBoys-HomeIcon.png"
+local theBoysHomeIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THE%20BOYS/Theme-TheBoys-HomeIcon.png"
 local theBoysHomeIconFileName    = "assets/THEMES/THEBOYS/Theme-TheBoys-HomeIcon.png"
-local theBoysActionsIconUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/THE%20BOYS/Theme-TheBoys-Actions-Icon.png"
+local theBoysActionsIconUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/THE%20BOYS/Theme-TheBoys-Actions-Icon.png"
 local theBoysActionsIconFileName = "assets/THEMES/THEBOYS/Theme-TheBoys-Actions-Icon.png"
 local theBoysBgUrl               = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/THE%20BOYS/Theme-TheBoys2.jpg"
 local theBoysBgFileName          = "assets/THEMES/THEBOYS/Theme-TheBoys2.jpg"
-local theBoysMusicUrl            = "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/THEME%20MUSICS/THE%20BOYS/The%20Boys%20Homelander%20Theme%20Enhanced%20Version.mp3"
-local theBoysMusicFileName       = "assets/TL-MP3-FILES/Theme-TheBoys-Music.mp3"
+local theBoysMusicUrl            = "https://github.com/TLMenu/TLASSETS/blob/main/TL-MP3/THEME-MP3/THEME-MUSIC/THEBOYS/The%20Boys%20Homelander%20Theme%20Enhanced%20Version.mp3"
+local theBoysMusicFileName       = "assets/TL-MP3-FILES/THEBOYS/Theme-TheBoys-Music.mp3"
 
 local comTabIconUrl              = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Com-Icon.png"
 local comTabIconFileName         = "assets/TL-DEFAULT/Com-Icon.png"
@@ -118,43 +147,49 @@ local actionsTabIconFileName     = "assets/TL-DEFAULT/ActionTab-Icon.png"
 local playerlistTabIconUrl       = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/Playerlist-Icon.png"
 local playerlistTabIconFileName  = "assets/TL-DEFAULT/Playerlist-Icon.png"
 
-local deathNoteHomeIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Home-Icon.png"
-local deathNoteHomeIconFileName    = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Home-Icon.png"
-local deathNoteCharIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEATH%20NOTE/Theme-Death-Note-CharacterIcon.png"
-local deathNoteCharIconFileName    = "assets/THEMES/DEATHNOTE/Theme-Death-Note-CharacterIcon.png"
-local deathNoteScriptsIconUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Scripts-Icon.png"
-local deathNoteScriptsIconFileName = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Scripts-Icon.png"
-local deathNoteSettingsIconUrl     = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Settings-Icon.png"
-local deathNoteSettingsIconFileName = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Settings-Icon.png"
-local deathNoteComIconUrl          = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Com-Icon.png"
-local deathNoteComIconFileName     = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Com-Icon.png"
-local deathNoteCharBgUrl           = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEATH%20NOTE/Theme-Death-Note-CharacterPanelBackground.png"
-local deathNoteCharBgFileName      = "assets/THEMES/DEATHNOTE/Theme-Death-Note-CharPanelBg.png"
-local deathNoteComBgUrl            = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Com-Background.png"
-local deathNoteComBgFileName       = "assets/THEMES/DEATHNOTE/Theme-Death-Note-ComPanelBg.png"
-local deathNoteScriptsBgUrl        = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Actions-Background-Icon.png"
-local deathNoteScriptsBgFileName   = "assets/THEMES/DEATHNOTE/Theme-Death-Note-ActionsPanelBg.png"
-local deathNoteScriptsPanelBgUrl    = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEATH%20NOTE/Theme-Death-Note-ScriptsPanel-Background.png"
+-- ── DEATH NOTE ───────────────────────────────────────────────────────────────
+local deathNoteHomeIconUrl            = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DEATH%20NOTE/Theme-Death-Note-Home-Icon.png"
+local deathNoteHomeIconFileName       = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Home-Icon.png"
+local deathNoteCharIconUrl            = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DEATH%20NOTE/Theme-Death-Note-CharacterIcon.png"
+local deathNoteCharIconFileName       = "assets/THEMES/DEATHNOTE/Theme-Death-Note-CharacterIcon.png"
+local deathNoteScriptsIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DEATH%20NOTE/Theme-Death-Note-Settings-Icon.png"
+local deathNoteScriptsIconFileName    = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Scripts-Icon.png"
+local deathNoteSettingsIconUrl        = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Settings-Icon.png"
+local deathNoteSettingsIconFileName   = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Settings-Icon.png"
+local deathNoteComIconUrl             = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DEATH%20NOTE/Theme-Death-Note-Com-Icon.png"
+local deathNoteComIconFileName        = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Com-Icon.png"
+local deathNoteCharBgUrl              = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DEATH%20NOTE/Theme-Death-Note-CharacterPanelBackground.png"
+local deathNoteCharBgFileName         = "assets/THEMES/DEATHNOTE/Theme-Death-Note-CharPanelBg.png"
+local deathNoteComBgUrl               = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DEATH%20NOTE/Theme-Death-Note-Com-Background.png"
+local deathNoteComBgFileName          = "assets/THEMES/DEATHNOTE/Theme-Death-Note-ComPanelBg.png"
+local deathNoteScriptsBgUrl           = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DEATH%20NOTE/Theme-Death-Note-Actions-Background-Icon.png"
+local deathNoteScriptsBgFileName      = "assets/THEMES/DEATHNOTE/Theme-Death-Note-ActionsPanelBg.png"
+local deathNoteScriptsPanelBgUrl      = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DEATH%20NOTE/Theme-Death-Note-ScriptsPanel-Background.png"
 local deathNoteScriptsPanelBgFileName = "assets/THEMES/DEATHNOTE/Theme-Death-Note-ScriptsPanelBg.png"
-local deathNoteLoadingScreenUrl    = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Loading-Screen.png"
-local deathNoteLoadingScreenFileName = "assets/THEMES/DEATHNOTE/Theme-Death-Note-LoadingScreen.png"
-local deathNoteHomeBgUrl            = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEATH%20NOTE/Theme-Death-Note-Home-Background-Icon.png"
-local deathNoteHomeBgFileName       = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Home-Background.png"
+local deathNoteLoadingScreenUrl       = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DEATH%20NOTE/Theme-Death-Note-Loading-Screen.png"
+local deathNoteLoadingScreenFileName  = "assets/THEMES/DEATHNOTE/Theme-Death-Note-LoadingScreen.png"
+local deathNoteHomeBgUrl              = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DEATH%20NOTE/Theme-Death-Note-Home-Background-Icon.png"
+local deathNoteHomeBgFileName         = "assets/THEMES/DEATHNOTE/Theme-Death-Note-Home-Background.png"
 
-local dexterCharIconUrl             = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEXTER/Theme-Dexter-CharacterIcon.png"
-local dexterCharIconFileName        = "assets/THEMES/DEXTER/Theme-Dexter-CharacterIcon.png"
-local dexterCharBgUrl               = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEXTER/Theme-Dexter-CharacterPanel.png"
-local dexterCharBgFileName          = "assets/THEMES/DEXTER/Theme-Dexter-CharacterPanel.png"
-local dexterSettingsIconUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEXTER/Theme-Dexter-Settings-Icon.png"
-local dexterSettingsIconFileName    = "assets/THEMES/DEXTER/Theme-Dexter-Settings-Icon.png"
-local dexterScriptsIconUrl          = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEXTER/Theme-Dexter-Scripts-Icon.png"
-local dexterScriptsIconFileName     = "assets/THEMES/DEXTER/Theme-Dexter-Scripts-Icon.png"
-local dexterComBgUrl                = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEXTER/Theme-Dexter-Com-Wallpaper.png"
-local dexterComBgFileName           = "assets/THEMES/DEXTER/Theme-Dexter-ComWallpaper.png"
-local dexterLoadingScreenUrl        = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEXTER/Theme-Dexter-Loading-Screen.png"
-local dexterLoadingScreenFileName   = "assets/THEMES/DEXTER/Theme-Dexter-LoadingScreen.png"
-local dexterPlayerlistIconUrl       = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEXTER/Theme-Dexter-Playerlist-Icon.png"
-local dexterPlayerlistIconFileName  = "assets/THEMES/DEXTER/Theme-Dexter-Playerlist-Icon.png"
+-- ── DEXTER ───────────────────────────────────────────────────────────────────
+local dexterHomeIconUrl              = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DEXTER/Theme-Dexter-HomeIcon.png"
+local dexterHomeIconFileName         = "assets/THEMES/DEXTER/Theme-Dexter-HomeIcon.png"
+local dexterSettingsWpUrl            = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DEXTER/Theme-Dexter-Settings-Wallpaper.png"
+local dexterSettingsWpFileName       = "assets/THEMES/DEXTER/Theme-Dexter-Settings-Wallpaper.png"
+local dexterCharIconUrl              = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DEXTER/Theme-Dexter-CharacterIcon.png"
+local dexterCharIconFileName         = "assets/THEMES/DEXTER/Theme-Dexter-CharacterIcon.png"
+local dexterCharBgUrl                = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DEXTER/Theme-Dexter-CharacterPanel.png"
+local dexterCharBgFileName           = "assets/THEMES/DEXTER/Theme-Dexter-CharacterPanel.png"
+local dexterSettingsIconUrl          = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DEXTER/Theme-Dexter-Settings-Icon.png"
+local dexterSettingsIconFileName     = "assets/THEMES/DEXTER/Theme-Dexter-Settings-Icon.png"
+local dexterScriptsIconUrl           = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DEXTER/Theme-Dexter-Scripts-Icon.png"
+local dexterScriptsIconFileName      = "assets/THEMES/DEXTER/Theme-Dexter-Scripts-Icon.png"
+local dexterComBgUrl                 = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DEXTER/Theme-Dexter-Com-Wallpaper.png"
+local dexterComBgFileName            = "assets/THEMES/DEXTER/Theme-Dexter-ComWallpaper.png"
+local dexterLoadingScreenUrl         = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/THEMES/DEXTER/Theme-Dexter-Loading-Screen.png"
+local dexterLoadingScreenFileName    = "assets/THEMES/DEXTER/Theme-Dexter-LoadingScreen.png"
+local dexterPlayerlistIconUrl        = "https://raw.githubusercontent.com/TLMenu/TLASSETS/refs/heads/main/DEXTER/Theme-Dexter-Playerlist-Icon.png"
+local dexterPlayerlistIconFileName   = "assets/THEMES/DEXTER/Theme-Dexter-Playerlist-Icon.png"
 
 local loadingScreenVoiceUrl      = "https://github.com/TLMenu/TLASSETS/raw/main/TL-MP3/TLMenuLoadingScreen.mp3"
 local loadingScreenVoiceFileName = "assets/TL-MP3-FILES/TLMenuLoadingScreen.mp3"
@@ -295,6 +330,8 @@ task.spawn(function()
     end
     pcall(function()
         if not _TL_safeIsFolder("assets/TL-MP3-FILES") then _TL_safeMakeFolder("assets/TL-MP3-FILES") end
+        if not _TL_safeIsFolder("assets/TL-MP3-FILES/DRAGONBALL") then _TL_safeMakeFolder("assets/TL-MP3-FILES/DRAGONBALL") end
+        if not _TL_safeIsFolder("assets/TL-MP3-FILES/THEBOYS") then _TL_safeMakeFolder("assets/TL-MP3-FILES/THEBOYS") end
         if not _TL_safeIsFolder("assets/TL-ROLE-PICS") then _TL_safeMakeFolder("assets/TL-ROLE-PICS") end
         if not _TL_safeIsFolder("assets/TL-DEFAULT") then _TL_safeMakeFolder("assets/TL-DEFAULT") end
         if not _TL_safeIsFolder("assets/ROLE-ICONS") then _TL_safeMakeFolder("assets/ROLE-ICONS") end
@@ -364,35 +401,55 @@ task.spawn(function()
         { name = "TL Default QA Backshots",    url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/TL-DEFAULT/QuickAction%20Backshots-Icon.png", file = "assets/TL-DEFAULT/QuickAction-Backshots-Icon.png", kind = "image", priority = 2 },
         { name = "Admin Join Audio",           url = adminAudioUrl,                file = adminAudioFileName,                kind = "audio", priority = 1 },
         
-        { name = "The Boys Scripts Icon",      url = theBoysScriptsIconUrl,        file = theBoysScriptsIconFileName,        kind = "image", priority = 2 },
-        { name = "The Boys Settings Icon",     url = theBoysSettingsIconUrl,       file = theBoysSettingsIconFileName,       kind = "image", priority = 2 },
-        { name = "The Boys Home Icon",         url = theBoysHomeIconUrl,           file = theBoysHomeIconFileName,           kind = "image", priority = 2 },
-        { name = "The Boys Actions Icon",      url = theBoysActionsIconUrl,        file = theBoysActionsIconFileName,        kind = "image", priority = 2 },
-        { name = "The Boys Theme Music",       url = theBoysMusicUrl,              file = theBoysMusicFileName,              kind = "audio", priority = 2 },
-        { name = "The Boys Wallpaper",         url = theBoysBgUrl,                 file = theBoysBgFileName,                 kind = "image", priority = 2 },
-        { name = "Dragonball Settings Icon",   url = dragonballSettingsIconUrl,    file = dragonballSettingsIconFileName,    kind = "image", priority = 2 },
-        { name = "Dragonball Wallpaper",       url = dragonballBgUrl,              file = dragonballBgFileName,              kind = "image", priority = 2 },
-        { name = "Dragonball Theme Music",     url = dragonballMusicUrl,           file = dragonballMusicFileName,           kind = "audio", priority = 2 },
-        { name = "One Piece COM Background",   url = "https://raw.githubusercontent.com/TLMenu/TLASSETS/main/ONE%20PIECE/Theme-OnePiece-Com-Wallpaper.png", file = "assets/THEMES/ONEPIECE/OP-COM-BG.png", kind = "image", priority = 2 },
-        { name = "One Piece Action Background", url = onePieceActionBgUrl, file = onePieceActionBgFileName, kind = "image", priority = 2 },
-        { name = "Death Note Home Icon",       url = deathNoteHomeIconUrl,         file = deathNoteHomeIconFileName,         kind = "image", priority = 2 },
-        { name = "Death Note Character Icon",  url = deathNoteCharIconUrl,         file = deathNoteCharIconFileName,         kind = "image", priority = 2 },
-        { name = "Death Note Scripts Icon",    url = deathNoteScriptsIconUrl,      file = deathNoteScriptsIconFileName,      kind = "image", priority = 2 },
-        { name = "Death Note Settings Icon",   url = deathNoteSettingsIconUrl,     file = deathNoteSettingsIconFileName,     kind = "image", priority = 2 },
-        { name = "Death Note Com Icon",        url = deathNoteComIconUrl,          file = deathNoteComIconFileName,          kind = "image", priority = 2 },
-        { name = "Death Note Char BG",         url = deathNoteCharBgUrl,           file = deathNoteCharBgFileName,           kind = "image", priority = 2 },
-        { name = "Death Note Com BG",          url = deathNoteComBgUrl,            file = deathNoteComBgFileName,            kind = "image", priority = 2 },
-        { name = "Death Note Scripts BG",      url = deathNoteScriptsBgUrl,        file = deathNoteScriptsBgFileName,        kind = "image", priority = 2 },
-        { name = "Death Note ScriptsPanel BG", url = deathNoteScriptsPanelBgUrl,   file = deathNoteScriptsPanelBgFileName,   kind = "image", priority = 2 },
-        { name = "Death Note Loading Screen",  url = deathNoteLoadingScreenUrl,    file = deathNoteLoadingScreenFileName,    kind = "image", priority = 2 },
-        { name = "Death Note Home BG",         url = deathNoteHomeBgUrl,           file = deathNoteHomeBgFileName,           kind = "image", priority = 2 },
-        { name = "Dexter Character Icon",      url = dexterCharIconUrl,             file = dexterCharIconFileName,             kind = "image", priority = 2 },
-        { name = "Dexter Character BG",        url = dexterCharBgUrl,               file = dexterCharBgFileName,               kind = "image", priority = 2 },
-        { name = "Dexter Settings Icon",       url = dexterSettingsIconUrl,         file = dexterSettingsIconFileName,         kind = "image", priority = 2 },
-        { name = "Dexter Scripts Icon",        url = dexterScriptsIconUrl,          file = dexterScriptsIconFileName,          kind = "image", priority = 2 },
-        { name = "Dexter Com Wallpaper",       url = dexterComBgUrl,                file = dexterComBgFileName,                kind = "image", priority = 2 },
-        { name = "Dexter Loading Screen",      url = dexterLoadingScreenUrl,        file = dexterLoadingScreenFileName,        kind = "image", priority = 2 },
-        { name = "Dexter Playerlist Icon",     url = dexterPlayerlistIconUrl,       file = dexterPlayerlistIconFileName,       kind = "image", priority = 2 },
+        -- THE BOYS
+        { name = "The Boys Scripts Icon",         url = theBoysScriptsIconUrl,           file = theBoysScriptsIconFileName,           kind = "image", priority = 2 },
+        { name = "The Boys Settings Icon",        url = theBoysSettingsIconUrl,          file = theBoysSettingsIconFileName,          kind = "image", priority = 2 },
+        { name = "The Boys Home Icon",             url = theBoysHomeIconUrl,              file = theBoysHomeIconFileName,              kind = "image", priority = 2 },
+        { name = "The Boys Actions Icon",          url = theBoysActionsIconUrl,           file = theBoysActionsIconFileName,           kind = "image", priority = 2 },
+        { name = "The Boys Theme Music",           url = theBoysMusicUrl,                 file = theBoysMusicFileName,                 kind = "audio", priority = 2 },
+        { name = "The Boys Wallpaper",             url = theBoysBgUrl,                    file = theBoysBgFileName,                    kind = "image", priority = 2 },
+        -- DRAGONBALL
+        { name = "Dragonball Settings Icon",       url = dragonballSettingsIconUrl,       file = dragonballSettingsIconFileName,       kind = "image", priority = 2 },
+        { name = "Dragonball Wallpaper",           url = dragonballBgUrl,                 file = dragonballBgFileName,                 kind = "image", priority = 2 },
+        { name = "Dragonball Theme Music",         url = dragonballMusicUrl,              file = dragonballMusicFileName,              kind = "audio", priority = 2 },
+        { name = "Dragonball Character Icon",      url = dragonballCharIconUrl,           file = dragonballCharIconFileName,           kind = "image", priority = 2 },
+        { name = "Dragonball Character BG",        url = dragonballCharBgUrl,             file = dragonballCharBgFileName,             kind = "image", priority = 2 },
+        { name = "Dragonball Home Icon",           url = dragonballHomeIconUrl,           file = dragonballHomeIconFileName,           kind = "image", priority = 2 },
+        { name = "Dragonball Loading Screen",      url = dragonballLoadingScreenUrl,      file = dragonballLoadingScreenFileName,      kind = "image", priority = 2 },
+        { name = "Dragonball Playerlist Icon",     url = dragonballPlayerlistIconUrl,     file = dragonballPlayerlistIconFileName,     kind = "image", priority = 2 },
+        -- ONE PIECE
+        { name = "One Piece COM Background",       url = onePieceComBgUrl,                file = onePieceComBgFileName,                kind = "image", priority = 2 },
+        { name = "One Piece Action Background",    url = onePieceActionBgUrl,             file = onePieceActionBgFileName,             kind = "image", priority = 2 },
+        { name = "One Piece Home Icon",            url = onePieceHomeIconUrl,             file = onePieceHomeIconFileName,             kind = "image", priority = 2 },
+        { name = "One Piece Character Icon",       url = onePieceCharIconUrl,             file = onePieceCharIconFileName,             kind = "image", priority = 2 },
+        { name = "One Piece Settings Icon",        url = onePieceSettingsIconUrl,         file = onePieceSettingsIconFileName,         kind = "image", priority = 2 },
+        { name = "One Piece Settings Wallpaper",   url = onePieceSettingsWpUrl,           file = onePieceSettingsWpFileName,           kind = "image", priority = 2 },
+        { name = "One Piece Home Wallpaper",       url = onePieceHomeWpUrl,               file = onePieceHomeWpFileName,               kind = "image", priority = 2 },
+        { name = "One Piece Loading Screen",       url = onePieceLoadingScreenUrl,        file = onePieceLoadingScreenFileName,        kind = "image", priority = 2 },
+        { name = "One Piece Playerlist Icon",      url = onePiecePlayerlistIconUrl,       file = onePiecePlayerlistIconFileName,       kind = "image", priority = 2 },
+        { name = "One Piece Playerlist Wallpaper", url = onePiecePlayerlistWpUrl,         file = onePiecePlayerlistWpFileName,         kind = "image", priority = 2 },
+        -- DEATH NOTE
+        { name = "Death Note Home Icon",           url = deathNoteHomeIconUrl,            file = deathNoteHomeIconFileName,            kind = "image", priority = 2 },
+        { name = "Death Note Character Icon",      url = deathNoteCharIconUrl,            file = deathNoteCharIconFileName,            kind = "image", priority = 2 },
+        { name = "Death Note Scripts Icon",        url = deathNoteScriptsIconUrl,         file = deathNoteScriptsIconFileName,         kind = "image", priority = 2 },
+        { name = "Death Note Settings Icon",       url = deathNoteSettingsIconUrl,        file = deathNoteSettingsIconFileName,        kind = "image", priority = 2 },
+        { name = "Death Note Com Icon",            url = deathNoteComIconUrl,             file = deathNoteComIconFileName,             kind = "image", priority = 2 },
+        { name = "Death Note Char BG",             url = deathNoteCharBgUrl,              file = deathNoteCharBgFileName,              kind = "image", priority = 2 },
+        { name = "Death Note Com BG",              url = deathNoteComBgUrl,               file = deathNoteComBgFileName,               kind = "image", priority = 2 },
+        { name = "Death Note Scripts BG",          url = deathNoteScriptsBgUrl,           file = deathNoteScriptsBgFileName,           kind = "image", priority = 2 },
+        { name = "Death Note ScriptsPanel BG",     url = deathNoteScriptsPanelBgUrl,      file = deathNoteScriptsPanelBgFileName,      kind = "image", priority = 2 },
+        { name = "Death Note Loading Screen",      url = deathNoteLoadingScreenUrl,       file = deathNoteLoadingScreenFileName,       kind = "image", priority = 2 },
+        { name = "Death Note Home BG",             url = deathNoteHomeBgUrl,              file = deathNoteHomeBgFileName,              kind = "image", priority = 2 },
+        -- DEXTER
+        { name = "Dexter Home Icon",               url = dexterHomeIconUrl,               file = dexterHomeIconFileName,               kind = "image", priority = 2 },
+        { name = "Dexter Settings Wallpaper",      url = dexterSettingsWpUrl,             file = dexterSettingsWpFileName,             kind = "image", priority = 2 },
+        { name = "Dexter Character Icon",          url = dexterCharIconUrl,               file = dexterCharIconFileName,               kind = "image", priority = 2 },
+        { name = "Dexter Character BG",            url = dexterCharBgUrl,                 file = dexterCharBgFileName,                 kind = "image", priority = 2 },
+        { name = "Dexter Settings Icon",           url = dexterSettingsIconUrl,           file = dexterSettingsIconFileName,           kind = "image", priority = 2 },
+        { name = "Dexter Scripts Icon",            url = dexterScriptsIconUrl,            file = dexterScriptsIconFileName,            kind = "image", priority = 2 },
+        { name = "Dexter Com Wallpaper",           url = dexterComBgUrl,                  file = dexterComBgFileName,                  kind = "image", priority = 2 },
+        { name = "Dexter Loading Screen",          url = dexterLoadingScreenUrl,          file = dexterLoadingScreenFileName,          kind = "image", priority = 2 },
+        { name = "Dexter Playerlist Icon",         url = dexterPlayerlistIconUrl,         file = dexterPlayerlistIconFileName,         kind = "image", priority = 2 },
     }
 
     
@@ -417,9 +474,9 @@ task.spawn(function()
     local _afkFiles = {
         { "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE.mp3",  "assets/TL-MP3-FILES/DB-AFK-VL0.mp3" },
         { "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/AFKSFX/DRAGONBALL-AFKSFX/DRAGONBALL-AFK-VOICELINE1.mp3", "assets/TL-MP3-FILES/DB-AFK-VL1.mp3" },
-        { "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/AFKSFX/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE.mp3",      "assets/TL-MP3-FILES/OP-AFK-VL0.mp3" },
-        { "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/AFKSFX/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE1.mp3",     "assets/TL-MP3-FILES/OP-AFK-VL1.mp3" },
-        { "https://github.com/TLMenu/TLASSETS/raw/main/TL%20SFX/AFKSFX/THE%20BOYS-AFKSFX/THEBOYS-AFK-VOICELINE.mp3",     "assets/TL-MP3-FILES/TB-AFK-VL0.mp3" },
+        { "https://github.com/TLMenu/TLASSETS/blob/main/TL-MP3/THEME-MP3/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE.mp3",    "assets/TL-MP3-FILES/ONEPIECE-AFK-VOICELINE.mp3" },
+        { "https://github.com/TLMenu/TLASSETS/blob/main/TL-MP3/THEME-MP3/ONEPIECE-AFKSFX/ONEPIECE-AFK-VOICELINE1.mp3",   "assets/TL-MP3-FILES/ONEPIECE-AFK-VOICELINE1.mp3" },
+        { "https://github.com/TLMenu/TLASSETS/blob/main/TL-MP3/THEME-MP3/THEBOYS-AFKSFX/THEBOYS-AFK-VOICELINE.mp3",      "assets/TL-MP3-FILES/TB-AFK-VL0.mp3" },
     }
     for _, v in ipairs(_afkFiles) do
         assets[#assets + 1] = { name = "AFK VL: " .. v[2], url = v[1], file = v[2], kind = "audio", priority = 2 }
