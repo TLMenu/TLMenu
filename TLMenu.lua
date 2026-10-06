@@ -21832,6 +21832,7 @@ local function parseFieldMessage(fullText, prefixLen)
                 local _nowPlayingLabel  = nil 
                 local _nowPlayingBadge  = nil
                 local _badgePauseIcon   = nil
+                local _badgePlayIcon    = nil
                 local _currentTrackIdx  = nil 
                 local _currentTracks    = nil 
                 local _musicPlaying     = false
@@ -21875,6 +21876,7 @@ local function parseFieldMessage(fullText, prefixLen)
                         pcall(function() _nowPlayingBadge.TextColor3 = C.sub or _C3_SUB end)
                     end
                     if _badgePauseIcon then _badgePauseIcon.Visible = false end
+                    if _badgePlayIcon  then _badgePlayIcon.Visible  = false end
                     if _playBtnRef then
                         pcall(function() _playBtnRef.Image = "rbxassetid://" .. tostring(_PLAY_IMG) end)
                     end
@@ -21935,6 +21937,10 @@ local function parseFieldMessage(fullText, prefixLen)
                         pcall(function() _nowPlayingBadge.TextColor3 = C.accent or _C3_ACC end)
                     end
                     if _badgePauseIcon then _badgePauseIcon.Visible = false end
+                    if _badgePlayIcon  then
+                        _badgePlayIcon.Visible = true
+                        pcall(function() _badgePlayIcon.ImageColor3 = C.accent or _C3_ACC end)
+                    end
                     if _playBtnRef then
                         pcall(function() _playBtnRef.Image = "rbxassetid://" .. tostring(_STOP_IMG) end)
                     end
@@ -22026,6 +22032,21 @@ local function parseFieldMessage(fullText, prefixLen)
                     end)
                     _pauseIconImg.Visible = false
                     _badgePauseIcon = _pauseIconImg
+
+                    -- Play icon displayed left of the badge text when playing
+                    local _playIconImg = Instance.new("ImageLabel", playerCard)
+                    _playIconImg.Size = UDim2.new(0, 12, 0, 12)
+                    _playIconImg.Position = UDim2.new(0, 46, 0, 27)
+                    _playIconImg.BackgroundTransparency = 1
+                    _playIconImg.BorderSizePixel = 0
+                    _playIconImg.ScaleType = Enum.ScaleType.Fit
+                    _playIconImg.ImageColor3 = C.accent or _C3_ACC
+                    pcall(function()
+                        local _pli = _TL_safeGetCustomAsset("assets/TL-DEFAULT/MusicPlay-Icon.png")
+                        if _pli then _playIconImg.Image = _pli end
+                    end)
+                    _playIconImg.Visible = false
+                    _badgePlayIcon = _playIconImg
 
                     -- Quick Action Buttons in Top Right
                     local _SCAN_BTN_W, _SCAN_BTN_H = 66, 26
@@ -22481,6 +22502,10 @@ local function parseFieldMessage(fullText, prefixLen)
                                 pcall(function() _nowPlayingBadge.TextColor3 = C.accent or _C3_ACC end)
                             end
                             if _badgePauseIcon then _badgePauseIcon.Visible = false end
+                            if _badgePlayIcon  then
+                                _badgePlayIcon.Visible = true
+                                pcall(function() _badgePlayIcon.ImageColor3 = C.accent or _C3_ACC end)
+                            end
                         else
                             pcall(function() _activeMusicSound:Pause() end)
                             playBtn.Image = "rbxassetid://" .. tostring(_PLAY_IMG)
@@ -22493,6 +22518,7 @@ local function parseFieldMessage(fullText, prefixLen)
                                 _nowPlayingBadge.Text = "PAUSED"
                                 pcall(function() _nowPlayingBadge.TextColor3 = C.sub or _C3_SUB end)
                             end
+                            if _badgePlayIcon  then _badgePlayIcon.Visible  = false end
                             if _badgePauseIcon then
                                 _badgePauseIcon.Visible = true
                                 pcall(function() _badgePauseIcon.ImageColor3 = C.sub or _C3_SUB end)
