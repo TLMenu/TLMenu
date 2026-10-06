@@ -21884,6 +21884,8 @@ local function parseFieldMessage(fullText, prefixLen)
                     if _pbKnobRef then _pbKnobRef.Position = UDim2.new(0, -5, 0.5, -5) end
                     if _timeCurRef then _timeCurRef.Text = "0:00" end
                     if _timeTotalRef then _timeTotalRef.Text = "--:--" end
+                    -- Clear global ref so cleanup on reinject works
+                    pcall(function() if getgenv then _genv._TL_activeMusicSound = nil end end)
                 end
 
                 local function _playMusicId(id, vol, trackName)
@@ -21904,6 +21906,8 @@ local function parseFieldMessage(fullText, prefixLen)
                     snd.RollOffMaxDistance = 1e9
                     snd:Play()
                     _activeMusicSound = snd
+                    -- Register globally so reinject cleanup can stop it
+                    pcall(function() if getgenv then _genv._TL_activeMusicSound = snd end end)
                     _musicPlaying = true
 
                     snd.Ended:Connect(function()
@@ -22116,11 +22120,20 @@ local function parseFieldMessage(fullText, prefixLen)
                     end)
                     copyBtn.MouseButton1Click:Connect(function()
                         if _sc._playClickSound then _sc._playClickSound() end
-                        local path = _cmEnsureFolder() or "Custom-Music"
-                        pcall(function() setclipboard(path) end)
-                        copyBtn.Text = "✓ Done"
+                        -- _TL_getAbsWorkspacePath() handles all fallbacks:
+                        --   Best case : C:\Users\NAME\AppData\Local\Real\workspace\Custom-Music
+                        --   Mid case  : %LOCALAPPDATA%\Real\workspace\Custom-Music
+                        --   Worst case: nil  (executor & appdata undetectable)
+                        local absPath = _TL_getAbsWorkspacePath()
+                        if absPath then
+                            pcall(function() setclipboard(absPath) end)
+                            copyBtn.Text = "✓ Kopiert"
+                        else
+                            pcall(function() setclipboard("Custom-Music (Executor nicht erkannt)") end)
+                            copyBtn.Text = "? Manuell"
+                        end
                         copyBtn.TextColor3 = C.accent or _C3_ACC
-                        task.delay(1.5, function()
+                        task.delay(2, function()
                             copyBtn.Text = "📋 Path"
                             copyBtn.TextColor3 = C.sub or _C3_SUB
                         end)
@@ -22859,6 +22872,78 @@ local function parseFieldMessage(fullText, prefixLen)
                             pcall(function() makefolder("Custom-Music") end)
                         end
                         return isfolder("Custom-Music") and "Custom-Music" or nil
+                    end
+
+                    -- Resolves the absolute path to the executor's workspace/Custom-Music folder.
+                    -- Priority: getscriptpath() > os.getenv(LOCALAPPDATA)+execname > execname hint
+                    local function _TL_getAbsWorkspacePath()
+                        local CUSTOM_MUSIC_SUB = "\\workspace\\Custom-Music"
+
+                        -- Executor name → AppData subfolder mapping
+                        local _EXEC_FOLDER = {
+                            ["Real"]        = "Real",
+                            ["Xeno"]        = "Xeno",
+                            ["Xenoware"]    = "Xeno",
+                            ["Solara"]      = "Solara",
+                            ["Seliware"]    = "Seliware",
+                            ["Synapse X"]   = "Synapse",
+                            ["SynapseX"]    = "Synapse",
+                            ["Synapse"]     = "Synapse",
+                            ["KRNL"]        = "KRNL",
+                            ["Krnl"]        = "KRNL",
+                            ["Fluxus"]      = "Fluxus",
+                            ["Medusa"]      = "Medusa",
+                            ["Madium"]      = "Madium",
+                            ["Celery"]      = "Celery",
+                            ["Vayne"]       = "Vayne",
+                            ["Comet"]       = "Comet",
+                            ["Script-Ware"] = "ScriptWare",
+                            ["ScriptWare"]  = "ScriptWare",
+                            ["Coco-Z"]      = "Coco-Z",
+                            ["CocoZ"]       = "Coco-Z",
+                            ["Electron"]    = "Electron",
+                            ["AWP.GG"]      = "AWP",
+                            ["AWP"]         = "AWP",
+                        }
+
+                        -- Step 1: getscriptpath() gives the running script's full absolute path
+                        if type(getscriptpath) == "function" then
+                            local ok, sp = pcall(getscriptpath)
+                            if ok and type(sp) == "string" and sp ~= "" then
+                                local base = sp:match("^(.+\\AppData\\Local\\[^\\]+)")
+                                if base then return base .. CUSTOM_MUSIC_SUB end
+                            end
+                        end
+
+                        -- Step 2: os.getenv("LOCALAPPDATA") + executor name
+                        local localappdata = nil
+                        if type(os) == "table" and type(os.getenv) == "function" then
+                            local ok, v = pcall(os.getenv, "LOCALAPPDATA")
+                            if ok and type(v) == "string" and v ~= "" then localappdata = v end
+                        end
+
+                        local execName = nil
+                        if type(getexecutorname) == "function" then
+                            local ok, n = pcall(getexecutorname)
+                            if ok and type(n) == "string" and n ~= "" then execName = n end
+                        end
+                        if not execName and type(identifyexecutor) == "function" then
+                            local ok, n = pcall(identifyexecutor)
+                            if ok and type(n) == "string" and n ~= "" then execName = n end
+                        end
+
+                        if localappdata and execName then
+                            local folder = _EXEC_FOLDER[execName] or execName
+                            return localappdata .. "\\" .. folder .. CUSTOM_MUSIC_SUB
+                        end
+
+                        -- Step 3: only exec name known → return hint with %LOCALAPPDATA% placeholder
+                        if execName then
+                            local folder = _EXEC_FOLDER[execName] or execName
+                            return "%LOCALAPPDATA%\\" .. folder .. CUSTOM_MUSIC_SUB
+                        end
+
+                        return nil -- couldn't detect executor or appdata path
                     end
 
                     local function _cmScan()
@@ -26018,6 +26103,15 @@ local function _TL_showLoadingScreen()
                     if _hoverSoundObj then
                         _hoverSoundObj:Destroy(); _hoverSoundObj = nil
                     end
+                end)
+                -- Stop any active music immediately on reinject
+                pcall(function()
+                    local snd = getgenv and _genv._TL_activeMusicSound
+                    if snd and snd.Parent then
+                        pcall(function() snd:Stop() end)
+                        pcall(function() snd:Destroy() end)
+                    end
+                    if getgenv then _genv._TL_activeMusicSound = nil end
                 end)
 
                 pcall(function()
